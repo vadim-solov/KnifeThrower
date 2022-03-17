@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using CodeBase.Beam;
 using UnityEngine;
+using Motion = CodeBase.Beam.Motion;
 
 namespace CodeBase.Factories
 {
@@ -8,20 +10,60 @@ namespace CodeBase.Factories
     {
         [SerializeField]
         private BeamMotion[] _stages = new BeamMotion[5];
-        [SerializeField, Range(1,100)] 
-        private int _appleChance = 25;
         [SerializeField]
-        private int _knifeChance = 3;
+        private Motion _applePrefab;
+        [SerializeField]
+        private Motion _knifePrefab;
+        [SerializeField, Range(0f,100f)] 
+        private int _appleChance = 25;
+
+        private readonly float _applePosition = 60f;
+        private readonly List<float> _knivesPositions = new List<float>() {0f, 120f, 240f};
+        
+        private int _maxKnife = 3;
+        private GameObject _container;
+        private BeamMotion _beam;
+
+        public void CreateContainer() => 
+            _container = new GameObject();
 
         public void CreateBeam()
         {
-            BeamMotion beam = Instantiate(_stages[0]);
-            beam.StartRotation();
+            _beam = Instantiate(_stages[0], _container.transform);
+            _beam.StartRotation();
         }
 
-        private void CreateApple()
+        public void CreateApple()
         {
+            if(!CheckAppleChance())
+                return;
             
+            Motion apple = Instantiate(_applePrefab, _container.transform);
+            apple.Initialize(_beam.transform);
+            apple.SetAngle(_applePosition);
+            apple.StartRotation();
+        }
+
+        public void CreateKnives()
+        {
+            int knivesCount = Random.Range(1, _maxKnife + 1);
+
+            for (int i = 0; i < knivesCount; i++)
+            {
+                Motion knife = Instantiate(_knifePrefab, _container.transform);
+                knife.Initialize(_beam.transform);
+                knife.SetAngle(_knivesPositions[0]);
+                knife.StartRotation();
+                _knivesPositions.RemoveAt(0);
+                Debug.Log(_knivesPositions.Count);
+            }
+        }
+
+        private bool CheckAppleChance()
+        {
+            int random = Random.Range(1, 100) + 1;
+            Debug.Log(random);
+            return random <= _appleChance;
         }
     }
 }

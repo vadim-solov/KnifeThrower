@@ -10,7 +10,10 @@ namespace CodeBase.Game
         
         private void Awake()
         {
+            _gameFactory.CreateContainer();
             _gameFactory.CreateBeam();
+            _gameFactory.CreateApple();
+            _gameFactory.CreateKnives();
         }
     }
 }

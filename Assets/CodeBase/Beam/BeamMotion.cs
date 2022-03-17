@@ -1,12 +1,11 @@
-using System;
 using UnityEngine;
 
 namespace CodeBase.Beam
 {
     public class BeamMotion : MonoBehaviour
     {
-        [SerializeField, Range(1, 100)]
-        private float _rotateSpeed;
+        [SerializeField, Range(-100f, 100f)]
+        private float _rotateSpeed = 50f;
 
         private bool _rotate;
 
