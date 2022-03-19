@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using CodeBase.Beam;
+using CodeBase.Knife;
 using UnityEngine;
 using Motion = CodeBase.Beam.Motion;
 
@@ -41,7 +42,11 @@ namespace CodeBase.Factories
             Motion apple = Instantiate(_applePrefab, _container.transform);
             apple.Initialize(_beam.transform);
             apple.SetAngle(_applePosition);
-            apple.StartRotation();
+            
+            var attach = apple.GetComponent<Attacher>();
+            var rb = _beam.GetComponent<Rigidbody>();
+            
+            attach.Attach(rb);
         }
 
         public void CreateKnives()
@@ -61,9 +66,14 @@ namespace CodeBase.Factories
 
         private bool CheckAppleChance()
         {
-            int random = Random.Range(1, 100) + 1;
+            int random = Random.Range(1, 101);
             Debug.Log(random);
             return random <= _appleChance;
+        }
+
+        public void CreatePlayerKnife()
+        {
+            
         }
     }
 }
