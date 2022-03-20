@@ -1,10 +1,9 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 using CodeBase.Beam;
 using CodeBase.Behaviours;
-using CodeBase.Knife;
 using CodeBase.Models;
 using UnityEngine;
-using Motion = CodeBase.Behaviours.Motion;
 
 namespace CodeBase.Factories
 {
@@ -16,6 +15,7 @@ namespace CodeBase.Factories
         [SerializeField, Range(0f,100f)] 
         private int _appleChance = 25;
 
+        [Header("Pin object")]
         [SerializeField]
         private PinBehaviour _pinBehaviour;
         [SerializeField]
@@ -23,6 +23,12 @@ namespace CodeBase.Factories
         [SerializeField]
         private Model _knifeModel;
 
+        [Header("Player object")]
+        [SerializeField]
+        private ThrowBehaviour _throwBehaviour;
+        [SerializeField]
+        private Model _playerKnifeModel;
+        
         private readonly float _applePosition = 60f;
         private readonly List<float> _knivesPositions = new List<float>() {0f, 120f, 240f};
         
@@ -48,9 +54,7 @@ namespace CodeBase.Factories
             Instantiate(_appleModel, apple.transform);
             SetPosition(apple.transform, _beam.transform);
             SetAngle(apple.transform, _beam.transform, _applePosition);
-            var attach = apple.GetComponent<Attacher>();
-            var rb = _beam.GetComponent<Rigidbody>();
-            attach.Attach(rb);
+            Attach(apple);
         }
 
         public void CreateKnives()
@@ -63,17 +67,38 @@ namespace CodeBase.Factories
                 Instantiate(_knifeModel, knife.transform);
                 SetPosition(knife.transform, _beam.transform);
                 SetAngle(knife.transform, _beam.transform, _knivesPositions[0]);
-                var attach = knife.GetComponent<Attacher>();
-                var rb = _beam.GetComponent<Rigidbody>();
-                attach.Attach(rb);
-                _knivesPositions.RemoveAt(0);
-                Debug.Log(_knivesPositions.Count);
+                Attach(knife);
+                RemoveInListPositions();
             }
         }
 
         public void CreatePlayerKnife()
         {
-            
+            ThrowBehaviour knife = Instantiate(_throwBehaviour);
+            Instantiate(_playerKnifeModel, knife.transform);
+            SetPosition(knife.transform);
+        }
+
+        private void SetPosition(Transform entity) => 
+            entity.position = new Vector3(0f, -4f, 0f);
+
+        private void SetPosition(Transform entity, Transform beam) => 
+            entity.position = beam.transform.position + new Vector3(0.7f, 0f, 0f);
+
+        private void SetAngle(Transform entity, Transform beam, float angle) => 
+            entity.transform.RotateAround(beam.transform.position, Vector3.forward, angle);
+
+        private void Attach(PinBehaviour entity)
+        {
+            var attach = entity.GetComponent<Attacher>();
+            var rb = _beam.GetComponent<Rigidbody>();
+            attach.Attach(rb);
+        }
+
+        private void RemoveInListPositions()
+        {
+            _knivesPositions.RemoveAt(0);
+            Debug.Log(_knivesPositions.Count);
         }
 
         private bool CheckAppleChance()
@@ -82,11 +107,5 @@ namespace CodeBase.Factories
             Debug.Log(random);
             return random <= _appleChance;
         }
-
-        private void SetPosition(Transform entity, Transform beam) => 
-            entity.position = beam.transform.position + new Vector3(0.7f, 0f, 0f);
-
-        private void SetAngle(Transform entity, Transform beam, float angle) => 
-            entity.transform.RotateAround(beam.transform.position, Vector3.forward, angle);
     }
 }

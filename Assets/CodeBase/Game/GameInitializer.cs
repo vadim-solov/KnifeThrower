@@ -14,6 +14,7 @@ namespace CodeBase.Game
             _gameFactory.CreateBeam();
             _gameFactory.CreateApple();
             _gameFactory.CreateKnives();
+            _gameFactory.CreatePlayerKnife();
         }
     }
 }

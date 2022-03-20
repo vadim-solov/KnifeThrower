@@ -9,7 +9,7 @@ namespace CodeBase.Beam
 
         private bool _rotate;
 
-        private void Update()
+        private void FixedUpdate()
         {
             if (_rotate) 
                 RotateBeam();
@@ -19,6 +19,6 @@ namespace CodeBase.Beam
             _rotate = true;
 
         private void RotateBeam() => 
-            transform.Rotate(new Vector3(0f, 0f, _rotateSpeed) * Time.deltaTime); //Refactor this. Use rigidbody
+            transform.Rotate(new Vector3(0f, 0f, _rotateSpeed)); //Refactor this. Use rigidbody
     }
 }

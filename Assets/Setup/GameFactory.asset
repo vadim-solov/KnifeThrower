@@ -18,3 +18,5 @@ MonoBehaviour:
   _pinBehaviour: {fileID: 2537021472883135390, guid: 6aad6f98b258d0548b6f27091d1432af, type: 3}
   _appleModel: {fileID: 292660662404506034, guid: 60ecdd9a6b84e484389243e94e0fa7d8, type: 3}
   _knifeModel: {fileID: -3433357154022635772, guid: a5fae2d9f141d2840ad53e488d10e1aa, type: 3}
+  _throwBehaviour: {fileID: 9078143251870780314, guid: ae08b5087cdbe2542a2efc08d4e67b4a, type: 3}
+  _playerKnifeModel: {fileID: -3433357154022635772, guid: a5fae2d9f141d2840ad53e488d10e1aa, type: 3}
