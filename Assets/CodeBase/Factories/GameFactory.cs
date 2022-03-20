@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using CodeBase.Beam;
+using CodeBase.Behaviours;
 using CodeBase.Knife;
+using CodeBase.Models;
 using UnityEngine;
-using Motion = CodeBase.Beam.Motion;
+using Motion = CodeBase.Behaviours.Motion;
 
 namespace CodeBase.Factories
 {
@@ -11,12 +13,15 @@ namespace CodeBase.Factories
     {
         [SerializeField]
         private BeamMotion[] _stages = new BeamMotion[5];
-        [SerializeField]
-        private Motion _applePrefab;
-        [SerializeField]
-        private Motion _knifePrefab;
         [SerializeField, Range(0f,100f)] 
         private int _appleChance = 25;
+
+        [SerializeField]
+        private PinBehaviour _pinBehaviour;
+        [SerializeField]
+        private Model _appleModel;
+        [SerializeField]
+        private Model _knifeModel;
 
         private readonly float _applePosition = 60f;
         private readonly List<float> _knivesPositions = new List<float>() {0f, 120f, 240f};
@@ -39,13 +44,12 @@ namespace CodeBase.Factories
             if(!CheckAppleChance())
                 return;
             
-            Motion apple = Instantiate(_applePrefab, _container.transform);
-            apple.Initialize(_beam.transform);
-            apple.SetAngle(_applePosition);
-            
+            PinBehaviour apple = Instantiate(_pinBehaviour, _container.transform);
+            Instantiate(_appleModel, apple.transform);
+            SetPosition(apple.transform, _beam.transform);
+            SetAngle(apple.transform, _beam.transform, _applePosition);
             var attach = apple.GetComponent<Attacher>();
             var rb = _beam.GetComponent<Rigidbody>();
-            
             attach.Attach(rb);
         }
 
@@ -55,13 +59,21 @@ namespace CodeBase.Factories
 
             for (int i = 0; i < knivesCount; i++)
             {
-                Motion knife = Instantiate(_knifePrefab, _container.transform);
-                knife.Initialize(_beam.transform);
-                knife.SetAngle(_knivesPositions[0]);
-                knife.StartRotation();
+                PinBehaviour knife = Instantiate(_pinBehaviour, _container.transform);
+                Instantiate(_knifeModel, knife.transform);
+                SetPosition(knife.transform, _beam.transform);
+                SetAngle(knife.transform, _beam.transform, _knivesPositions[0]);
+                var attach = knife.GetComponent<Attacher>();
+                var rb = _beam.GetComponent<Rigidbody>();
+                attach.Attach(rb);
                 _knivesPositions.RemoveAt(0);
                 Debug.Log(_knivesPositions.Count);
             }
+        }
+
+        public void CreatePlayerKnife()
+        {
+            
         }
 
         private bool CheckAppleChance()
@@ -71,9 +83,10 @@ namespace CodeBase.Factories
             return random <= _appleChance;
         }
 
-        public void CreatePlayerKnife()
-        {
-            
-        }
+        private void SetPosition(Transform entity, Transform beam) => 
+            entity.position = beam.transform.position + new Vector3(0.7f, 0f, 0f);
+
+        private void SetAngle(Transform entity, Transform beam, float angle) => 
+            entity.transform.RotateAround(beam.transform.position, Vector3.forward, angle);
     }
 }

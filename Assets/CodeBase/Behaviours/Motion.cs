@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace CodeBase.Knife
+namespace CodeBase.Behaviours
 {
-    public class KnifeMotion : MonoBehaviour
+    public class Motion : MonoBehaviour
     {
         [SerializeField]
         private Rigidbody _rb;

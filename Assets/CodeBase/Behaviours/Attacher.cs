@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace CodeBase.Knife
+namespace CodeBase.Behaviours
 {
     public class Attacher : MonoBehaviour
     {

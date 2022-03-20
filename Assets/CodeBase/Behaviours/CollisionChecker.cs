@@ -1,11 +1,11 @@
 using UnityEngine;
 
-namespace CodeBase.Knife
+namespace CodeBase.Behaviours
 {
     public class CollisionChecker : MonoBehaviour
     {
         [SerializeField]
-        private KnifeMotion _knife;
+        private Motion _knife;
         [SerializeField]
         private Attacher _attacher;
         

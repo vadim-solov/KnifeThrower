@@ -19,6 +19,6 @@ namespace CodeBase.Beam
             _rotate = true;
 
         private void RotateBeam() => 
-            transform.Rotate(new Vector3(0f, 0f, _rotateSpeed) * Time.deltaTime);
+            transform.Rotate(new Vector3(0f, 0f, _rotateSpeed) * Time.deltaTime); //Refactor this. Use rigidbody
     }
 }

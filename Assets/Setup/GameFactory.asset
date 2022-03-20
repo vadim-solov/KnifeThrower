@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _stages:
   - {fileID: 775396957438537179, guid: 1d9bccbd70161304eb8455c263748b25, type: 3}
-  _applePrefab: {fileID: 230301818744053835, guid: 963f8f17c73f5b24ab827f3dd5f78ef7, type: 3}
-  _knifePrefab: {fileID: 230301818744053835, guid: 463c595f4c9273948950bab955da17c1, type: 3}
-  _appleChance: 25
+  _appleChance: 100
+  _pinBehaviour: {fileID: 2537021472883135390, guid: 6aad6f98b258d0548b6f27091d1432af, type: 3}
+  _appleModel: {fileID: 292660662404506034, guid: 60ecdd9a6b84e484389243e94e0fa7d8, type: 3}
+  _knifeModel: {fileID: -3433357154022635772, guid: a5fae2d9f141d2840ad53e488d10e1aa, type: 3}
