@@ -1,37 +1,36 @@
-using CodeBase.Beam;
+using CodeBase.AttachedKnife;
+using CodeBase.PinApple;
 using UnityEngine;
 
 namespace CodeBase.Behaviours
 {
     public class CollisionChecker : MonoBehaviour
     {
-        [SerializeField]
-        private Motion _knife;
-        [SerializeField]
-        private Attacher _attacher;
-        
-        private void OnTriggerEnter(Collider other)
+        private HitController _hitController;
+
+        public void Initialize(HitController hitController)
         {
-            if (other != null)
+            _hitController = hitController;
+        }
+
+        private void OnTriggerEnter(Collider collision)
+        {
+            if (collision != null)
             {
-
-
-                if (other.gameObject.TryGetComponent(out BeamMotion beam))
+                if (collision.gameObject.TryGetComponent(out Beam.Beam beam))
                 {
-                    Debug.Log("Hit in beam");
-                    _knife.StopMotion();
-                    var connectedBody1 = other.gameObject.GetComponent<Rigidbody>();
-                    _attacher.Attach(connectedBody1);
+                    _hitController.HitInBeam(gameObject, beam);
                 }
                 
-                if (other.gameObject.TryGetComponent(out PinBehaviour pin))
+                if (collision.gameObject.TryGetComponent(out Apple apple))
                 {
-                    Debug.Log("Hit in pin object");
-                    _knife.StopMotion();
-                    var connectedBody = other.gameObject.GetComponent<Rigidbody>();
-                    _attacher.Attach(connectedBody);
-                }
+                    _hitController.HitInApple(gameObject, apple);
+                }     
                 
+                if (collision.gameObject.TryGetComponent(out Knife knife))
+                {
+                    _hitController.HitInKnife(gameObject, knife);
+                }
             }
         }
     }

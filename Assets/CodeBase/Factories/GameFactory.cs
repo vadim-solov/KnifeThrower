@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using CodeBase.Beam;
 using CodeBase.Behaviours;
-using CodeBase.Models;
+using CodeBase.PinApple;
 using UnityEngine;
+using CodeBase.AttachedKnife;
+using Motion = CodeBase.Behaviours.Motion;
+using Random = UnityEngine.Random;
 
 namespace CodeBase.Factories
 {
@@ -17,17 +20,13 @@ namespace CodeBase.Factories
 
         [Header("Pin object")]
         [SerializeField]
-        private PinBehaviour _pinBehaviour;
+        private GameObject _attachedApple;
         [SerializeField]
-        private Model _appleModel;
-        [SerializeField]
-        private Model _knifeModel;
+        private GameObject _attachedKnife;
 
         [Header("Player object")]
         [SerializeField]
-        private ThrowBehaviour _throwBehaviour;
-        [SerializeField]
-        private Model _playerKnifeModel;
+        private GameObject _playerKnife;
         
         private readonly float _applePosition = 60f;
         private readonly List<float> _knivesPositions = new List<float>() {0f, 120f, 240f};
@@ -35,6 +34,10 @@ namespace CodeBase.Factories
         private int _maxKnife = 3;
         private GameObject _container;
         private BeamMotion _beam;
+        private HitController _hitController;
+        
+        public void Initialize(HitController hitController) => 
+            _hitController = hitController;
 
         public void CreateContainer() => 
             _container = new GameObject();
@@ -50,11 +53,16 @@ namespace CodeBase.Factories
             if(!CheckAppleChance())
                 return;
             
-            PinBehaviour apple = Instantiate(_pinBehaviour, _container.transform);
-            Instantiate(_appleModel, apple.transform);
+            GameObject apple = Instantiate(_attachedApple, _container.transform);
+            apple.AddComponent<Apple>();
+            
             SetPosition(apple.transform, _beam.transform);
             SetAngle(apple.transform, _beam.transform, _applePosition);
-            Attach(apple);
+            
+            FixedJoint joint = apple.AddComponent<FixedJoint>();
+            joint.connectedBody = _beam.gameObject.GetComponent<Rigidbody>();
+            
+
         }
 
         public void CreateKnives()
@@ -63,19 +71,30 @@ namespace CodeBase.Factories
 
             for (int i = 0; i < knivesCount; i++)
             {
-                PinBehaviour knife = Instantiate(_pinBehaviour, _container.transform);
-                Instantiate(_knifeModel, knife.transform);
+                
+                GameObject knife = Instantiate(_attachedKnife, _container.transform);
+                knife.AddComponent<Knife>();
+                
                 SetPosition(knife.transform, _beam.transform);
                 SetAngle(knife.transform, _beam.transform, _knivesPositions[0]);
-                Attach(knife);
+                
+                FixedJoint joint = knife.AddComponent<FixedJoint>();
+                joint.connectedBody = _beam.gameObject.GetComponent<Rigidbody>();
+                
                 RemoveInListPositions();
             }
         }
 
         public void CreatePlayerKnife()
         {
-            ThrowBehaviour knife = Instantiate(_throwBehaviour);
-            Instantiate(_playerKnifeModel, knife.transform);
+            GameObject knife = Instantiate(_playerKnife);
+
+            var rb = knife.GetComponent<Rigidbody>();
+            knife.AddComponent<Motion>().Initialize(rb, 10f);
+            var motion = knife.GetComponent<Motion>();
+            knife.AddComponent<KnifeInput>().Initialize(motion);
+            knife.AddComponent<CollisionChecker>();
+            knife.GetComponent<CollisionChecker>().Initialize(_hitController);
             SetPosition(knife.transform);
         }
 
@@ -107,5 +126,13 @@ namespace CodeBase.Factories
             Debug.Log(random);
             return random <= _appleChance;
         }
+        
+        public void Attach(GameObject gameObject, Rigidbody connectedBody)
+        {
+            FixedJoint joint = gameObject.AddComponent<FixedJoint>();
+            joint.connectedBody = connectedBody.gameObject.GetComponent<Rigidbody>();
+        }
+
+
     }
 }
