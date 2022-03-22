@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: GameFactory
   m_EditorClassIdentifier: 
   _stageConfigs:
-  - _beam: {fileID: 5437991918128654572, guid: 1d9bccbd70161304eb8455c263748b25, type: 3}
-    _knifeCount: 5
+  - _numberOfKnives: 2
+    _beam: {fileID: 6651404066569717191, guid: 1d9bccbd70161304eb8455c263748b25, type: 3}
+    _rotateSpeed: 5
+    _rotatedTime: 5
   _appleChance: 100
   _attachedApple: {fileID: 3474160458616741028, guid: 60ecdd9a6b84e484389243e94e0fa7d8, type: 3}
   _attachedKnife: {fileID: 3474160458616741028, guid: 16db354325bc61c45897435b266fb953, type: 3}

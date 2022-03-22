@@ -20,5 +20,11 @@ namespace CodeBase.Behaviours
 
         public void StopMotion() => 
             _rb.velocity = Vector3.zero;
+
+        public void Splash()
+        {
+            _rb.useGravity = true;
+            _rb.AddForce(transform.up * 0.005f * Time.deltaTime);
+        }
     }
 }

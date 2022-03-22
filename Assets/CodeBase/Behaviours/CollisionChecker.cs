@@ -19,7 +19,7 @@ namespace CodeBase.Behaviours
         {
             if (collision != null && _enabled)
             {
-                if (collision.gameObject.TryGetComponent(out ObjectType.Beam beam))
+                if (collision.gameObject.TryGetComponent(out Beam beam))
                 {
                     _hitController.HitInBeam(gameObject, beam);
                 }

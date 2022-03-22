@@ -7,10 +7,16 @@ namespace CodeBase.Factories
     public class StageConfig
     {
         [SerializeField]
-        private ObjectType.Beam _beam;
+        private int _numberOfKnives = 5;
         [SerializeField]
-        private int _knifeCount = 5;
+        private GameObject _beam;
+        [SerializeField]
+        private float _rotateSpeed = 50f;
+        [SerializeField]
+        private float _rotatedTime = 5f;
 
-        public ObjectType.Beam Beam => _beam;
+        public GameObject Beam => _beam;
+        public float RotateSpeed => _rotateSpeed;
+        public int NumberOfKnives => _numberOfKnives;
     }
 }

@@ -8,12 +8,16 @@ namespace CodeBase.Game
 {
     public class HitController : MonoBehaviour
     {
-        private IGameFactory _gameFactory; 
+        private IGameFactory _gameFactory;
+        private KnivesCounter _knivesCounter;
             
-        public void Initialize(IGameFactory gameFactory) => 
+        public void Initialize(IGameFactory gameFactory, KnivesCounter knivesCounter)
+        {
             _gameFactory = gameFactory;
+            _knivesCounter = knivesCounter;
+        }
 
-        public void HitInBeam(GameObject knife, ObjectType.Beam component)
+        public void HitInBeam(GameObject knife, Beam component)
         {            
             Debug.Log("Hit in beam");
             var motion = knife.GetComponent<Motion>();
@@ -23,6 +27,8 @@ namespace CodeBase.Game
             knife.gameObject.GetComponent<CollisionChecker>().SwitchOff();
             knife.gameObject.GetComponent<KnifeInput>().enabled = false;
             _gameFactory.CreatePlayerKnife();
+            
+            _knivesCounter.Decrease();
         }
 
         public void HitInApple(GameObject knife, Apple component)
@@ -34,6 +40,9 @@ namespace CodeBase.Game
             
             FixedJoint joint = knife.AddComponent<FixedJoint>();
             joint.connectedBody = component.gameObject.GetComponent<Rigidbody>();
+            
+            knife.gameObject.GetComponent<CollisionChecker>().SwitchOff();
+            knife.gameObject.GetComponent<KnifeInput>().enabled = false;
         }
 
         public void HitInKnife(GameObject knife, Knife component)
@@ -45,6 +54,9 @@ namespace CodeBase.Game
             
             FixedJoint joint = knife.AddComponent<FixedJoint>();
             joint.connectedBody = component.gameObject.GetComponent<Rigidbody>();
+            
+            knife.gameObject.GetComponent<CollisionChecker>().SwitchOff();
+            knife.gameObject.GetComponent<KnifeInput>().enabled = false;
         }
     }
 }

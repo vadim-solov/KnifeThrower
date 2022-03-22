@@ -1,12 +1,10 @@
 using UnityEngine;
 
-namespace CodeBase.Beam
+namespace CodeBase.Behaviours
 {
     public class BeamMotion : MonoBehaviour
     {
-        [SerializeField, Range(-100f, 100f)]
         private float _rotateSpeed = 50f;
-
         private bool _rotate;
 
         private void FixedUpdate()
@@ -15,8 +13,11 @@ namespace CodeBase.Beam
                 RotateBeam();
         }
 
-        public void StartRotation() =>
+        public void StartRotation(float rotateSpeed)
+        {
+            _rotateSpeed = rotateSpeed; 
             _rotate = true;
+        }
 
         private void RotateBeam() => 
             transform.Rotate(new Vector3(0f, 0f, _rotateSpeed)); //Refactor this. Use rigidbody
