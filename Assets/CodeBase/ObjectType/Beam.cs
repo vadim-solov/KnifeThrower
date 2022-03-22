@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace CodeBase.Beam
+namespace CodeBase.ObjectType
 {
     public class Beam : MonoBehaviour
     {

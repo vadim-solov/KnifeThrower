@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace CodeBase.AttachedKnife
+namespace CodeBase.ObjectType
 {
     public class Knife : MonoBehaviour
     {

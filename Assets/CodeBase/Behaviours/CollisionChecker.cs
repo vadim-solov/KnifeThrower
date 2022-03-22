@@ -1,23 +1,25 @@
-using CodeBase.AttachedKnife;
-using CodeBase.PinApple;
+using CodeBase.Game;
+using CodeBase.ObjectType;
 using UnityEngine;
 
 namespace CodeBase.Behaviours
 {
     public class CollisionChecker : MonoBehaviour
     {
+        private bool _enabled = true;
         private HitController _hitController;
 
-        public void Initialize(HitController hitController)
-        {
+        public void Initialize(HitController hitController) => 
             _hitController = hitController;
-        }
+
+        public void SwitchOff() => 
+            _enabled = false;
 
         private void OnTriggerEnter(Collider collision)
         {
-            if (collision != null)
+            if (collision != null && _enabled)
             {
-                if (collision.gameObject.TryGetComponent(out Beam.Beam beam))
+                if (collision.gameObject.TryGetComponent(out ObjectType.Beam beam))
                 {
                     _hitController.HitInBeam(gameObject, beam);
                 }

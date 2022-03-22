@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace CodeBase.PinApple
+namespace CodeBase.ObjectType
 {
     public class Apple : MonoBehaviour
     {

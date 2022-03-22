@@ -1,4 +1,3 @@
-using CodeBase.Behaviours;
 using CodeBase.Factories;
 using UnityEngine;
 
@@ -14,8 +13,8 @@ namespace CodeBase.Game
         
         private void Awake()
         {
+            _hitController.Initialize(_gameFactory);
             _gameFactory.Initialize(_hitController);
-            
             _gameFactory.CreateContainer();
             _gameFactory.CreateBeam();
             _gameFactory.CreateApple();

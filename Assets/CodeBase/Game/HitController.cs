@@ -1,20 +1,28 @@
-using CodeBase.AttachedKnife;
-using CodeBase.PinApple;
+using CodeBase.Behaviours;
+using CodeBase.Factories;
+using CodeBase.ObjectType;
 using UnityEngine;
+using Motion = CodeBase.Behaviours.Motion;
 
-namespace CodeBase.Behaviours
+namespace CodeBase.Game
 {
     public class HitController : MonoBehaviour
     {
-        public void HitInBeam(GameObject knife, Beam.Beam component)
+        private IGameFactory _gameFactory; 
+            
+        public void Initialize(IGameFactory gameFactory) => 
+            _gameFactory = gameFactory;
+
+        public void HitInBeam(GameObject knife, ObjectType.Beam component)
         {            
             Debug.Log("Hit in beam");
-
             var motion = knife.GetComponent<Motion>();
             motion.StopMotion();
-            
             FixedJoint joint = knife.AddComponent<FixedJoint>();
             joint.connectedBody = component.gameObject.GetComponent<Rigidbody>();
+            knife.gameObject.GetComponent<CollisionChecker>().SwitchOff();
+            knife.gameObject.GetComponent<KnifeInput>().enabled = false;
+            _gameFactory.CreatePlayerKnife();
         }
 
         public void HitInApple(GameObject knife, Apple component)
