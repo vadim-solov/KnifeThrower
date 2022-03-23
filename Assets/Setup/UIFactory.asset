@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04e9857bc8ce47ee9b7323ab26b98285, type: 3}
   m_Name: UIFactory
   m_EditorClassIdentifier: 
-  _canvas: {fileID: 7704184565466896074, guid: de4b559a4c5196c48914a810d53587e8, type: 3}
-  _victoryScreen: {fileID: 0}
+  _canvasPrefab: {fileID: 7704184565466896074, guid: de4b559a4c5196c48914a810d53587e8, type: 3}
+  _loseScreenPrefab: {fileID: 5759684475154948952, guid: ce246a6e7c5aa2d4b979fcbab9927fdd, type: 3}

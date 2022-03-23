@@ -23,5 +23,13 @@ namespace CodeBase.Game
             if(_numberOfKnives <= 0)
                 Victory?.Invoke();            
         }
+
+        public bool CheckLastKnife()
+        {
+            if (_numberOfKnives <= 0)
+                return true;
+            
+            return false;
+        }
     }
 }

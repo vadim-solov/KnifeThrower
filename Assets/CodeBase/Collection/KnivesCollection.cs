@@ -21,7 +21,7 @@ namespace CodeBase.Collection
         public void Cleanup()
         {
             _gameFactory.KnifeCreated -= OnKnifeCreated;
-            Debug.Log("desub");
+            Debug.Log("Desub");
         }
 
         public void Clear() => 

@@ -46,17 +46,17 @@ namespace CodeBase.Factories
         public void Initialize(HitController hitController) => 
             _hitController = hitController;
 
-        public void CreateContainer()
-        {
+        public void CreateContainer() => 
             _container = new GameObject {name = "Container"};
-        }
 
         public void CreateBeam()
         {
             _beam = Instantiate(_stageConfigs[0].Beam, _container.transform);
-            AddRigidbodyComponent(_beam, true);
+            var rb = AddRigidbodyComponent(_beam, true);
+            rb.isKinematic = true;
             _beam.AddComponent<Beam>();
-            _beam.AddComponent<BeamMotion>().StartRotation(_stageConfigs[0].RotateSpeed);
+            var motion = _beam.AddComponent<Motion>();
+            motion.StartRotation(_stageConfigs[0].RotateSpeed);
         }
 
         public void CreateApple()
@@ -65,22 +65,22 @@ namespace CodeBase.Factories
                 return;
             
             _apple = Instantiate(_attachedApple, _container.transform);
-            AddRigidbodyComponent(_apple, false);
+            Rigidbody rb = AddRigidbodyComponent(_apple, false);
             SetPosition(_apple.transform, _beam.transform);
             SetAngle(_apple.transform, _beam.transform, _applePosition);
             Attach(_apple);
             AddAppleComponent(_apple);
+            _apple.AddComponent<Motion>().Initialize(rb, 10f);
         }
 
         public void CreateKnives()
         {
             int knivesCount = Random.Range(1, _maxKnife + 1);
-            //int knivesCount = 0;
             
             for (int i = 0; i < knivesCount; i++)
             {
                 GameObject knife = Instantiate(_attachedKnife, _container.transform);
-                var rb = AddRigidbodyComponent(knife, false);
+                Rigidbody rb = AddRigidbodyComponent(knife, false);
                 SetPosition(knife.transform, _beam.transform);
                 SetAngle(knife.transform, _beam.transform, _knivesPositions[0]);
                 Attach(knife);
@@ -88,7 +88,7 @@ namespace CodeBase.Factories
                 knife.AddComponent<Motion>().Initialize(rb, 10f);
                 RemoveInListPositions();
 
-                var knifeComponent = knife.GetComponent<Knife>();
+                Knife knifeComponent = knife.GetComponent<Knife>();
                 KnifeCreated?.Invoke(knifeComponent);
             }
         }
@@ -96,16 +96,33 @@ namespace CodeBase.Factories
         public void CreatePlayerKnife()
         {
             GameObject knife = Instantiate(_playerKnife, _container.transform);
-            var rb = AddRigidbodyComponent(knife, false);
+            Rigidbody rb = AddRigidbodyComponent(knife, false);
             AddKnifeComponent(knife);
             knife.AddComponent<Motion>().Initialize(rb, 10f);
-            var motion = knife.GetComponent<Motion>();
+            Motion motion = knife.GetComponent<Motion>();
             AddKnifeInputComponent(knife, motion);
             AddCollisionCheckerComponent(knife);
             SetPosition(knife.transform);
             
-            var knifeComponent = knife.GetComponent<Knife>();
+            Knife knifeComponent = knife.GetComponent<Knife>();
             KnifeCreated?.Invoke(knifeComponent);
+        }
+
+        public void DestroyBeam() => 
+            Destroy(_beam.gameObject);
+
+        public void DestroyApple()
+        {
+            _apple.GetComponent<Motion>().Drop();
+            Destroy(_apple.gameObject, 2f);
+            Debug.Log("Apple destroyed");                
+        }
+
+        public void DestroyKnife(Knife knife)
+        {
+            knife.GetComponent<Motion>().Drop();
+            Destroy(knife.gameObject, 2f);
+            Debug.Log("Knife destroyed");                
         }
 
         private bool CheckAppleChance()
@@ -121,19 +138,10 @@ namespace CodeBase.Factories
             Debug.Log(_knivesPositions.Count);
         }
 
-        public void DestroyBeam() => 
-            Destroy(_beam.gameObject);
-        
-        public void DestroyApple() => 
-            Destroy(_apple.gameObject, 2f);
-
-        public void DestroyKnife(Knife knife) => 
-            Destroy(knife.gameObject, 2f);
-
         private Rigidbody AddRigidbodyComponent(GameObject entity, bool freezePosition)
         {
             entity.AddComponent<Rigidbody>();
-            var rb = entity.GetComponent<Rigidbody>();
+            Rigidbody rb = entity.GetComponent<Rigidbody>();
             rb.mass = 0f;
             rb.useGravity = false;
 

@@ -3,7 +3,6 @@ using CodeBase.Collection;
 using CodeBase.Factories;
 using CodeBase.ObjectType;
 using UnityEngine;
-using Motion = CodeBase.Behaviours.Motion;
 
 namespace CodeBase.Game
 {
@@ -22,30 +21,38 @@ namespace CodeBase.Game
             _knivesCollection = knivesCollection;
             _knivesCounter.Victory += OnVictory;
         }
+        
+        public void Cleanup()
+        {
+            _knivesCounter.Victory -= OnVictory;
+            Debug.Log("Desub");
+        }
+
 
         private void OnVictory()
         {
             Debug.Log("Victory!");
-            _gameFactory.DestroyBeam();
-            _gameFactory.DestroyApple();
-            SplashKnives();
+            DestroyBeam();
+            DestroyApple();
             DestroyKnives();
             _knivesCollection.Clear();
+            
+            _gameFactory.CreateBeam();
+            _gameFactory.CreateApple();
+            _gameFactory.CreateKnives();
+            _gameFactory.CreatePlayerKnife();
         }
 
-        private void SplashKnives()
-        {
-            foreach (Knife knife in _knivesList)
-                knife.GetComponent<Motion>().Splash();
-        }
+        private void DestroyBeam() => 
+            _gameFactory.DestroyBeam();
+
+        private void DestroyApple() => 
+            _gameFactory.DestroyApple();
 
         private void DestroyKnives()
         {
-            foreach (Knife knife in _knivesList)
-            {
+            foreach (Knife knife in _knivesList) 
                 _gameFactory.DestroyKnife(knife);
-                Debug.Log("Knife destroyed");                
-            }
         }
     }
 }

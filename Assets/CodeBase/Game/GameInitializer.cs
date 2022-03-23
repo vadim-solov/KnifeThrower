@@ -17,6 +17,7 @@ namespace CodeBase.Game
         private KnivesCounter _knivesCounter;
         private VictoryController _victoryController;
         private KnivesCollection _knivesCollection;
+        private LoseController _loseController;
         
         private void Awake()
         {
@@ -32,11 +33,17 @@ namespace CodeBase.Game
             _knivesCounter = new KnivesCounter(_gameFactory.StageConfig[0].NumberOfKnives);
             _hitController.Initialize(_gameFactory, _knivesCounter);
             _victoryController = new VictoryController(_gameFactory, _knivesCounter, _knivesCollection);
+            _loseController = new LoseController(_gameFactory, _uiFactory, _hitController, _knivesCollection);
         }
+
+        private void Start() => 
+            Application.targetFrameRate = 300;
 
         private void OnDisable()
         {
             _knivesCollection.Cleanup();
+            _victoryController.Cleanup();
+            _loseController.Cleanup();
         }
     }
 }

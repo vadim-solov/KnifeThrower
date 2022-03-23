@@ -1,3 +1,4 @@
+using System;
 using CodeBase.Behaviours;
 using CodeBase.Factories;
 using CodeBase.ObjectType;
@@ -10,6 +11,8 @@ namespace CodeBase.Game
     {
         private IGameFactory _gameFactory;
         private KnivesCounter _knivesCounter;
+
+        public event Action Lose;
             
         public void Initialize(IGameFactory gameFactory, KnivesCounter knivesCounter)
         {
@@ -26,9 +29,10 @@ namespace CodeBase.Game
             joint.connectedBody = component.gameObject.GetComponent<Rigidbody>();
             knife.gameObject.GetComponent<CollisionChecker>().SwitchOff();
             knife.gameObject.GetComponent<KnifeInput>().enabled = false;
-            _gameFactory.CreatePlayerKnife();
-            
             _knivesCounter.Decrease();
+
+
+            TryCreatePlayerKnife();
         }
 
         public void HitInApple(GameObject knife, Apple component)
@@ -57,6 +61,16 @@ namespace CodeBase.Game
             
             knife.gameObject.GetComponent<CollisionChecker>().SwitchOff();
             knife.gameObject.GetComponent<KnifeInput>().enabled = false;
+            
+            Lose?.Invoke();
+        }
+
+        private void TryCreatePlayerKnife()
+        {
+            if(_knivesCounter.CheckLastKnife())
+                return;
+            
+            _gameFactory.CreatePlayerKnife();
         }
     }
 }
