@@ -4,19 +4,15 @@ namespace CodeBase.Behaviours
 {
     public class Motion : MonoBehaviour
     {
-        [SerializeField]
         private Rigidbody _rb;
-        [SerializeField, Range(0f,100f)]
-        private float _speed = 50f;
-        
-        
         private float _rotateSpeed = 50f;
         private bool _rotate;
 
-        public void Initialize(Rigidbody rb, float speed)
+        public void Initialize(Rigidbody rb)
         {
             _rb = rb;
-            _speed = speed;
+            _rb.mass = 0f;
+            _rb.useGravity = false;
         }
 
         private void FixedUpdate()
@@ -30,14 +26,13 @@ namespace CodeBase.Behaviours
             _rotateSpeed = rotateSpeed; 
             _rotate = true;
         }
+        public void StopRotation() => 
+            _rotate = false;
 
-        private void Rotation() => 
-            transform.Rotate(new Vector3(0f, 0f, _rotateSpeed)); //Refactor this. Use rigidbody
-        
-        public void StartMotion() => 
-            _rb.velocity = transform.up * _speed;
+        public void MoveForward(float speed) => 
+            _rb.velocity = transform.up * speed;
 
-        public void StopMotion() => 
+        public void StopMove() => 
             _rb.velocity = Vector3.zero;
 
         public void Drop()
@@ -45,5 +40,23 @@ namespace CodeBase.Behaviours
             _rb.useGravity = true;
             _rb.AddForce(transform.up * 0.005f * Time.deltaTime);
         }
+
+        public void IsKinematic() => 
+            _rb.isKinematic = true;
+
+        public void FreezePosition() => 
+            _rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ;
+
+        private void Rotation() => 
+            transform.Rotate(new Vector3(0f, 0f, _rotateSpeed)); //Refactor this. Use rigidbody
+        
+        public void SetDistance() => 
+            transform.position = new Vector3(0f, -4f, 0f);
+
+        public void SetDistance(Transform beam) => 
+            transform.position = beam.transform.position + new Vector3(0.7f, 0f, 0f);
+
+        public void SetPosition(Transform beam, float position) => 
+            transform.RotateAround(beam.transform.position, Vector3.forward, position);
     }
 }

@@ -40,6 +40,7 @@ namespace CodeBase.Factories
         private HitController _hitController;
 
         public StageConfig[] StageConfig => _stageConfigs;
+        public GameObject Beam => _beam;
 
         public event Action<Knife> KnifeCreated;
         
@@ -52,10 +53,12 @@ namespace CodeBase.Factories
         public void CreateBeam()
         {
             _beam = Instantiate(_stageConfigs[0].Beam, _container.transform);
-            var rb = AddRigidbodyComponent(_beam, true);
-            rb.isKinematic = true;
-            _beam.AddComponent<Beam>();
+            var rb = AddRigidbody(_beam);
+            AddBeam();
             var motion = _beam.AddComponent<Motion>();
+            motion.Initialize(rb);
+            motion.IsKinematic();
+            motion.FreezePosition();
             motion.StartRotation(_stageConfigs[0].RotateSpeed);
         }
 
@@ -65,12 +68,13 @@ namespace CodeBase.Factories
                 return;
             
             _apple = Instantiate(_attachedApple, _container.transform);
-            Rigidbody rb = AddRigidbodyComponent(_apple, false);
-            SetPosition(_apple.transform, _beam.transform);
-            SetAngle(_apple.transform, _beam.transform, _applePosition);
+            Rigidbody rb = AddRigidbody(_apple);
+            AddApple(_apple);
+            Motion motion = AddMotion(_apple);
+            motion.Initialize(rb);
+            motion.SetDistance(_beam.transform);
+            motion.SetPosition(_beam.transform, _applePosition);
             Attach(_apple);
-            AddAppleComponent(_apple);
-            _apple.AddComponent<Motion>().Initialize(rb, 10f);
         }
 
         public void CreateKnives()
@@ -80,14 +84,14 @@ namespace CodeBase.Factories
             for (int i = 0; i < knivesCount; i++)
             {
                 GameObject knife = Instantiate(_attachedKnife, _container.transform);
-                Rigidbody rb = AddRigidbodyComponent(knife, false);
-                SetPosition(knife.transform, _beam.transform);
-                SetAngle(knife.transform, _beam.transform, _knivesPositions[0]);
+                Rigidbody rb = AddRigidbody(knife);
+                AddKnife(knife);
+                Motion motion = AddMotion(knife);
+                motion.Initialize(rb);
+                motion.SetDistance(_beam.transform);
+                motion.SetPosition(_beam.transform, _knivesPositions[0]);
                 Attach(knife);
-                AddKnifeComponent(knife);
-                knife.AddComponent<Motion>().Initialize(rb, 10f);
                 RemoveInListPositions();
-
                 Knife knifeComponent = knife.GetComponent<Knife>();
                 KnifeCreated?.Invoke(knifeComponent);
             }
@@ -96,14 +100,13 @@ namespace CodeBase.Factories
         public void CreatePlayerKnife()
         {
             GameObject knife = Instantiate(_playerKnife, _container.transform);
-            Rigidbody rb = AddRigidbodyComponent(knife, false);
-            AddKnifeComponent(knife);
-            knife.AddComponent<Motion>().Initialize(rb, 10f);
-            Motion motion = knife.GetComponent<Motion>();
-            AddKnifeInputComponent(knife, motion);
-            AddCollisionCheckerComponent(knife);
-            SetPosition(knife.transform);
-            
+            Rigidbody rb = AddRigidbody(knife);
+            AddKnife(knife);
+            Motion motion = AddMotion(knife);
+            motion.Initialize(rb);
+            motion.SetDistance();
+            AddKnifeInput(knife, motion);
+            AddCollisionChecker(knife); 
             Knife knifeComponent = knife.GetComponent<Knife>();
             KnifeCreated?.Invoke(knifeComponent);
         }
@@ -138,16 +141,16 @@ namespace CodeBase.Factories
             Debug.Log(_knivesPositions.Count);
         }
 
-        private Rigidbody AddRigidbodyComponent(GameObject entity, bool freezePosition)
+        private void AddBeam() => 
+            _beam.AddComponent<Beam>();
+
+        private Motion AddMotion(GameObject entity) => 
+            entity.AddComponent<Motion>();
+
+        private Rigidbody AddRigidbody(GameObject entity)
         {
             entity.AddComponent<Rigidbody>();
             Rigidbody rb = entity.GetComponent<Rigidbody>();
-            rb.mass = 0f;
-            rb.useGravity = false;
-
-            if (freezePosition)
-                rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ;
-
             return rb;
         }
 
@@ -157,25 +160,16 @@ namespace CodeBase.Factories
             joint.connectedBody = _beam.gameObject.GetComponent<Rigidbody>();
         }
 
-        private void AddAppleComponent(GameObject apple) => 
+        private void AddApple(GameObject apple) => 
             apple.AddComponent<Apple>();
 
-        private void AddKnifeComponent(GameObject knife) => 
+        private void AddKnife(GameObject knife) => 
             knife.AddComponent<Knife>();
 
-        private void AddKnifeInputComponent(GameObject knife, Motion motion) => 
-            knife.AddComponent<KnifeInput>().Initialize(motion);
+        private void AddKnifeInput(GameObject knife, Motion motion) => 
+            knife.AddComponent<KnifeInput>().Initialize(motion, 10f);
 
-        private void AddCollisionCheckerComponent(GameObject knife) => 
+        private void AddCollisionChecker(GameObject knife) => 
             knife.AddComponent<CollisionChecker>().Initialize(_hitController);
-
-        private void SetPosition(Transform entity) => 
-            entity.position = new Vector3(0f, -4f, 0f);
-
-        private void SetPosition(Transform entity, Transform beam) => 
-            entity.position = beam.transform.position + new Vector3(0.7f, 0f, 0f);
-
-        private void SetAngle(Transform entity, Transform beam, float angle) => 
-            entity.transform.RotateAround(beam.transform.position, Vector3.forward, angle);
     }
 }

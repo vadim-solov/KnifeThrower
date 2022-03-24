@@ -24,7 +24,7 @@ namespace CodeBase.Game
         {            
             Debug.Log("Hit in beam");
             var motion = knife.GetComponent<Motion>();
-            motion.StopMotion();
+            motion.StopMove();
             FixedJoint joint = knife.AddComponent<FixedJoint>();
             joint.connectedBody = component.gameObject.GetComponent<Rigidbody>();
             knife.gameObject.GetComponent<CollisionChecker>().SwitchOff();
@@ -40,7 +40,7 @@ namespace CodeBase.Game
             Debug.Log("Hit in apple");
             
             var motion = knife.GetComponent<Motion>();
-            motion.StopMotion();
+            motion.StopMove();
             
             FixedJoint joint = knife.AddComponent<FixedJoint>();
             joint.connectedBody = component.gameObject.GetComponent<Rigidbody>();
@@ -54,7 +54,7 @@ namespace CodeBase.Game
             Debug.Log("Hit in Knife");
             
             var motion = knife.GetComponent<Motion>();
-            motion.StopMotion();
+            motion.StopMove();
             
             FixedJoint joint = knife.AddComponent<FixedJoint>();
             joint.connectedBody = component.gameObject.GetComponent<Rigidbody>();

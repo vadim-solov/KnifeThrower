@@ -3,6 +3,7 @@ using CodeBase.Collection;
 using CodeBase.Factories;
 using CodeBase.ObjectType;
 using UnityEngine;
+using Motion = CodeBase.Behaviours.Motion;
 
 namespace CodeBase.Game
 {
@@ -38,9 +39,7 @@ namespace CodeBase.Game
             _uiFactory.CreateLoseScreen();
         }
 
-        private void StopMotion()
-        {
-            
-        }
+        private void StopMotion() => 
+            _gameFactory.Beam.GetComponent<Motion>().StopRotation();
     }
 }
