@@ -50,13 +50,16 @@ namespace CodeBase.Behaviours
         private void Rotation() => 
             transform.Rotate(new Vector3(0f, 0f, _rotateSpeed)); //Refactor this. Use rigidbody
         
-        public void SetDistance() => 
+        public void SetPlayerKnife() => 
             transform.position = new Vector3(0f, -4f, 0f);
 
-        public void SetDistance(Transform beam) => 
+        public void SetDepth(Transform beam) => 
             transform.position = beam.transform.position + new Vector3(0.7f, 0f, 0f);
 
         public void SetPosition(Transform beam, float position) => 
             transform.RotateAround(beam.transform.position, Vector3.forward, position);
+
+        public void Rotate() => 
+            transform.Rotate(0f, 0f, 90f);
     }
 }

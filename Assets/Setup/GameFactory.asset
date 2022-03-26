@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _stageConfigs:
   - _numberOfKnives: 3
-    _beam: {fileID: 6651404066569717191, guid: 1d9bccbd70161304eb8455c263748b25, type: 3}
+    _beam: {fileID: 470815551834236230, guid: 7f9af1c1f5f1cde49aa139269bc3c007, type: 3}
     _rotateSpeed: 1
     _rotatedTime: 5
   _appleChance: 100

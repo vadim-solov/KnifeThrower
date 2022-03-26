@@ -7,10 +7,15 @@ namespace CodeBase.Behaviours
     public class CollisionChecker : MonoBehaviour
     {
         private bool _enabled = true;
-        private HitController _hitController;
 
-        public void Initialize(HitController hitController) => 
-            _hitController = hitController;
+        private LoseController _loseController;
+        private VictoryController _victoryController;
+
+        public void Initialize(LoseController loseController, VictoryController victoryController)
+        {
+            _loseController = loseController;
+            _victoryController = victoryController;
+        }
 
         public void SwitchOff() => 
             _enabled = false;
@@ -21,17 +26,20 @@ namespace CodeBase.Behaviours
             {
                 if (collision.gameObject.TryGetComponent(out Beam beam))
                 {
-                    _hitController.HitInBeam(gameObject, beam);
+                    Debug.Log("Hit in beam");
+                    _victoryController.OnHitInBeam(gameObject, beam);
                 }
                 
                 if (collision.gameObject.TryGetComponent(out Apple apple))
                 {
-                    _hitController.HitInApple(gameObject, apple);
+                    Debug.Log("Hit in apple");
+                    _victoryController.OnHitInApple(gameObject, apple);
                 }     
                 
                 if (collision.gameObject.TryGetComponent(out Knife knife))
                 {
-                    _hitController.HitInKnife(gameObject, knife);
+                    Debug.Log("Hit in knife");
+                    _loseController.OnLose(gameObject, knife);
                 }
             }
         }

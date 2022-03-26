@@ -11,8 +11,6 @@ namespace CodeBase.Game
         private GameFactory _gameFactory;
         [SerializeField]
         private UIFactory _uiFactory;
-        [SerializeField]
-        private HitController _hitController;
 
         private KnivesCounter _knivesCounter;
         private VictoryController _victoryController;
@@ -22,18 +20,17 @@ namespace CodeBase.Game
         private void Awake()
         {
             _knivesCollection = new KnivesCollection(_gameFactory);
-            _gameFactory.Initialize(_hitController);
+            _knivesCounter = new KnivesCounter(_gameFactory.StageConfig[0].NumberOfKnives);
+            _loseController = new LoseController(_gameFactory, _uiFactory, _knivesCollection);
+            _victoryController = new VictoryController(_gameFactory, _knivesCounter, _knivesCollection);
+
+            _gameFactory.Initialize(_loseController, _victoryController);
             _gameFactory.CreateContainer();
             _gameFactory.CreateBeam();
             _gameFactory.CreateApple();
-            _gameFactory.CreateKnives();
+            _gameFactory.CreateAttachedKnives();
             _gameFactory.CreatePlayerKnife();
             _uiFactory.CreateCanvas();
-
-            _knivesCounter = new KnivesCounter(_gameFactory.StageConfig[0].NumberOfKnives);
-            _hitController.Initialize(_gameFactory, _knivesCounter);
-            _victoryController = new VictoryController(_gameFactory, _knivesCounter, _knivesCollection);
-            _loseController = new LoseController(_gameFactory, _uiFactory, _hitController, _knivesCollection);
         }
 
         private void Start() => 

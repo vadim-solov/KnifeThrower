@@ -1,8 +1,12 @@
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using CodeBase.Behaviours;
 using CodeBase.Collection;
 using CodeBase.Factories;
 using CodeBase.ObjectType;
 using UnityEngine;
+using Motion = CodeBase.Behaviours.Motion;
 
 namespace CodeBase.Game
 {
@@ -32,15 +36,23 @@ namespace CodeBase.Game
         private void OnVictory()
         {
             Debug.Log("Victory!");
+            
             DestroyBeam();
             DestroyApple();
             DestroyKnives();
             _knivesCollection.Clear();
             
+            CreateNewObjects();
+        }
+
+        private async void CreateNewObjects()
+        {
+            await Task.Delay(TimeSpan.FromSeconds(2));
             _gameFactory.CreateBeam();
             _gameFactory.CreateApple();
-            _gameFactory.CreateKnives();
+            _gameFactory.CreateAttachedKnives();
             _gameFactory.CreatePlayerKnife();
+            Debug.Log("!!!!!!!!!!!");
         }
 
         private void DestroyBeam() => 
@@ -53,6 +65,38 @@ namespace CodeBase.Game
         {
             foreach (Knife knife in _knivesList) 
                 _gameFactory.DestroyKnife(knife);
+        }
+        
+        private void TryCreatePlayerKnife()
+        {
+            if(_knivesCounter.CheckLastKnife())
+                return;
+            
+            _gameFactory.CreatePlayerKnife();
+        }
+
+        public void OnHitInBeam(GameObject playerKnife, Beam beam)
+        {
+            var motion = playerKnife.GetComponent<Motion>();
+            motion.StopMove();
+            FixedJoint joint = playerKnife.AddComponent<FixedJoint>();
+            joint.connectedBody = beam.gameObject.GetComponent<Rigidbody>();
+            playerKnife.gameObject.GetComponent<CollisionChecker>().SwitchOff();
+            playerKnife.gameObject.GetComponent<KnifeInput>().enabled = false;
+            _knivesCounter.Decrease();
+            TryCreatePlayerKnife();
+        }
+        
+        public void OnHitInApple(GameObject knife, Apple component)
+        {
+            var motion = knife.GetComponent<Motion>();
+            motion.StopMove();
+            
+            FixedJoint joint = knife.AddComponent<FixedJoint>();
+            joint.connectedBody = component.gameObject.GetComponent<Rigidbody>();
+            
+            knife.gameObject.GetComponent<CollisionChecker>().SwitchOff();
+            knife.gameObject.GetComponent<KnifeInput>().enabled = false;
         }
     }
 }

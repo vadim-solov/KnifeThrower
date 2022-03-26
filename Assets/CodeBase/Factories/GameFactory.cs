@@ -33,19 +33,22 @@ namespace CodeBase.Factories
         private readonly float _applePosition = 60f;
         private readonly List<float> _knivesPositions = new List<float>() {0f, 120f, 240f};
         
-        private int _maxKnife = 3;
         private GameObject _container;
         private GameObject _beam;
         private GameObject _apple;
-        private HitController _hitController;
+        private LoseController _loseController;
+        private VictoryController _victoryController;
 
         public StageConfig[] StageConfig => _stageConfigs;
         public GameObject Beam => _beam;
 
         public event Action<Knife> KnifeCreated;
         
-        public void Initialize(HitController hitController) => 
-            _hitController = hitController;
+        public void Initialize(LoseController loseController, VictoryController victoryController)
+        {
+            _loseController = loseController;
+            _victoryController = victoryController;
+        }
 
         public void CreateContainer() => 
             _container = new GameObject {name = "Container"};
@@ -72,14 +75,14 @@ namespace CodeBase.Factories
             AddApple(_apple);
             Motion motion = AddMotion(_apple);
             motion.Initialize(rb);
-            motion.SetDistance(_beam.transform);
+            motion.SetDepth(_beam.transform);
             motion.SetPosition(_beam.transform, _applePosition);
             Attach(_apple);
         }
 
-        public void CreateKnives()
+        public void CreateAttachedKnives()
         {
-            int knivesCount = Random.Range(1, _maxKnife + 1);
+            int knivesCount = Random.Range(1, _knivesPositions.Count + 1);
             
             for (int i = 0; i < knivesCount; i++)
             {
@@ -88,10 +91,10 @@ namespace CodeBase.Factories
                 AddKnife(knife);
                 Motion motion = AddMotion(knife);
                 motion.Initialize(rb);
-                motion.SetDistance(_beam.transform);
-                motion.SetPosition(_beam.transform, _knivesPositions[0]);
+                motion.Rotate();
+                motion.SetDepth(_beam.transform);
+                motion.SetPosition(_beam.transform, _knivesPositions[i]);
                 Attach(knife);
-                RemoveInListPositions();
                 Knife knifeComponent = knife.GetComponent<Knife>();
                 KnifeCreated?.Invoke(knifeComponent);
             }
@@ -104,7 +107,7 @@ namespace CodeBase.Factories
             AddKnife(knife);
             Motion motion = AddMotion(knife);
             motion.Initialize(rb);
-            motion.SetDistance();
+            motion.SetPlayerKnife();
             AddKnifeInput(knife, motion);
             AddCollisionChecker(knife); 
             Knife knifeComponent = knife.GetComponent<Knife>();
@@ -133,12 +136,6 @@ namespace CodeBase.Factories
             int random = Random.Range(1, 101);
             Debug.Log(random);
             return random <= _appleChance;
-        }
-
-        private void RemoveInListPositions()
-        {
-            _knivesPositions.RemoveAt(0);
-            Debug.Log(_knivesPositions.Count);
         }
 
         private void AddBeam() => 
@@ -170,6 +167,6 @@ namespace CodeBase.Factories
             knife.AddComponent<KnifeInput>().Initialize(motion, 10f);
 
         private void AddCollisionChecker(GameObject knife) => 
-            knife.AddComponent<CollisionChecker>().Initialize(_hitController);
+            knife.AddComponent<CollisionChecker>().Initialize(_loseController, _victoryController);
     }
 }
