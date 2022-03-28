@@ -31,5 +31,10 @@ namespace CodeBase.Game
             
             return false;
         }
+
+        public void Reset()
+        {
+            _numberOfKnives = 3;
+        }
     }
 }

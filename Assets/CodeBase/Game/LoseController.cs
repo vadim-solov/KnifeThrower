@@ -12,6 +12,8 @@ namespace CodeBase.Game
 {
     public class LoseController
     {
+        private const float AppearanceUIDelay = 1f;
+        
         private readonly GameFactory _gameFactory;
         private readonly UIFactory _uiFactory;
         private readonly KnivesCollection _knivesCollection;
@@ -25,36 +27,55 @@ namespace CodeBase.Game
             _knivesList = knivesCollection.KnivesList;
         }
         
-        public void Cleanup()
-        {
-            Debug.Log("Desub");
-        }
-
         public void OnLose(GameObject playerKnife, Knife collision)
         {
             Debug.Log("Lose");
-            StopMotion();
-            _knivesCollection.Clear();
-            CreateLoseScreen();
-            
-            var motion = playerKnife.GetComponent<Motion>();
-            motion.StopMove();
-            
-            FixedJoint joint = playerKnife.AddComponent<FixedJoint>();
-            joint.connectedBody = collision.gameObject.GetComponent<Rigidbody>();
-            
+            StopBeamMotion();
+
             playerKnife.gameObject.GetComponent<CollisionChecker>().SwitchOff();
             playerKnife.gameObject.GetComponent<KnifeInput>().enabled = false;
+
+            var motion = playerKnife.GetComponent<Motion>();
+            motion.StopMove();
+            motion.MoveBack();
+            motion.StartRandomRotation();
+            
+            CreateLoseScreen();
+            
+            DestroyBeam();
+            DestroyApple();
+            DestroyKnives();
         }
 
         private async void CreateLoseScreen()
         {
-            await Task.Delay(TimeSpan.FromSeconds(0.5));
+            await Task.Delay(TimeSpan.FromSeconds(AppearanceUIDelay));
             _uiFactory.CreateLoseScreen();
-            Debug.Log("!!!!!!!");
         }
 
-        private void StopMotion() => 
+        private void StopBeamMotion() => 
             _gameFactory.Beam.GetComponent<Motion>().StopRotation();
+
+        private async void DestroyBeam()
+        {
+            await Task.Delay(TimeSpan.FromSeconds(AppearanceUIDelay));
+            _gameFactory.DestroyBeam();
+        }
+
+        private async void DestroyApple()
+        {
+            await Task.Delay(TimeSpan.FromSeconds(AppearanceUIDelay));
+            _gameFactory.DestroyApple(0f);
+        }
+
+        private async void DestroyKnives()
+        {
+            await Task.Delay(TimeSpan.FromSeconds(AppearanceUIDelay));
+            
+            foreach (Knife knife in _knivesList) 
+                _gameFactory.DestroyKnife(knife, 0f);
+            
+            _knivesCollection.Clear();
+        }
     }
 }

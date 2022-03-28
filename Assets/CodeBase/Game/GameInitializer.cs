@@ -30,6 +30,7 @@ namespace CodeBase.Game
             _gameFactory.CreateApple();
             _gameFactory.CreateAttachedKnives();
             _gameFactory.CreatePlayerKnife();
+            _uiFactory.Initialize(_gameFactory);
             _uiFactory.CreateCanvas();
         }
 
@@ -40,7 +41,6 @@ namespace CodeBase.Game
         {
             _knivesCollection.Cleanup();
             _victoryController.Cleanup();
-            _loseController.Cleanup();
         }
     }
 }

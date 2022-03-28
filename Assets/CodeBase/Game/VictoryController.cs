@@ -41,7 +41,7 @@ namespace CodeBase.Game
             DestroyApple();
             DestroyKnives();
             _knivesCollection.Clear();
-            
+
             CreateNewObjects();
         }
 
@@ -52,19 +52,29 @@ namespace CodeBase.Game
             _gameFactory.CreateApple();
             _gameFactory.CreateAttachedKnives();
             _gameFactory.CreatePlayerKnife();
+            _knivesCounter.Reset();
+
             Debug.Log("!!!!!!!!!!!");
         }
 
         private void DestroyBeam() => 
             _gameFactory.DestroyBeam();
 
-        private void DestroyApple() => 
-            _gameFactory.DestroyApple();
+        private void DestroyApple()
+        {
+            var apple = _gameFactory.Apple.GetComponent<Motion>();
+            apple.Drop();
+            _gameFactory.DestroyApple(2f);
+        }
 
         private void DestroyKnives()
         {
-            foreach (Knife knife in _knivesList) 
-                _gameFactory.DestroyKnife(knife);
+            foreach (Knife knife in _knivesList)
+            {
+                var motion = knife.GetComponent<Motion>();
+                motion.Drop();
+                _gameFactory.DestroyKnife(knife, 2f);
+            }
         }
         
         private void TryCreatePlayerKnife()
@@ -79,6 +89,7 @@ namespace CodeBase.Game
         {
             var motion = playerKnife.GetComponent<Motion>();
             motion.StopMove();
+            playerKnife.transform.position += new Vector3(0f, 0.2f, 0f); // FIX
             FixedJoint joint = playerKnife.AddComponent<FixedJoint>();
             joint.connectedBody = beam.gameObject.GetComponent<Rigidbody>();
             playerKnife.gameObject.GetComponent<CollisionChecker>().SwitchOff();

@@ -25,6 +25,13 @@ namespace CodeBase.Behaviours
         {
             _rotateSpeed = rotateSpeed; 
             _rotate = true;
+        }      
+        
+        public void StartRandomRotation()
+        {
+            var random = Random.Range(1, 25);
+            _rotateSpeed = random; 
+            _rotate = true;
         }
         public void StopRotation() => 
             _rotate = false;
@@ -61,5 +68,8 @@ namespace CodeBase.Behaviours
 
         public void Rotate() => 
             transform.Rotate(0f, 0f, 90f);
+
+        public void MoveBack() => 
+            _rb.velocity = -transform.up * 5f;
     }
 }

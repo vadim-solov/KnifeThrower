@@ -14,6 +14,10 @@ namespace CodeBase.Factories
         private float _rotateSpeed = 50f;
         [SerializeField]
         private float _rotatedTime = 5f;
+        [SerializeField]
+        private bool _boss;
+        [SerializeField]
+        private string _bossName;
 
         public GameObject Beam => _beam;
         public float RotateSpeed => _rotateSpeed;

@@ -41,6 +41,7 @@ namespace CodeBase.Factories
 
         public StageConfig[] StageConfig => _stageConfigs;
         public GameObject Beam => _beam;
+        public GameObject Apple => _apple;
 
         public event Action<Knife> KnifeCreated;
         
@@ -117,25 +118,23 @@ namespace CodeBase.Factories
         public void DestroyBeam() => 
             Destroy(_beam.gameObject);
 
-        public void DestroyApple()
-        {
-            _apple.GetComponent<Motion>().Drop();
-            Destroy(_apple.gameObject, 2f);
-            Debug.Log("Apple destroyed");                
-        }
+        public void DestroyApple(float destructionTime) => 
+            Destroy(_apple.gameObject, destructionTime);
 
-        public void DestroyKnife(Knife knife)
-        {
-            knife.GetComponent<Motion>().Drop();
-            Destroy(knife.gameObject, 2f);
-            Debug.Log("Knife destroyed");                
-        }
+        public void DestroyKnife(Knife knife, float destructionTime) => 
+            Destroy(knife.gameObject, destructionTime);
 
         private bool CheckAppleChance()
         {
             int random = Random.Range(1, 101);
             Debug.Log(random);
             return random <= _appleChance;
+        }
+
+        private void Attach(GameObject entity)
+        {
+            FixedJoint joint = entity.AddComponent<FixedJoint>();
+            joint.connectedBody = _beam.gameObject.GetComponent<Rigidbody>();
         }
 
         private void AddBeam() => 
@@ -149,12 +148,6 @@ namespace CodeBase.Factories
             entity.AddComponent<Rigidbody>();
             Rigidbody rb = entity.GetComponent<Rigidbody>();
             return rb;
-        }
-
-        private void Attach(GameObject entity)
-        {
-            FixedJoint joint = entity.AddComponent<FixedJoint>();
-            joint.connectedBody = _beam.gameObject.GetComponent<Rigidbody>();
         }
 
         private void AddApple(GameObject apple) => 
