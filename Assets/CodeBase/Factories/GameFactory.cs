@@ -12,6 +12,8 @@ namespace CodeBase.Factories
     [CreateAssetMenu]
     public class GameFactory : ScriptableObject, IGameFactory
     {
+        private const string ContainerName = "Container";
+        
         [Header("Stages config")]
         [SerializeField]
         private StageConfig[] _stageConfigs = new StageConfig[5];
@@ -38,6 +40,8 @@ namespace CodeBase.Factories
         private GameObject _apple;
         private LoseController _loseController;
         private VictoryController _victoryController;
+        private StagesCounter _stagesCounter;
+        private AppleHit _appleHit;
 
         public StageConfig[] StageConfig => _stageConfigs;
         public GameObject Beam => _beam;
@@ -45,25 +49,27 @@ namespace CodeBase.Factories
 
         public event Action<Knife> KnifeCreated;
         
-        public void Initialize(LoseController loseController, VictoryController victoryController)
+        public void Initialize(LoseController loseController, VictoryController victoryController, StagesCounter stagesCounter, AppleHit appleHit)
         {
             _loseController = loseController;
             _victoryController = victoryController;
+            _stagesCounter = stagesCounter;
+            _appleHit = appleHit;
         }
 
         public void CreateContainer() => 
-            _container = new GameObject {name = "Container"};
+            _container = new GameObject {name = ContainerName};
 
         public void CreateBeam()
         {
-            _beam = Instantiate(_stageConfigs[0].Beam, _container.transform);
+            _beam = Instantiate(_stageConfigs[_stagesCounter.CurrentStage].Beam, _container.transform);
             var rb = AddRigidbody(_beam);
             AddBeam();
             var motion = _beam.AddComponent<Motion>();
             motion.Initialize(rb);
             motion.IsKinematic();
             motion.FreezePosition();
-            motion.StartRotation(_stageConfigs[0].RotateSpeed);
+            motion.StartRotation(_stageConfigs[_stagesCounter.CurrentStage].RotateSpeed);
         }
 
         public void CreateApple()
@@ -78,7 +84,7 @@ namespace CodeBase.Factories
             motion.Initialize(rb);
             motion.SetDepth(_beam.transform);
             motion.SetPosition(_beam.transform, _applePosition);
-            Attach(_apple);
+            motion.Attach(_beam.gameObject);
         }
 
         public void CreateAttachedKnives()
@@ -95,7 +101,7 @@ namespace CodeBase.Factories
                 motion.Rotate();
                 motion.SetDepth(_beam.transform);
                 motion.SetPosition(_beam.transform, _knivesPositions[i]);
-                Attach(knife);
+                motion.Attach(_beam.gameObject);
                 Knife knifeComponent = knife.GetComponent<Knife>();
                 KnifeCreated?.Invoke(knifeComponent);
             }
@@ -127,14 +133,7 @@ namespace CodeBase.Factories
         private bool CheckAppleChance()
         {
             int random = Random.Range(1, 101);
-            Debug.Log(random);
             return random <= _appleChance;
-        }
-
-        private void Attach(GameObject entity)
-        {
-            FixedJoint joint = entity.AddComponent<FixedJoint>();
-            joint.connectedBody = _beam.gameObject.GetComponent<Rigidbody>();
         }
 
         private void AddBeam() => 
@@ -160,6 +159,6 @@ namespace CodeBase.Factories
             knife.AddComponent<KnifeInput>().Initialize(motion, 10f);
 
         private void AddCollisionChecker(GameObject knife) => 
-            knife.AddComponent<CollisionChecker>().Initialize(_loseController, _victoryController);
+            knife.AddComponent<CollisionChecker>().Initialize(_loseController, _victoryController, _appleHit);
     }
 }

@@ -18,18 +18,19 @@ namespace CodeBase.Game
         private readonly UIFactory _uiFactory;
         private readonly KnivesCollection _knivesCollection;
         private readonly List<Knife> _knivesList;
+        private readonly StagesCounter _stagesCounter;
 
-        public LoseController(GameFactory gameFactory, UIFactory uiFactory, KnivesCollection knivesCollection)
+        public LoseController(GameFactory gameFactory, UIFactory uiFactory, KnivesCollection knivesCollection, StagesCounter stagesCounter)
         {
             _gameFactory = gameFactory;
             _uiFactory = uiFactory;
             _knivesCollection = knivesCollection;
+            _stagesCounter = stagesCounter;
             _knivesList = knivesCollection.KnivesList;
         }
         
         public void OnLose(GameObject playerKnife, Knife collision)
         {
-            Debug.Log("Lose");
             StopBeamMotion();
 
             playerKnife.gameObject.GetComponent<CollisionChecker>().SwitchOff();
@@ -45,6 +46,8 @@ namespace CodeBase.Game
             DestroyBeam();
             DestroyApple();
             DestroyKnives();
+
+            _stagesCounter.ResetStages();
         }
 
         private async void CreateLoseScreen()

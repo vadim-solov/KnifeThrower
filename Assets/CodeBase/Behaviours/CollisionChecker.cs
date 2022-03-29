@@ -10,11 +10,13 @@ namespace CodeBase.Behaviours
 
         private LoseController _loseController;
         private VictoryController _victoryController;
+        private AppleHit _appleHit;
 
-        public void Initialize(LoseController loseController, VictoryController victoryController)
+        public void Initialize(LoseController loseController, VictoryController victoryController, AppleHit appleHit)
         {
             _loseController = loseController;
             _victoryController = victoryController;
+            _appleHit = appleHit;
         }
 
         public void SwitchOff() => 
@@ -33,7 +35,7 @@ namespace CodeBase.Behaviours
                 if (collision.gameObject.TryGetComponent(out Apple apple))
                 {
                     Debug.Log("Hit in apple");
-                    _victoryController.OnHitInApple(gameObject, apple);
+                    _appleHit.OnHitInApple(gameObject, apple);
                 }     
                 
                 if (collision.gameObject.TryGetComponent(out Knife knife))

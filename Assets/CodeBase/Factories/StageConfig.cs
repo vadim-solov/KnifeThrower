@@ -17,7 +17,7 @@ namespace CodeBase.Factories
         [SerializeField]
         private bool _boss;
         [SerializeField]
-        private string _bossName;
+        private string _name;
 
         public GameObject Beam => _beam;
         public float RotateSpeed => _rotateSpeed;

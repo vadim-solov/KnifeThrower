@@ -25,14 +25,15 @@ namespace CodeBase.Behaviours
         {
             _rotateSpeed = rotateSpeed; 
             _rotate = true;
-        }      
-        
+        }
+
         public void StartRandomRotation()
         {
             var random = Random.Range(1, 25);
             _rotateSpeed = random; 
             _rotate = true;
         }
+
         public void StopRotation() => 
             _rotate = false;
 
@@ -41,6 +42,18 @@ namespace CodeBase.Behaviours
 
         public void StopMove() => 
             _rb.velocity = Vector3.zero;
+
+        public void Attach(GameObject beam)
+        {
+            FixedJoint joint = gameObject.AddComponent<FixedJoint>();
+            joint.connectedBody = beam.GetComponent<Rigidbody>();
+        }
+
+        public void Detach(GameObject entity) //move to Motion
+        {
+            var attach = entity.GetComponent<FixedJoint>();
+            Destroy(attach);
+        }
 
         public void Drop()
         {
@@ -54,9 +67,6 @@ namespace CodeBase.Behaviours
         public void FreezePosition() => 
             _rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ;
 
-        private void Rotation() => 
-            transform.Rotate(new Vector3(0f, 0f, _rotateSpeed)); //Refactor this. Use rigidbody
-        
         public void SetPlayerKnife() => 
             transform.position = new Vector3(0f, -4f, 0f);
 
@@ -71,5 +81,8 @@ namespace CodeBase.Behaviours
 
         public void MoveBack() => 
             _rb.velocity = -transform.up * 5f;
+
+        private void Rotation() => 
+            transform.Rotate(new Vector3(0f, 0f, _rotateSpeed)); //Refactor this. Use rigidbody
     }
 }
