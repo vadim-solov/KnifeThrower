@@ -8,16 +8,10 @@ namespace CodeBase.Game
         
         public int CurrentStage { get; private set; } = 0;
 
-        public void AddStage()
-        {
+        public void IncreaseStage() => 
             CurrentStage++;
-            Debug.Log("Current stage " + CurrentStage);
-        }
 
-        public void ResetStages()
-        {
+        public void ResetStages() => 
             CurrentStage = 0;
-            Debug.Log("Current stage " + CurrentStage);
-        }
     }
 }

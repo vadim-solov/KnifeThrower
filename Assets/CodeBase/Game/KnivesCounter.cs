@@ -1,40 +1,45 @@
 using System;
+using CodeBase.Factories;
 using UnityEngine;
 
 namespace CodeBase.Game
 {
     public class KnivesCounter
     {
-        private int _numberOfKnives;
+        private readonly GameFactory _gameFactory;
+        private readonly StagesCounter _stagesCounter;
+
+        public int NumberOfKnives { get; private set; }
 
         public event Action Victory;
+        public event Action<int> DecreaseNumberOfKnives;
         
-        public KnivesCounter(int numberOfKnives)
+        public KnivesCounter(GameFactory gameFactory, StagesCounter stagesCounter)
         {
-            _numberOfKnives = numberOfKnives;
-            Debug.Log(_numberOfKnives);
+            _gameFactory = gameFactory;
+            _stagesCounter = stagesCounter;
+            UpdateCounter();
         }
 
         public void Decrease()
         {
-            _numberOfKnives--;
-            Debug.Log(_numberOfKnives);
+            NumberOfKnives--;
+            DecreaseNumberOfKnives?.Invoke(NumberOfKnives);
+            Debug.Log(NumberOfKnives);
             
-            if(_numberOfKnives <= 0)
+            if(NumberOfKnives <= 0)
                 Victory?.Invoke();            
         }
 
         public bool CheckLastKnife()
         {
-            if (_numberOfKnives <= 0)
+            if (NumberOfKnives <= 0)
                 return true;
             
             return false;
         }
 
-        public void Reset()
-        {
-            _numberOfKnives = 3;
-        }
+        public void UpdateCounter() => 
+            NumberOfKnives = _gameFactory.StageConfig[_stagesCounter.CurrentStage].NumberOfKnives;
     }
 }

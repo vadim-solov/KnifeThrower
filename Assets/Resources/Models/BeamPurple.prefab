@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5225968033279919992}
   - component: {fileID: 6805321393334978746}
   m_Layer: 0
-  m_Name: Beam
+  m_Name: BeamPurple
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 38c9e946d0dc02948a3fc1b273126acc, type: 2}
+  - {fileID: 2100000, guid: 85d43a05c8d80544ead0a4d9e63b419a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

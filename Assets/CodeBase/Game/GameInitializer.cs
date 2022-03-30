@@ -31,8 +31,8 @@ namespace CodeBase.Game
             _appleHit = new AppleHit(_appleCounter, _gameFactory);
             _stagesCounter = new StagesCounter();
             _knivesCollection = new KnivesCollection(_gameFactory);
-            _knivesCounter = new KnivesCounter(_gameFactory.StageConfig[0].NumberOfKnives);
-            _loseController = new LoseController(_gameFactory, _uiFactory, _knivesCollection, _stagesCounter);
+            _knivesCounter = new KnivesCounter(_gameFactory, _stagesCounter);
+            _loseController = new LoseController(_gameFactory, _uiFactory, _knivesCollection, _stagesCounter, _knivesCounter);
             _victoryController = new VictoryController(_gameFactory, _knivesCounter, _knivesCollection, _stagesCounter);
 
             _gameFactory.Initialize(_loseController, _victoryController, _stagesCounter, _appleHit);
@@ -41,8 +41,9 @@ namespace CodeBase.Game
             _gameFactory.CreateApple();
             _gameFactory.CreateAttachedKnives();
             _gameFactory.CreatePlayerKnife();
-            _uiFactory.Initialize(_gameFactory);
+            _uiFactory.Initialize(_gameFactory, _appleCounter, _knivesCounter, _victoryController);
             _uiFactory.CreateCanvas();
+            _uiFactory.CreateHUD();
         }
 
         private void Start() => 

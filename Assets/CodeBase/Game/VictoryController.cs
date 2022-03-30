@@ -16,15 +16,17 @@ namespace CodeBase.Game
         private readonly KnivesCounter _knivesCounter;
         private readonly List<Knife> _knivesList;
         private readonly KnivesCollection _knivesCollection;
-        private readonly StagesCounter _stageCounter;
+        private readonly StagesCounter _stagesCounter;
 
-        public VictoryController(GameFactory gameFactory, KnivesCounter knivesCounter, KnivesCollection knivesCollection, StagesCounter stageCounter)
+        public event Action Victory;
+
+        public VictoryController(GameFactory gameFactory, KnivesCounter knivesCounter, KnivesCollection knivesCollection, StagesCounter stagesCounter)
         {
             _gameFactory = gameFactory;
             _knivesCounter = knivesCounter;
             _knivesList = knivesCollection.KnivesList;
             _knivesCollection = knivesCollection;
-            _stageCounter = stageCounter;
+            _stagesCounter = stagesCounter;
             _knivesCounter.Victory += OnVictory;
         }
         
@@ -38,21 +40,20 @@ namespace CodeBase.Game
             TryDestroyApple();
             DestroyKnives();
             _knivesCollection.Clear();
-
             CreateNewObjects();
         }
 
         private async void CreateNewObjects()
         {
             await Task.Delay(TimeSpan.FromSeconds(2));
-
-            _stageCounter.AddStage();
-            
+            _stagesCounter.IncreaseStage();
             _gameFactory.CreateBeam();
             _gameFactory.CreateApple();
             _gameFactory.CreateAttachedKnives();
             _gameFactory.CreatePlayerKnife();
-            _knivesCounter.Reset();
+            _knivesCounter.UpdateCounter();
+            
+            Victory?.Invoke();
         }
 
         private void DestroyBeam() => 
