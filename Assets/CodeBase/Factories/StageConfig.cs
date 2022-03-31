@@ -22,5 +22,7 @@ namespace CodeBase.Factories
         public GameObject Beam => _beam;
         public float RotateSpeed => _rotateSpeed;
         public int NumberOfKnives => _numberOfKnives;
+        public bool Boss => _boss;
+        public string Name => _name;
     }
 }

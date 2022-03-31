@@ -21,11 +21,13 @@ namespace CodeBase.Game
         private StagesCounter _stagesCounter;
         private AppleHit _appleHit;
         private AppleCounter _appleCounter;
+        private RestarterController _restarterController;
 
         private ISaveLoadSystem _saveLoadSystem;
         
         private void Awake()
         {
+            _restarterController = new RestarterController(_gameFactory, _uiFactory);
             _saveLoadSystem = new PlayerPrefsSystem();
             _appleCounter = new AppleCounter(_saveLoadSystem);
             _appleHit = new AppleHit(_appleCounter, _gameFactory);
@@ -36,14 +38,16 @@ namespace CodeBase.Game
             _victoryController = new VictoryController(_gameFactory, _knivesCounter, _knivesCollection, _stagesCounter);
 
             _gameFactory.Initialize(_loseController, _victoryController, _stagesCounter, _appleHit);
+            _uiFactory.Initialize(_appleCounter, _knivesCounter, _victoryController, _restarterController, _gameFactory.StageConfig, _stagesCounter, _gameFactory);
+            
+            _uiFactory.CreateCanvas();
+            _uiFactory.CreateHUD();
+            
             _gameFactory.CreateContainer();
             _gameFactory.CreateBeam();
             _gameFactory.CreateApple();
             _gameFactory.CreateAttachedKnives();
             _gameFactory.CreatePlayerKnife();
-            _uiFactory.Initialize(_gameFactory, _appleCounter, _knivesCounter, _victoryController);
-            _uiFactory.CreateCanvas();
-            _uiFactory.CreateHUD();
         }
 
         private void Start() => 

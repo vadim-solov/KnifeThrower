@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CodeBase.Factories;
 using CodeBase.Game;
 using UnityEngine;
 
@@ -8,30 +9,33 @@ namespace CodeBase.HUD
     {
         [SerializeField]
         private RectTransform _knivesContainer;
-        [SerializeField]
-        private GameObject _knifePrefab;
 
         private readonly List<GameObject> _knivesList = new List<GameObject>();
 
+        private UIFactory _uiFactory;
         private VictoryController _victoryController;
         private KnivesCounter _knivesCounter;
+        private RestarterController _restarterController;
+        private GameFactory _gameFactory;
 
-        public void Initialize(KnivesCounter knivesCounter, VictoryController victoryController)
+        public void Initialize(UIFactory uiFactory, KnivesCounter knivesCounter, VictoryController victoryController, RestarterController restarterController, GameFactory gameFactory)
         {
+            _uiFactory = uiFactory;
             _knivesCounter = knivesCounter;
-            _knivesCounter.DecreaseNumberOfKnives += OnDecreaseNumberOfKnives;
             _victoryController = victoryController;
-            _victoryController.Victory += OnVictory;
+            _restarterController = restarterController;
+            _gameFactory = gameFactory;
+
+            _gameFactory.AttachedKnivesCreated += ClearAndCreateKnives;
+            _knivesCounter.DecreaseNumberOfKnives += OnDecreaseNumberOfKnives;
+
         }
 
         private void OnDisable()
         {
+            _gameFactory.AttachedKnivesCreated -= ClearAndCreateKnives;
             _knivesCounter.DecreaseNumberOfKnives -= OnDecreaseNumberOfKnives;
-            _victoryController.Victory -= OnVictory;
         }
-
-        private void Start() => 
-            CreateKnivesList();
 
         private void OnDecreaseNumberOfKnives(int number)
         {
@@ -40,13 +44,13 @@ namespace CodeBase.HUD
             image.color = Color.gray;
         }
 
-        private void OnVictory()
+        private void ClearAndCreateKnives()
         {
-            RestKnivesList();
-            CreateKnivesList();
+            ClearKnives();
+            CreateKnives();
         }
 
-        private void RestKnivesList()
+        private void ClearKnives()
         {
             foreach (var knife in _knivesList) 
                 Destroy(knife.gameObject);
@@ -54,11 +58,12 @@ namespace CodeBase.HUD
             _knivesList.Clear();
         }
 
-        private void CreateKnivesList()
+        private void CreateKnives()
         {
             for (int i = 0; i < _knivesCounter.NumberOfKnives; i++)
             {
-                var knife = Instantiate(_knifePrefab, _knivesContainer.transform);
+                var knife = _uiFactory.CreateKnife();
+                knife.transform.SetParent(_knivesContainer);
                 _knivesList.Add(knife);
             }
         }

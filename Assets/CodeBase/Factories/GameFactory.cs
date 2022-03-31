@@ -48,6 +48,10 @@ namespace CodeBase.Factories
         public GameObject Apple => _apple;
 
         public event Action<Knife> KnifeCreated;
+
+        public event Action BeamCreated;
+
+        public event Action AttachedKnivesCreated;
         
         public void Initialize(LoseController loseController, VictoryController victoryController, StagesCounter stagesCounter, AppleHit appleHit)
         {
@@ -70,6 +74,8 @@ namespace CodeBase.Factories
             motion.IsKinematic();
             motion.FreezePosition();
             motion.StartRotation(_stageConfigs[_stagesCounter.CurrentStage].RotateSpeed);
+            
+            BeamCreated?.Invoke();
         }
 
         public void CreateApple()
@@ -105,6 +111,8 @@ namespace CodeBase.Factories
                 Knife knifeComponent = knife.GetComponent<Knife>();
                 KnifeCreated?.Invoke(knifeComponent);
             }
+            
+            AttachedKnivesCreated?.Invoke();
         }
 
         public void CreatePlayerKnife()

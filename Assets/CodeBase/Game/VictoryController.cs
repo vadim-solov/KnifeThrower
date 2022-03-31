@@ -47,12 +47,13 @@ namespace CodeBase.Game
         {
             await Task.Delay(TimeSpan.FromSeconds(2));
             _stagesCounter.IncreaseStage();
+            _knivesCounter.UpdateCounter();
+            
             _gameFactory.CreateBeam();
             _gameFactory.CreateApple();
             _gameFactory.CreateAttachedKnives();
             _gameFactory.CreatePlayerKnife();
-            _knivesCounter.UpdateCounter();
-            
+
             Victory?.Invoke();
         }
 

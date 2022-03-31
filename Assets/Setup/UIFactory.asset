@@ -15,3 +15,4 @@ MonoBehaviour:
   _canvasPrefab: {fileID: 7704184565466896074, guid: de4b559a4c5196c48914a810d53587e8, type: 3}
   _loseScreenPrefab: {fileID: 5759684475154948952, guid: ce246a6e7c5aa2d4b979fcbab9927fdd, type: 3}
   _HUDPrefab: {fileID: 9035993070047203417, guid: 0668a3bffbac61f4fbbc96cf7ad913ac, type: 3}
+  _knifePrefab: {fileID: 5197167033857003116, guid: c6994963a35a342409b32a51be712f74, type: 3}
