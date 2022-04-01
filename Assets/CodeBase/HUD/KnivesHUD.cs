@@ -10,20 +10,16 @@ namespace CodeBase.HUD
         [SerializeField]
         private RectTransform _knivesContainer;
 
+        private UIFactory _uiFactory;
+        private KnivesCounter _knivesCounter;
+        private GameFactory _gameFactory;
+        
         private readonly List<GameObject> _knivesList = new List<GameObject>();
 
-        private UIFactory _uiFactory;
-        private VictoryController _victoryController;
-        private KnivesCounter _knivesCounter;
-        private RestarterController _restarterController;
-        private GameFactory _gameFactory;
-
-        public void Initialize(UIFactory uiFactory, KnivesCounter knivesCounter, VictoryController victoryController, RestarterController restarterController, GameFactory gameFactory)
+        public void Initialize(UIFactory uiFactory, KnivesCounter knivesCounter, GameFactory gameFactory)
         {
             _uiFactory = uiFactory;
             _knivesCounter = knivesCounter;
-            _victoryController = victoryController;
-            _restarterController = restarterController;
             _gameFactory = gameFactory;
 
             _gameFactory.AttachedKnivesCreated += ClearAndCreateKnives;
@@ -37,17 +33,17 @@ namespace CodeBase.HUD
             _knivesCounter.DecreaseNumberOfKnives -= OnDecreaseNumberOfKnives;
         }
 
+        private void ClearAndCreateKnives()
+        {
+            ClearKnives();
+            CreateKnives();
+        }
+
         private void OnDecreaseNumberOfKnives(int number)
         {
             var item = _knivesList[number];
             var image = item.GetComponent<KnifeImage>().Knife;
             image.color = Color.gray;
-        }
-
-        private void ClearAndCreateKnives()
-        {
-            ClearKnives();
-            CreateKnives();
         }
 
         private void ClearKnives()

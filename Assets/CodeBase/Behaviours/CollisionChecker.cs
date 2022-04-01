@@ -7,16 +7,15 @@ namespace CodeBase.Behaviours
     public class CollisionChecker : MonoBehaviour
     {
         private bool _enabled = true;
-
         private LoseController _loseController;
-        private VictoryController _victoryController;
         private AppleHit _appleHit;
+        private BeamHit _beamHit;
 
-        public void Initialize(LoseController loseController, VictoryController victoryController, AppleHit appleHit)
+        public void Initialize(LoseController loseController, AppleHit appleHit, BeamHit beamHit)
         {
             _loseController = loseController;
-            _victoryController = victoryController;
             _appleHit = appleHit;
+            _beamHit = beamHit;
         }
 
         public void SwitchOff() => 
@@ -26,23 +25,14 @@ namespace CodeBase.Behaviours
         {
             if (collision != null && _enabled)
             {
-                if (collision.gameObject.TryGetComponent(out Beam beam))
-                {
-                    Debug.Log("Hit in beam");
-                    _victoryController.OnHitInBeam(gameObject, beam);
-                }
-                
-                if (collision.gameObject.TryGetComponent(out Apple apple))
-                {
-                    Debug.Log("Hit in apple");
+                if (collision.gameObject.TryGetComponent(out Beam beam)) 
+                    _beamHit.OnHitInBeam(gameObject, beam);
+
+                if (collision.gameObject.TryGetComponent(out Apple apple)) 
                     _appleHit.OnHitInApple(gameObject, apple);
-                }     
-                
-                if (collision.gameObject.TryGetComponent(out Knife knife))
-                {
-                    Debug.Log("Hit in knife");
+
+                if (collision.gameObject.TryGetComponent(out Knife knife)) 
                     _loseController.OnLose(gameObject, knife);
-                }
             }
         }
     }

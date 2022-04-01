@@ -1,14 +1,13 @@
 using System;
 using CodeBase.SaveLoadSystem;
-using UnityEngine;
 
 namespace CodeBase.Game
 {
     public class AppleCounter
     {
-        private readonly ISaveLoadSystem _saveLoadSystem;
-
         public int Score { get; private set; } = 0;
+        
+        private readonly ISaveLoadSystem _saveLoadSystem;
 
         public event Action<int> ScoreChanged;
 

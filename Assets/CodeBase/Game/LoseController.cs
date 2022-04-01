@@ -20,8 +20,9 @@ namespace CodeBase.Game
         private readonly List<Knife> _knivesList;
         private readonly StagesCounter _stagesCounter;
         private readonly KnivesCounter _knivesCounter;
+        private readonly ScoreCounter _scoreCounter;
 
-        public LoseController(GameFactory gameFactory, UIFactory uiFactory, KnivesCollection knivesCollection, StagesCounter stagesCounter, KnivesCounter knivesCounter)
+        public LoseController(GameFactory gameFactory, UIFactory uiFactory, KnivesCollection knivesCollection, StagesCounter stagesCounter, KnivesCounter knivesCounter, ScoreCounter scoreCounter)
         {
             _gameFactory = gameFactory;
             _uiFactory = uiFactory;
@@ -29,6 +30,7 @@ namespace CodeBase.Game
             _stagesCounter = stagesCounter;
             _knivesCounter = knivesCounter;
             _knivesList = knivesCollection.KnivesList;
+            _scoreCounter = scoreCounter;
         }
         
         public void OnLose(GameObject playerKnife, Knife collision)
@@ -41,12 +43,12 @@ namespace CodeBase.Game
             motion.MoveBack();
             motion.StartRandomRotation();
             CreateLoseScreen();
-            DestroyBeam();
-            DestroyApple();
-            DestroyKnives();
-            _stagesCounter.ResetStages();
-            _knivesCounter.UpdateCounter();
+            DestroyGameObjects();
+            ResetCounters();
         }
+
+        private void StopBeamMotion() => 
+            _gameFactory.Beam.GetComponent<Motion>().StopRotation();
 
         private async void CreateLoseScreen()
         {
@@ -54,25 +56,30 @@ namespace CodeBase.Game
             _uiFactory.CreateLoseScreen();
         }
 
-        private void StopBeamMotion() => 
-            _gameFactory.Beam.GetComponent<Motion>().StopRotation();
-
-        private async void DestroyBeam()
+        private async void DestroyGameObjects()
         {
             await Task.Delay(TimeSpan.FromSeconds(AppearanceUIDelay));
+            DestroyBeam();
+            DestroyApple();
+            DestroyKnives();
+        }
+
+        private async void ResetCounters()
+        {
+            await Task.Delay(TimeSpan.FromSeconds(AppearanceUIDelay));
+            _stagesCounter.ResetStages();
+            _knivesCounter.UpdateCounter();
+            _scoreCounter.ResetScore();
+        }
+
+        private void DestroyBeam() => 
             _gameFactory.DestroyBeam();
-        }
 
-        private async void DestroyApple()
-        {
-            await Task.Delay(TimeSpan.FromSeconds(AppearanceUIDelay));
+        private void DestroyApple() => 
             _gameFactory.DestroyApple(0f);
-        }
 
-        private async void DestroyKnives()
+        private void DestroyKnives()
         {
-            await Task.Delay(TimeSpan.FromSeconds(AppearanceUIDelay));
-            
             foreach (Knife knife in _knivesList) 
                 _gameFactory.DestroyKnife(knife, 0f);
             

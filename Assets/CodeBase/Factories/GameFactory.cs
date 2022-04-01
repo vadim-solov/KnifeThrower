@@ -14,7 +14,6 @@ namespace CodeBase.Factories
     {
         private const string ContainerName = "Container";
         
-        [Header("Stages config")]
         [SerializeField]
         private StageConfig[] _stageConfigs = new StageConfig[5];
 
@@ -31,34 +30,31 @@ namespace CodeBase.Factories
         [Header("Player object")]
         [SerializeField]
         private GameObject _playerKnife;
-        
-        private readonly float _applePosition = 60f;
-        private readonly List<float> _knivesPositions = new List<float>() {0f, 120f, 240f};
-        
+
         private GameObject _container;
         private GameObject _beam;
         private GameObject _apple;
         private LoseController _loseController;
-        private VictoryController _victoryController;
         private StagesCounter _stagesCounter;
         private AppleHit _appleHit;
+        private BeamHit _beamHit;
 
+        private readonly float _applePosition = 60f;
+        private readonly List<float> _knivesPositions = new List<float>() {0f, 120f, 240f};
+        
         public StageConfig[] StageConfig => _stageConfigs;
         public GameObject Beam => _beam;
         public GameObject Apple => _apple;
 
         public event Action<Knife> KnifeCreated;
-
-        public event Action BeamCreated;
-
         public event Action AttachedKnivesCreated;
         
-        public void Initialize(LoseController loseController, VictoryController victoryController, StagesCounter stagesCounter, AppleHit appleHit)
+        public void Initialize(LoseController loseController, StagesCounter stagesCounter, AppleHit appleHit, BeamHit beamHit)
         {
             _loseController = loseController;
-            _victoryController = victoryController;
             _stagesCounter = stagesCounter;
             _appleHit = appleHit;
+            _beamHit = beamHit;
         }
 
         public void CreateContainer() => 
@@ -66,16 +62,14 @@ namespace CodeBase.Factories
 
         public void CreateBeam()
         {
-            _beam = Instantiate(_stageConfigs[_stagesCounter.CurrentStage].Beam, _container.transform);
+            _beam = Instantiate(_stageConfigs[_stagesCounter.Stage].Beam, _container.transform);
             var rb = AddRigidbody(_beam);
             AddBeam();
             var motion = _beam.AddComponent<Motion>();
             motion.Initialize(rb);
             motion.IsKinematic();
             motion.FreezePosition();
-            motion.StartRotation(_stageConfigs[_stagesCounter.CurrentStage].RotateSpeed);
-            
-            BeamCreated?.Invoke();
+            motion.StartRotation(_stageConfigs[_stagesCounter.Stage].RotateSpeed);
         }
 
         public void CreateApple()
@@ -167,6 +161,6 @@ namespace CodeBase.Factories
             knife.AddComponent<KnifeInput>().Initialize(motion, 10f);
 
         private void AddCollisionChecker(GameObject knife) => 
-            knife.AddComponent<CollisionChecker>().Initialize(_loseController, _victoryController, _appleHit);
+            knife.AddComponent<CollisionChecker>().Initialize(_loseController, _appleHit, _beamHit);
     }
 }

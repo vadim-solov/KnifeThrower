@@ -1,4 +1,3 @@
-using System;
 using CodeBase.Factories;
 using CodeBase.Game;
 using UnityEngine;
@@ -8,30 +7,35 @@ namespace CodeBase.HUD
 {
     public class StageHUD : MonoBehaviour
     {
+        private const string Boss = "BOSS ";
+        private const string Stage = "STAGE ";
+
         [SerializeField]
         private Text _stageText;
 
-        private StageConfig[] _stageConfig;
         private StagesCounter _stagesCounter;
-        private GameFactory _gameFactory;
+        private StageConfig[] _stageConfig;
 
-        public void Initialize(StageConfig[] stageConfig, StagesCounter stagesCounter, GameFactory gameFactory)
+        public void Initialize(StagesCounter stagesCounter, StageConfig[] stageConfig)
         {
-            _stageConfig = stageConfig;
             _stagesCounter = stagesCounter;
-            _gameFactory = gameFactory;
-
-            _gameFactory.BeamCreated += OnBossCreated;
+            _stageConfig = stageConfig;
+            OnBeamCreated(_stagesCounter.Stage);
+            _stagesCounter.StageChanged += OnBeamCreated;
         }
 
-        private void OnBossCreated()
+        private void OnDisable() => 
+            _stagesCounter.StageChanged -= OnBeamCreated;
+
+        private void OnBeamCreated(int stage)
         {
-            var boss = _stageConfig[_stagesCounter.CurrentStage].Boss;
+            var boss = _stageConfig[_stagesCounter.Stage].Boss;
 
             if (boss)
-            {
-                _stageText.text = _stageConfig[_stagesCounter.CurrentStage].Name;
-            }
+                _stageText.text = Boss + _stageConfig[_stagesCounter.Stage].Name;
+            
+            else
+                _stageText.text = Stage + (stage + 1);
         }
     }
 }

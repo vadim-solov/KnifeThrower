@@ -1,4 +1,3 @@
-using System;
 using CodeBase.Game;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,19 +11,17 @@ namespace CodeBase.HUD
 
         private AppleCounter _appleCounter;
 
-        public void Initialize(AppleCounter appleCounter) => 
-            _appleCounter = appleCounter;
-
-        private void Start()
+        public void Initialize(AppleCounter appleCounter)
         {
-            _score.text = _appleCounter.Score.ToString();
-            _appleCounter.ScoreChanged += OnScoreChanged;
+            _appleCounter = appleCounter;
+            ChangeScore(_appleCounter.Score);
+            _appleCounter.ScoreChanged += ChangeScore;
         }
 
         private void OnDisable() => 
-            _appleCounter.ScoreChanged -= OnScoreChanged;
+            _appleCounter.ScoreChanged -= ChangeScore;
 
-        private void OnScoreChanged(int score) => 
+        private void ChangeScore(int score) => 
             _score.text = score.ToString();
     }
 }

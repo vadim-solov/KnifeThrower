@@ -18,8 +18,6 @@ namespace CodeBase.Game
         private readonly KnivesCollection _knivesCollection;
         private readonly StagesCounter _stagesCounter;
 
-        public event Action Victory;
-
         public VictoryController(GameFactory gameFactory, KnivesCounter knivesCounter, KnivesCollection knivesCollection, StagesCounter stagesCounter)
         {
             _gameFactory = gameFactory;
@@ -53,8 +51,6 @@ namespace CodeBase.Game
             _gameFactory.CreateApple();
             _gameFactory.CreateAttachedKnives();
             _gameFactory.CreatePlayerKnife();
-
-            Victory?.Invoke();
         }
 
         private void DestroyBeam() => 
@@ -78,27 +74,6 @@ namespace CodeBase.Game
                 motion.Drop();
                 _gameFactory.DestroyKnife(knife, 2f);
             }
-        }
-        
-        private void TryCreatePlayerKnife()
-        {
-            if(_knivesCounter.CheckLastKnife())
-                return;
-            
-            _gameFactory.CreatePlayerKnife();
-        }
-
-        public void OnHitInBeam(GameObject playerKnife, Beam beam)
-        {
-            var motion = playerKnife.GetComponent<Motion>();
-            motion.StopMove();
-            playerKnife.transform.position += new Vector3(0f, 0.2f, 0f); // FIX
-            FixedJoint joint = playerKnife.AddComponent<FixedJoint>();
-            joint.connectedBody = beam.gameObject.GetComponent<Rigidbody>();
-            playerKnife.gameObject.GetComponent<CollisionChecker>().SwitchOff();
-            playerKnife.gameObject.GetComponent<KnifeInput>().enabled = false;
-            _knivesCounter.Decrease();
-            TryCreatePlayerKnife();
         }
     }
 }

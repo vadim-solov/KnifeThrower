@@ -1,17 +1,39 @@
-using UnityEngine;
+using System;
+using CodeBase.SaveLoadSystem;
 
 namespace CodeBase.Game
 {
     public class StagesCounter
     {
-        private int _maxStage;
+        private readonly ISaveLoadSystem _saveLoadSystem;
         
-        public int CurrentStage { get; private set; } = 0;
+        public int Stage { get; private set; } = 0;
+        
+        public StagesCounter(ISaveLoadSystem saveLoadSystem) => 
+            _saveLoadSystem = saveLoadSystem;
 
-        public void IncreaseStage() => 
-            CurrentStage++;
+        public event Action<int> StageChanged;
 
-        public void ResetStages() => 
-            CurrentStage = 0;
+        public void IncreaseStage()
+        {
+            Stage++;
+            StageChanged?.Invoke(Stage);
+        }
+
+        public void ResetStages()
+        {
+            CheckMaxStage();
+
+            Stage = 0;
+            StageChanged?.Invoke(Stage);
+        }
+        
+        private void CheckMaxStage()
+        {
+            var loadedStage = _saveLoadSystem.LoadStage();
+            
+            if (loadedStage < Stage)
+                _saveLoadSystem.SaveStage(Stage);
+        }
     }
 }

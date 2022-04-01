@@ -11,11 +11,11 @@ namespace CodeBase.UI
 
         private RestarterController _restarterController;
         
-        public void Initialize(RestarterController restarterController) => 
+        public void Initialize(RestarterController restarterController)
+        {
             _restarterController = restarterController;
-
-        private void Start() => 
             _restartButton.onClick.AddListener(OnClick);
+        }
 
         private void OnDisable() => 
             _restartButton.onClick.RemoveListener(OnClick);

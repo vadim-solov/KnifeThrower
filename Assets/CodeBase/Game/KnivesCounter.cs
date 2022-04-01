@@ -40,6 +40,6 @@ namespace CodeBase.Game
         }
 
         public void UpdateCounter() => 
-            NumberOfKnives = _gameFactory.StageConfig[_stagesCounter.CurrentStage].NumberOfKnives;
+            NumberOfKnives = _gameFactory.StageConfig[_stagesCounter.Stage].NumberOfKnives;
     }
 }
