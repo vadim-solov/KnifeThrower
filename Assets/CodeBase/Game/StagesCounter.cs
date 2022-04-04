@@ -8,11 +8,11 @@ namespace CodeBase.Game
         private readonly ISaveLoadSystem _saveLoadSystem;
         
         public int Stage { get; private set; } = 0;
-        
-        public StagesCounter(ISaveLoadSystem saveLoadSystem) => 
-            _saveLoadSystem = saveLoadSystem;
 
         public event Action<int> StageChanged;
+
+        public StagesCounter(ISaveLoadSystem saveLoadSystem) => 
+            _saveLoadSystem = saveLoadSystem;
 
         public void IncreaseStage()
         {

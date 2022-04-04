@@ -16,7 +16,7 @@ namespace CodeBase.Factories
         
         [SerializeField]
         private StageConfig[] _stageConfigs = new StageConfig[5];
-
+        
         [Header("Config on all stages")]
         [SerializeField, Range(0f,100f)]
         private int _appleChance = 25;
@@ -29,7 +29,9 @@ namespace CodeBase.Factories
         
         [Header("Player object")]
         [SerializeField]
-        private GameObject _playerKnife;
+        private GameObject _defaultKnife;
+        [SerializeField] 
+        private GameObject _skinKnife;
 
         private GameObject _container;
         private GameObject _beam;
@@ -38,6 +40,7 @@ namespace CodeBase.Factories
         private StagesCounter _stagesCounter;
         private AppleHit _appleHit;
         private BeamHit _beamHit;
+        private GameObject _playerKnife;
 
         private readonly float _applePosition = 60f;
         private readonly List<float> _knivesPositions = new List<float>() {0f, 120f, 240f};
@@ -111,15 +114,20 @@ namespace CodeBase.Factories
 
         public void CreatePlayerKnife()
         {
-            GameObject knife = Instantiate(_playerKnife, _container.transform);
-            Rigidbody rb = AddRigidbody(knife);
-            AddKnife(knife);
-            Motion motion = AddMotion(knife);
+            if (_skinKnife == null)
+                _playerKnife = Instantiate(_defaultKnife, _container.transform);
+            
+            else
+                _playerKnife = Instantiate(_skinKnife, _container.transform);
+
+            Rigidbody rb = AddRigidbody(_playerKnife);
+            AddKnife(_playerKnife);
+            Motion motion = AddMotion(_playerKnife);
             motion.Initialize(rb);
             motion.SetPlayerKnife();
-            AddKnifeInput(knife, motion);
-            AddCollisionChecker(knife); 
-            Knife knifeComponent = knife.GetComponent<Knife>();
+            AddKnifeInput(_playerKnife, motion);
+            AddCollisionChecker(_playerKnife); 
+            Knife knifeComponent = _playerKnife.GetComponent<Knife>();
             KnifeCreated?.Invoke(knifeComponent);
         }
 
@@ -162,5 +170,10 @@ namespace CodeBase.Factories
 
         private void AddCollisionChecker(GameObject knife) => 
             knife.AddComponent<CollisionChecker>().Initialize(_loseController, _appleHit, _beamHit);
+
+        public void ChangeKnifeSkin(GameObject knife)
+        {
+            _skinKnife = knife;
+        }
     }
 }

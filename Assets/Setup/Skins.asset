@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1922d2ccc15544fcad6dd72060d2d07d, type: 3}
+  m_Name: Skins
+  m_EditorClassIdentifier: 
+  _defaultKnifePrefab: {fileID: 0}
+  _skinConfigs:
+  - _knifePrefab: {fileID: 3474160458616741028, guid: 16db354325bc61c45897435b266fb953, type: 3}
+    _availableAtStage: 1
+    _open: 1
+  - _knifePrefab: {fileID: 3474160458616741028, guid: 8847608197acb6a4c9eaf60eb212cf28, type: 3}
+    _availableAtStage: 3
+    _open: 0
+  - _knifePrefab: {fileID: 3474160458616741028, guid: 97204738f0c4e604b9500c289ea83e78, type: 3}
+    _availableAtStage: 7
+    _open: 1

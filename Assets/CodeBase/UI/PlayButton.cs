@@ -18,11 +18,9 @@ namespace CodeBase.UI
         }
 
         private void OnDisable() => 
-            _playButton.onClick.AddListener(Play);
+            _playButton.onClick.RemoveListener(Play);
 
-        private void Play()
-        {
+        private void Play() => 
             _gameStarter.CreateGameObjects();
-        }
     }
 }

@@ -6,6 +6,9 @@ namespace CodeBase.UI
 {
     public class Records : MonoBehaviour
     {
+        private const string Stage = "STAGE ";
+        private const string Score = "SCORE ";
+
         [SerializeField]
         private Text _stageText;
         [SerializeField]
@@ -16,14 +19,14 @@ namespace CodeBase.UI
         public void Initialize(ISaveLoadSystem saveLoadSystem)
         {
             _saveLoadSystem = saveLoadSystem;
-            ShowScore();
             ShowStage();
+            ShowScore();
         }
 
-        private void ShowScore() => 
-            _scoreText.text = _saveLoadSystem.LoadScore().ToString();
-        
         private void ShowStage() => 
-            _stageText.text = (_saveLoadSystem.LoadStage() + 1).ToString();
+            _stageText.text = Stage + (_saveLoadSystem.LoadStage() + 1).ToString();
+
+        private void ShowScore() => 
+            _scoreText.text = Score + _saveLoadSystem.LoadScore().ToString();
     }
 }

@@ -13,6 +13,10 @@ namespace CodeBase.Game
         private GameFactory _gameFactory;
         [SerializeField]
         private UIFactory _uiFactory;
+        [SerializeField]
+        private Skins _skins;
+        [SerializeField]
+        private Camera _cameraPrefab;
 
         private KnivesCounter _knivesCounter;
         private VictoryController _victoryController;
@@ -40,12 +44,13 @@ namespace CodeBase.Game
             _knivesCollection = new KnivesCollection(_gameFactory);
             _knivesCounter = new KnivesCounter(_gameFactory, _stagesCounter);
             _loseController = new LoseController(_gameFactory, _uiFactory, _knivesCollection, _stagesCounter, _knivesCounter, _scoreCounter);
-            _victoryController = new VictoryController(_gameFactory, _knivesCounter, _knivesCollection, _stagesCounter);
+            _victoryController = new VictoryController(_gameFactory, _knivesCounter, _knivesCollection, _stagesCounter, _skins);
             _beamHit = new BeamHit(_knivesCounter, _gameFactory, _scoreCounter);
 
             _gameFactory.Initialize(_loseController, _stagesCounter, _appleHit, _beamHit);
-            _uiFactory.Initialize(_appleCounter, _knivesCounter, _restarterController, _stagesCounter, _gameFactory, _scoreCounter, _gameStarter, _saveLoadSystem);
-            
+            _uiFactory.Initialize(_appleCounter, _knivesCounter, _restarterController, _stagesCounter, _gameFactory, _scoreCounter, _gameStarter, _saveLoadSystem, _skins, _cameraPrefab);
+            _uiFactory.CreateCamera();
+
             _uiFactory.CreateCanvas();
             _uiFactory.CreateStartScreen();
         }

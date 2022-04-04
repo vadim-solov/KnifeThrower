@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1483374485036852439}
   - component: {fileID: 8419196316123598431}
   m_Layer: 5
-  m_Name: SkeensButton
+  m_Name: SkinsButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -155,7 +155,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 230, y: 130}
+  m_AnchoredPosition: {x: 210, y: 130}
   m_SizeDelta: {x: 358.1158, y: 182.3309}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8849020176280560030
@@ -213,6 +213,7 @@ GameObject:
   - component: {fileID: 8639425256246491072}
   - component: {fileID: 6264146299448732469}
   - component: {fileID: 6086139904519192594}
+  - component: {fileID: 2956975568207391769}
   m_Layer: 5
   m_Name: StartScreen
   m_TagString: Untagged
@@ -309,6 +310,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playButton: {fileID: 3492282045200814792}
+--- !u!114 &2956975568207391769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1510183332318441575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bd37dcd589848a698e91d76e97939a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _skinsButton: {fileID: 8419196316123598431}
 --- !u!1 &5511932206343394680
 GameObject:
   m_ObjectHideFlags: 0
@@ -543,7 +557,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -230, y: 130}
+  m_AnchoredPosition: {x: -210, y: 130}
   m_SizeDelta: {x: 358.12, y: 182.33}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5862864887271226905
@@ -666,7 +680,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: SKEENS
+  m_Text: SKINS
 --- !u!1 &8626526542416461905
 GameObject:
   m_ObjectHideFlags: 0

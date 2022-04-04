@@ -19,7 +19,7 @@ MonoBehaviour:
     _rotatedTime: 5
     _boss: 0
     _name: 
-  - _numberOfKnives: 3
+  - _numberOfKnives: 2
     _beam: {fileID: 470815551834236230, guid: 4ea72acc6a0d2a44ebc7ebe4b19d91d8, type: 3}
     _rotateSpeed: -2
     _rotatedTime: 5
@@ -34,4 +34,5 @@ MonoBehaviour:
   _appleChance: 100
   _attachedApple: {fileID: 3474160458616741028, guid: 60ecdd9a6b84e484389243e94e0fa7d8, type: 3}
   _attachedKnife: {fileID: 3474160458616741028, guid: 16db354325bc61c45897435b266fb953, type: 3}
-  _playerKnife: {fileID: 3474160458616741028, guid: 16db354325bc61c45897435b266fb953, type: 3}
+  _defaultKnife: {fileID: 3474160458616741028, guid: 16db354325bc61c45897435b266fb953, type: 3}
+  _skinKnife: {fileID: 3474160458616741028, guid: 97204738f0c4e604b9500c289ea83e78, type: 3}

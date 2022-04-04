@@ -17,3 +17,4 @@ MonoBehaviour:
   _HUDPrefab: {fileID: 9035993070047203417, guid: 0668a3bffbac61f4fbbc96cf7ad913ac, type: 3}
   _knifePrefab: {fileID: 5197167033857003116, guid: c6994963a35a342409b32a51be712f74, type: 3}
   _startScreenPrefab: {fileID: 7814524308348853813, guid: dd2a159b767553c41abd5efe5a28e47b, type: 3}
+  _skinsScreenPrefab: {fileID: 3433612805920423463, guid: 2c876b16c7c9044478d5b0e920315677, type: 3}

@@ -17,14 +17,16 @@ namespace CodeBase.Game
         private readonly List<Knife> _knivesList;
         private readonly KnivesCollection _knivesCollection;
         private readonly StagesCounter _stagesCounter;
+        private readonly Skins _skins;
 
-        public VictoryController(GameFactory gameFactory, KnivesCounter knivesCounter, KnivesCollection knivesCollection, StagesCounter stagesCounter)
+        public VictoryController(GameFactory gameFactory, KnivesCounter knivesCounter, KnivesCollection knivesCollection, StagesCounter stagesCounter, Skins skins)
         {
             _gameFactory = gameFactory;
             _knivesCounter = knivesCounter;
             _knivesList = knivesCollection.KnivesList;
             _knivesCollection = knivesCollection;
             _stagesCounter = stagesCounter;
+            _skins = skins;
             _knivesCounter.Victory += OnVictory;
         }
         
@@ -38,6 +40,7 @@ namespace CodeBase.Game
             TryDestroyApple();
             DestroyKnives();
             _knivesCollection.Clear();
+            _skins.CheckNewSkins(_stagesCounter.Stage);
             CreateNewObjects();
         }
 

@@ -19,6 +19,8 @@ namespace CodeBase.Factories
         private GameObject _knifePrefab;
         [SerializeField]
         private RectTransform _startScreenPrefab;
+        [SerializeField]
+        private RectTransform _skinsScreenPrefab;
 
         private Canvas _canvas;
         private RectTransform _loseScreen;
@@ -31,11 +33,13 @@ namespace CodeBase.Factories
         private ScoreCounter _scoreCounter;
         private RectTransform _startScreen;
         private GameStarter _gameStarter;
-
+        private RectTransform _skinsScreen;
         private ISaveLoadSystem _saveLoadSystem;
+        private Skins _skins;
+        private Camera _camera;
 
         public void Initialize(AppleCounter appleCounter, KnivesCounter knivesCounter, RestarterController restarterController, 
-            StagesCounter stagesCounter, GameFactory gameFactory, ScoreCounter scoreCounter, GameStarter gameStarter, ISaveLoadSystem saveLoadSystem)
+            StagesCounter stagesCounter, GameFactory gameFactory, ScoreCounter scoreCounter, GameStarter gameStarter, ISaveLoadSystem saveLoadSystem, Skins skins, Camera cameraPrefab)
         {
             _appleCounter = appleCounter;
             _knivesCounter = knivesCounter;
@@ -45,10 +49,18 @@ namespace CodeBase.Factories
             _scoreCounter = scoreCounter;
             _gameStarter = gameStarter;
             _saveLoadSystem = saveLoadSystem;
+            _skins = skins;
+            _camera = cameraPrefab;
         }
 
-        public void CreateCanvas() => 
+        public void CreateCamera() => 
+            _camera = Instantiate(_camera);
+
+        public void CreateCanvas()
+        {
             _canvas = Instantiate(_canvasPrefab);
+            _canvas.GetComponent<Canvas>().worldCamera = _camera;
+        }
 
         public void CreateHUD()
         {
@@ -80,9 +92,16 @@ namespace CodeBase.Factories
             _startScreen = Instantiate(_startScreenPrefab, _canvas.transform);
             _startScreen.GetComponent<PlayButton>().Initialize(_gameStarter);
             _startScreen.GetComponent<Records>().Initialize(_saveLoadSystem);
+            _startScreen.GetComponent<SkinsButton>().Initialize(this);
         }
 
         public void DestroyStartScreen() => 
             Destroy(_startScreen.gameObject);
+
+        public void CreateSkinsScreen()
+        {
+            _skinsScreen = Instantiate(_skinsScreenPrefab, _canvas.transform);
+            _skinsScreen.GetComponent<SkinsLoader>().Initialize(_skins, _gameFactory);
+        }
     }
 }
