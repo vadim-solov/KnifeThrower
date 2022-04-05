@@ -7,10 +7,9 @@ namespace CodeBase.Collection
 {
     public class KnivesCollection
     {
+        public List<Knife> KnivesList { get; } = new List<Knife>();
+        
         private readonly GameFactory _gameFactory;
-        private readonly List<Knife> _knivesList = new List<Knife>();
-
-        public List<Knife> KnivesList => _knivesList;
 
         public KnivesCollection(GameFactory gameFactory)
         {
@@ -25,11 +24,11 @@ namespace CodeBase.Collection
         }
 
         public void Clear() => 
-            _knivesList.Clear();
+            KnivesList.Clear();
 
         private void OnKnifeCreated(Knife knife)
         {
-            _knivesList.Add(knife);
+            KnivesList.Add(knife);
             Debug.Log("Knife added: " + knife);
         }
     }

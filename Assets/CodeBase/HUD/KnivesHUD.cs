@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using CodeBase.Factories;
 using CodeBase.Game;
+using CodeBase.Game.Counters;
 using UnityEngine;
 
 namespace CodeBase.HUD

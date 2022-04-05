@@ -1,25 +1,27 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CodeBase.Behaviours;
 using CodeBase.Collection;
 using CodeBase.Factories;
+using CodeBase.Game.Counters;
 using CodeBase.ObjectType;
-using UnityEngine;
 using Motion = CodeBase.Behaviours.Motion;
 
-namespace CodeBase.Game
+namespace CodeBase.Game.Controllers
 {
     public class VictoryController
     {
+        private const float DestructionTime = 2f;
+        
         private readonly GameFactory _gameFactory;
         private readonly KnivesCounter _knivesCounter;
         private readonly List<Knife> _knivesList;
         private readonly KnivesCollection _knivesCollection;
         private readonly StagesCounter _stagesCounter;
         private readonly Skins _skins;
+        private readonly UIFactory _uiFactory;
 
-        public VictoryController(GameFactory gameFactory, KnivesCounter knivesCounter, KnivesCollection knivesCollection, StagesCounter stagesCounter, Skins skins)
+        public VictoryController(GameFactory gameFactory, KnivesCounter knivesCounter, KnivesCollection knivesCollection, StagesCounter stagesCounter, Skins skins, UIFactory uiFactory)
         {
             _gameFactory = gameFactory;
             _knivesCounter = knivesCounter;
@@ -27,6 +29,7 @@ namespace CodeBase.Game
             _knivesCollection = knivesCollection;
             _stagesCounter = stagesCounter;
             _skins = skins;
+            _uiFactory = uiFactory;
             _knivesCounter.Victory += OnVictory;
         }
         
@@ -41,15 +44,27 @@ namespace CodeBase.Game
             DestroyKnives();
             _knivesCollection.Clear();
             _skins.CheckNewSkins(_stagesCounter.Stage);
+            
+            if (_stagesCounter.CheckMaxStage() == true)
+            {
+                CreateMaxStageScreen();
+                return;
+            }
+
             CreateNewObjects();
+        }
+
+        private async void CreateMaxStageScreen()
+        {
+            await Task.Delay(TimeSpan.FromSeconds(DestructionTime));
+            _uiFactory.CreateMaxStageScreen();
         }
 
         private async void CreateNewObjects()
         {
-            await Task.Delay(TimeSpan.FromSeconds(2));
+            await Task.Delay(TimeSpan.FromSeconds(DestructionTime));
             _stagesCounter.IncreaseStage();
             _knivesCounter.UpdateCounter();
-            
             _gameFactory.CreateBeam();
             _gameFactory.CreateApple();
             _gameFactory.CreateAttachedKnives();
@@ -64,18 +79,18 @@ namespace CodeBase.Game
             if(_gameFactory.Apple == null)
                 return;
             
-            var apple = _gameFactory.Apple.GetComponent<Motion>();
+            Motion apple = _gameFactory.Apple.GetComponent<Motion>();
             apple.Drop();
-            _gameFactory.DestroyApple(2f);
+            _gameFactory.DestroyApple(DestructionTime);
         }
 
         private void DestroyKnives()
         {
             foreach (Knife knife in _knivesList)
             {
-                var motion = knife.GetComponent<Motion>();
+                Motion motion = knife.GetComponent<Motion>();
                 motion.Drop();
-                _gameFactory.DestroyKnife(knife, 2f);
+                _gameFactory.DestroyKnife(knife, DestructionTime);
             }
         }
     }

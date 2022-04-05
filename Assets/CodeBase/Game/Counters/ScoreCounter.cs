@@ -1,7 +1,7 @@
 using System;
 using CodeBase.SaveLoadSystem;
 
-namespace CodeBase.Game
+namespace CodeBase.Game.Counters
 {
     public class ScoreCounter
     {
@@ -28,7 +28,7 @@ namespace CodeBase.Game
 
         private void CheckMaxScore()
         {
-            var loadedScore = _saveLoadSystem.LoadScore();
+            int loadedScore = _saveLoadSystem.LoadScore();
             
             if (loadedScore < Score)
                 _saveLoadSystem.SaveScore(Score);

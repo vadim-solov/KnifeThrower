@@ -1,13 +1,13 @@
 using System;
 using CodeBase.SaveLoadSystem;
 
-namespace CodeBase.Game
+namespace CodeBase.Game.Counters
 {
     public class AppleCounter
     {
-        public int Score { get; private set; } = 0;
-        
         private readonly ISaveLoadSystem _saveLoadSystem;
+        
+        public int Score { get; private set; } = 0;
 
         public event Action<int> ScoreChanged;
 

@@ -1,4 +1,5 @@
 using CodeBase.Game;
+using CodeBase.Game.Counters;
 using CodeBase.HUD;
 using CodeBase.SaveLoadSystem;
 using CodeBase.UI;
@@ -21,33 +22,32 @@ namespace CodeBase.Factories
         private RectTransform _startScreenPrefab;
         [SerializeField]
         private RectTransform _skinsScreenPrefab;
+        [SerializeField]
+        private RectTransform _maxStageScreenPrefab;
 
         private Canvas _canvas;
         private RectTransform _loseScreen;
         private RectTransform _hud;
         private AppleCounter _appleCounter;
         private KnivesCounter _knivesCounter;
-        private RestarterController _restarterController;
         private StagesCounter _stagesCounter;
         private GameFactory _gameFactory;
         private ScoreCounter _scoreCounter;
         private RectTransform _startScreen;
-        private GameStarter _gameStarter;
         private RectTransform _skinsScreen;
         private ISaveLoadSystem _saveLoadSystem;
         private Skins _skins;
         private Camera _camera;
+        private RectTransform _maxStageScreen;
 
-        public void Initialize(AppleCounter appleCounter, KnivesCounter knivesCounter, RestarterController restarterController, 
-            StagesCounter stagesCounter, GameFactory gameFactory, ScoreCounter scoreCounter, GameStarter gameStarter, ISaveLoadSystem saveLoadSystem, Skins skins, Camera cameraPrefab)
+        public void Initialize(AppleCounter appleCounter, KnivesCounter knivesCounter, StagesCounter stagesCounter, GameFactory gameFactory, 
+            ScoreCounter scoreCounter, ISaveLoadSystem saveLoadSystem, Skins skins, Camera cameraPrefab)
         {
             _appleCounter = appleCounter;
             _knivesCounter = knivesCounter;
-            _restarterController = restarterController;
             _stagesCounter = stagesCounter;
             _gameFactory = gameFactory;
             _scoreCounter = scoreCounter;
-            _gameStarter = gameStarter;
             _saveLoadSystem = saveLoadSystem;
             _skins = skins;
             _camera = cameraPrefab;
@@ -74,7 +74,7 @@ namespace CodeBase.Factories
         public void CreateLoseScreen()
         {
             _loseScreen = Instantiate(_loseScreenPrefab, _canvas.transform);
-            _loseScreen.GetComponent<RestartButton>().Initialize(_restarterController);
+            _loseScreen.GetComponent<RestartButton>().Initialize(_gameFactory, this);
             _loseScreen.GetComponent<LevelStatistic>().Initialize(_scoreCounter, _stagesCounter);
         }
 
@@ -90,7 +90,7 @@ namespace CodeBase.Factories
         public void CreateStartScreen()
         {
             _startScreen = Instantiate(_startScreenPrefab, _canvas.transform);
-            _startScreen.GetComponent<PlayButton>().Initialize(_gameStarter);
+            _startScreen.GetComponent<PlayButton>().Initialize(_gameFactory, this);
             _startScreen.GetComponent<Records>().Initialize(_saveLoadSystem);
             _startScreen.GetComponent<SkinsButton>().Initialize(this);
         }
@@ -103,5 +103,8 @@ namespace CodeBase.Factories
             _skinsScreen = Instantiate(_skinsScreenPrefab, _canvas.transform);
             _skinsScreen.GetComponent<SkinsLoader>().Initialize(_skins, _gameFactory);
         }
+
+        public void CreateMaxStageScreen() => 
+            _maxStageScreen = Instantiate(_maxStageScreenPrefab, _canvas.transform);
     }
 }

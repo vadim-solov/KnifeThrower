@@ -82,6 +82,9 @@ namespace CodeBase.Behaviours
         public void MoveBack() => 
             _rb.velocity = -transform.up * 5f;
 
+        public void StickItIn() => 
+            transform.position += new Vector3(0f, 0.2f, 0f); // FIX
+
         private void Rotation() => 
             transform.Rotate(new Vector3(0f, 0f, _rotateSpeed)); //Refactor this. Use rigidbody
     }

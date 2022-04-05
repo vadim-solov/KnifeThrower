@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CodeBase.Configs;
 using CodeBase.Factories;
 using UnityEngine;
 

@@ -1,5 +1,6 @@
 using CodeBase.Behaviours;
 using CodeBase.Factories;
+using CodeBase.Game.Counters;
 using CodeBase.ObjectType;
 using UnityEngine;
 using Motion = CodeBase.Behaviours.Motion;
@@ -21,18 +22,23 @@ namespace CodeBase.Game
         
         public void OnHitInBeam(GameObject playerKnife, Beam beam)
         {
-            var motion = playerKnife.GetComponent<Motion>();
+            Motion motion = playerKnife.GetComponent<Motion>();
             motion.StopMove();
-            playerKnife.transform.position += new Vector3(0f, 0.2f, 0f); // FIX
-            FixedJoint joint = playerKnife.AddComponent<FixedJoint>();
-            joint.connectedBody = beam.gameObject.GetComponent<Rigidbody>();
-            playerKnife.gameObject.GetComponent<CollisionChecker>().SwitchOff();
-            playerKnife.gameObject.GetComponent<KnifeInput>().enabled = false;
+            motion.StickItIn();
+            motion.Attach(beam.gameObject);
+            SwitchOffCollision(playerKnife);
+            SwitchOffInput(playerKnife);
             _knivesCounter.Decrease();
             _scoreCounter.IncreaseScore();
             TryCreatePlayerKnife();
         }
-        
+
+        private void SwitchOffCollision(GameObject playerKnife) => 
+            playerKnife.gameObject.GetComponent<CollisionChecker>().SwitchOff();
+
+        private void SwitchOffInput(GameObject playerKnife) => 
+            playerKnife.gameObject.GetComponent<KnifeInput>().enabled = false;
+
         private void TryCreatePlayerKnife()
         {
             if(_knivesCounter.CheckLastKnife())

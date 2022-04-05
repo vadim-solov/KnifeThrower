@@ -2,7 +2,7 @@ using System;
 using CodeBase.Factories;
 using UnityEngine;
 
-namespace CodeBase.Game
+namespace CodeBase.Game.Counters
 {
     public class KnivesCounter
     {

@@ -1,3 +1,4 @@
+using CodeBase.Factories;
 using CodeBase.Game;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,18 +10,26 @@ namespace CodeBase.UI
         [SerializeField] 
         private Button _restartButton;
 
-        private RestarterController _restarterController;
-        
-        public void Initialize(RestarterController restarterController)
+        private GameFactory _gameFactory;
+        private UIFactory _uiFactory;
+
+        public void Initialize(GameFactory gameFactory, UIFactory uiFactory)
         {
-            _restarterController = restarterController;
+            _gameFactory = gameFactory;
+            _uiFactory = uiFactory;
             _restartButton.onClick.AddListener(OnClick);
         }
 
         private void OnDisable() => 
             _restartButton.onClick.RemoveListener(OnClick);
 
-        private void OnClick() => 
-            _restarterController.Restart();
+        private void OnClick()
+        {
+            _uiFactory.DestroyLoseScreen();
+            _gameFactory.CreateBeam();
+            _gameFactory.CreateApple();
+            _gameFactory.CreateAttachedKnives();
+            _gameFactory.CreatePlayerKnife();
+        }
     }
 }

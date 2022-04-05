@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace CodeBase.Factories
+namespace CodeBase.Configs
 {
     [Serializable]
     public class SkinConfig

@@ -13,19 +13,19 @@ MonoBehaviour:
   m_Name: GameFactory
   m_EditorClassIdentifier: 
   _stageConfigs:
-  - _numberOfKnives: 5
+  - _numberOfKnives: 1
     _beam: {fileID: 470815551834236230, guid: 7f9af1c1f5f1cde49aa139269bc3c007, type: 3}
     _rotateSpeed: 1
     _rotatedTime: 5
     _boss: 0
     _name: 
-  - _numberOfKnives: 2
+  - _numberOfKnives: 1
     _beam: {fileID: 470815551834236230, guid: 4ea72acc6a0d2a44ebc7ebe4b19d91d8, type: 3}
     _rotateSpeed: -2
     _rotatedTime: 5
     _boss: 0
     _name: 
-  - _numberOfKnives: 3
+  - _numberOfKnives: 1
     _beam: {fileID: 470815551834236230, guid: 7f9af1c1f5f1cde49aa139269bc3c007, type: 3}
     _rotateSpeed: 3
     _rotatedTime: 5

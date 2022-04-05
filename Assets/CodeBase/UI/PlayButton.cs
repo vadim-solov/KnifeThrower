@@ -1,4 +1,4 @@
-using CodeBase.Game;
+using CodeBase.Factories;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,18 +9,28 @@ namespace CodeBase.UI
         [SerializeField]
         private Button _playButton;
 
-        private GameStarter _gameStarter;
+        private GameFactory _gameFactory;
+        private UIFactory _uiFactory;
 
-        public void Initialize(GameStarter gameStarter)
+        public void Initialize(GameFactory gameFactory, UIFactory uiFactory)
         {
-            _gameStarter = gameStarter;
+            _gameFactory = gameFactory;
+            _uiFactory = uiFactory;
             _playButton.onClick.AddListener(Play);
         }
 
         private void OnDisable() => 
             _playButton.onClick.RemoveListener(Play);
 
-        private void Play() => 
-            _gameStarter.CreateGameObjects();
+        private void Play()
+        {
+            _uiFactory.DestroyStartScreen();
+            _uiFactory.CreateHUD();
+            _gameFactory.CreateContainer();
+            _gameFactory.CreateBeam();
+            _gameFactory.CreateApple();
+            _gameFactory.CreateAttachedKnives();
+            _gameFactory.CreatePlayerKnife();
+        }
     }
 }

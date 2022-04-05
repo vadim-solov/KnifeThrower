@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using CodeBase.Behaviours;
+using CodeBase.Configs;
 using UnityEngine;
 using CodeBase.Game;
+using CodeBase.Game.Controllers;
+using CodeBase.Game.Counters;
 using CodeBase.ObjectType;
 using Motion = CodeBase.Behaviours.Motion;
 using Random = UnityEngine.Random;
@@ -66,9 +69,9 @@ namespace CodeBase.Factories
         public void CreateBeam()
         {
             _beam = Instantiate(_stageConfigs[_stagesCounter.Stage].Beam, _container.transform);
-            var rb = AddRigidbody(_beam);
+            Rigidbody rb = AddRigidbody(_beam);
             AddBeam();
-            var motion = _beam.AddComponent<Motion>();
+            Motion motion = _beam.AddComponent<Motion>();
             motion.Initialize(rb);
             motion.IsKinematic();
             motion.FreezePosition();
