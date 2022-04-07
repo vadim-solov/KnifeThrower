@@ -14,23 +14,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _stageConfigs:
   - _numberOfKnives: 1
-    _beam: {fileID: 470815551834236230, guid: 7f9af1c1f5f1cde49aa139269bc3c007, type: 3}
+    _beam: {fileID: 5001395775998663276, guid: 3b8915c2d4cb46547914a1871a259431, type: 3}
     _rotateSpeed: 1
     _rotatedTime: 5
     _boss: 0
     _name: 
+    _particleSystem: {fileID: 5832708315200386561, guid: 25541392778949945b39283d1df00ee3, type: 3}
   - _numberOfKnives: 1
-    _beam: {fileID: 470815551834236230, guid: 4ea72acc6a0d2a44ebc7ebe4b19d91d8, type: 3}
+    _beam: {fileID: 5001395775998663276, guid: 3b8915c2d4cb46547914a1871a259431, type: 3}
     _rotateSpeed: -2
     _rotatedTime: 5
     _boss: 0
     _name: 
+    _particleSystem: {fileID: 5832708315200386561, guid: 25541392778949945b39283d1df00ee3, type: 3}
   - _numberOfKnives: 1
-    _beam: {fileID: 470815551834236230, guid: 7f9af1c1f5f1cde49aa139269bc3c007, type: 3}
+    _beam: {fileID: 5001395775998663276, guid: 3b8915c2d4cb46547914a1871a259431, type: 3}
     _rotateSpeed: 3
     _rotatedTime: 5
     _boss: 1
     _name: CHEESE
+    _particleSystem: {fileID: 5832708315200386561, guid: 25541392778949945b39283d1df00ee3, type: 3}
   _appleChance: 100
   _attachedApple: {fileID: 3474160458616741028, guid: 60ecdd9a6b84e484389243e94e0fa7d8, type: 3}
   _attachedKnife: {fileID: 3474160458616741028, guid: 16db354325bc61c45897435b266fb953, type: 3}

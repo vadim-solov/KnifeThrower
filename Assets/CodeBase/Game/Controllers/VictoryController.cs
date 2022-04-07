@@ -40,6 +40,7 @@ namespace CodeBase.Game.Controllers
         private void OnVictory()
         {
             DestroyBeam();
+            _gameFactory.CreateParticles();
             TryDestroyApple();
             DestroyKnives();
             _knivesCollection.Clear();

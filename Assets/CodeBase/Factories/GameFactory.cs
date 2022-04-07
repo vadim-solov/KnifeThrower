@@ -75,6 +75,7 @@ namespace CodeBase.Factories
             motion.Initialize(rb);
             motion.IsKinematic();
             motion.FreezePosition();
+            //motion.RotateBeam();
             motion.StartRotation(_stageConfigs[_stagesCounter.Stage].RotateSpeed);
         }
 
@@ -142,6 +143,11 @@ namespace CodeBase.Factories
 
         public void DestroyKnife(Knife knife, float destructionTime) => 
             Destroy(knife.gameObject, destructionTime);
+
+        public void CreateParticles()
+        {
+            Instantiate(_stageConfigs[_stagesCounter.Stage].ParticleSystem);
+        }
 
         private bool CheckAppleChance()
         {

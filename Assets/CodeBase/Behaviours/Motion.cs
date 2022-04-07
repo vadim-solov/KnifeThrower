@@ -27,6 +27,9 @@ namespace CodeBase.Behaviours
             _rotate = true;
         }
 
+        public void RotateBeam() => 
+            transform.rotation = new Quaternion(90f, 0f, 0f, 90f);
+
         public void StartRandomRotation()
         {
             var random = Random.Range(1, 25);
