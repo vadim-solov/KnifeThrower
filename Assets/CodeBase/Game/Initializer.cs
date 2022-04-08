@@ -27,7 +27,7 @@ namespace CodeBase.Game
         private StagesCounter _stagesCounter;
         private AppleHit _appleHit;
         private AppleCounter _appleCounter;
-        private BeamHit _beamHit;
+        private LogHit _logHit;
         private ScoreCounter _scoreCounter;
 
         private ISaveLoadSystem _saveLoadSystem;
@@ -43,9 +43,9 @@ namespace CodeBase.Game
             _knivesCounter = new KnivesCounter(_gameFactory, _stagesCounter);
             _loseController = new LoseController(_gameFactory, _uiFactory, _knivesCollection, _stagesCounter, _knivesCounter, _scoreCounter);
             _victoryController = new VictoryController(_gameFactory, _knivesCounter, _knivesCollection, _stagesCounter, _skins, _uiFactory);
-            _beamHit = new BeamHit(_knivesCounter, _gameFactory, _scoreCounter);
+            _logHit = new LogHit(_knivesCounter, _gameFactory, _scoreCounter);
 
-            _gameFactory.Initialize(_loseController, _stagesCounter, _appleHit, _beamHit);
+            _gameFactory.Initialize(_loseController, _stagesCounter, _appleHit, _logHit);
             _uiFactory.Initialize(_appleCounter, _knivesCounter, _stagesCounter, _gameFactory, _scoreCounter, _saveLoadSystem, _skins, _cameraPrefab);
             _uiFactory.CreateCamera();
 

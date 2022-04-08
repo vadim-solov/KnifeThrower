@@ -9,23 +9,30 @@ namespace CodeBase.Configs
         [SerializeField]
         private int _numberOfKnives = 5;
         [SerializeField]
-        private GameObject _beam;
+        private GameObject _logPrefab;
         [SerializeField]
         private float _rotateSpeed = 50f;
         [SerializeField]
-        private float _rotatedTime = 5f;
+        private float _rotationTime = 3f;
+        [SerializeField]
+        private float _rotationStopTime = 2f;
         [SerializeField]
         private bool _boss;
         [SerializeField]
         private string _name;
         [SerializeField]
-        private ParticleSystem _particleSystem;
+        private ParticleSystem _logExplosionParticles;
+        [SerializeField]
+        private ParticleSystem _particlesOnImpact;
 
-        public GameObject Beam => _beam;
+        public GameObject LogPrefab => _logPrefab;
         public float RotateSpeed => _rotateSpeed;
         public int NumberOfKnives => _numberOfKnives;
         public bool Boss => _boss;
         public string Name => _name;
-        public ParticleSystem ParticleSystem => _particleSystem;
+        public ParticleSystem LogExplosionParticles => _logExplosionParticles;
+        public ParticleSystem ParticlesOnImpact => _particlesOnImpact;
+        public float RotationTime => _rotationTime;
+        public float RotationStopTime => _rotationStopTime;
     }
 }

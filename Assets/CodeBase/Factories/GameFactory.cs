@@ -37,30 +37,30 @@ namespace CodeBase.Factories
         private GameObject _skinKnife;
 
         private GameObject _container;
-        private GameObject _beam;
+        private GameObject _log;
         private GameObject _apple;
         private LoseController _loseController;
         private StagesCounter _stagesCounter;
         private AppleHit _appleHit;
-        private BeamHit _beamHit;
+        private LogHit _logHit;
         private GameObject _playerKnife;
 
         private readonly float _applePosition = 60f;
         private readonly List<float> _knivesPositions = new List<float>() {0f, 120f, 240f};
         
         public StageConfig[] StageConfig => _stageConfigs;
-        public GameObject Beam => _beam;
+        public GameObject Log => _log;
         public GameObject Apple => _apple;
 
         public event Action<Knife> KnifeCreated;
         public event Action AttachedKnivesCreated;
         
-        public void Initialize(LoseController loseController, StagesCounter stagesCounter, AppleHit appleHit, BeamHit beamHit)
+        public void Initialize(LoseController loseController, StagesCounter stagesCounter, AppleHit appleHit, LogHit logHit)
         {
             _loseController = loseController;
             _stagesCounter = stagesCounter;
             _appleHit = appleHit;
-            _beamHit = beamHit;
+            _logHit = logHit;
         }
 
         public void CreateContainer() => 
@@ -68,11 +68,12 @@ namespace CodeBase.Factories
 
         public void CreateBeam()
         {
-            _beam = Instantiate(_stageConfigs[_stagesCounter.Stage].Beam, _container.transform);
-            Rigidbody rb = AddRigidbody(_beam);
+            _log = Instantiate(_stageConfigs[_stagesCounter.Stage].LogPrefab, _container.transform);
+            Rigidbody rb = AddRigidbody(_log);
             AddBeam();
-            Motion motion = _beam.AddComponent<Motion>();
+            Motion motion = _log.AddComponent<Motion>();
             motion.Initialize(rb);
+            motion.InitializeRotationTime(_stageConfigs[_stagesCounter.Stage].RotationTime, _stageConfigs[_stagesCounter.Stage].RotationStopTime);
             motion.IsKinematic();
             motion.FreezePosition();
             //motion.RotateBeam();
@@ -89,9 +90,9 @@ namespace CodeBase.Factories
             AddApple(_apple);
             Motion motion = AddMotion(_apple);
             motion.Initialize(rb);
-            motion.SetDepth(_beam.transform);
-            motion.SetPosition(_beam.transform, _applePosition);
-            motion.Attach(_beam.gameObject);
+            motion.SetDepth(_log.transform);
+            motion.SetPosition(_log.transform, _applePosition);
+            motion.Attach(_log.gameObject);
         }
 
         public void CreateAttachedKnives()
@@ -106,9 +107,9 @@ namespace CodeBase.Factories
                 Motion motion = AddMotion(knife);
                 motion.Initialize(rb);
                 motion.Rotate();
-                motion.SetDepth(_beam.transform);
-                motion.SetPosition(_beam.transform, _knivesPositions[i]);
-                motion.Attach(_beam.gameObject);
+                motion.SetDepth(_log.transform);
+                motion.SetPosition(_log.transform, _knivesPositions[i]);
+                motion.Attach(_log.gameObject);
                 Knife knifeComponent = knife.GetComponent<Knife>();
                 KnifeCreated?.Invoke(knifeComponent);
             }
@@ -136,7 +137,7 @@ namespace CodeBase.Factories
         }
 
         public void DestroyBeam() => 
-            Destroy(_beam.gameObject);
+            Destroy(_log.gameObject);
 
         public void DestroyApple(float destructionTime) => 
             Destroy(_apple.gameObject, destructionTime);
@@ -144,10 +145,11 @@ namespace CodeBase.Factories
         public void DestroyKnife(Knife knife, float destructionTime) => 
             Destroy(knife.gameObject, destructionTime);
 
-        public void CreateParticles()
-        {
-            Instantiate(_stageConfigs[_stagesCounter.Stage].ParticleSystem);
-        }
+        public void CreateParticlesOnExplosionLog() => 
+            Instantiate(_stageConfigs[_stagesCounter.Stage].LogExplosionParticles);
+
+        public void CreateParticlesOnImpact(Vector3 position) => 
+            Instantiate(_stageConfigs[_stagesCounter.Stage].ParticlesOnImpact, position, new Quaternion(90f, 0f, 0f, 90f));
 
         private bool CheckAppleChance()
         {
@@ -156,7 +158,7 @@ namespace CodeBase.Factories
         }
 
         private void AddBeam() => 
-            _beam.AddComponent<Beam>();
+            _log.AddComponent<Log>();
 
         private Motion AddMotion(GameObject entity) => 
             entity.AddComponent<Motion>();
@@ -178,7 +180,7 @@ namespace CodeBase.Factories
             knife.AddComponent<KnifeInput>().Initialize(motion, 10f);
 
         private void AddCollisionChecker(GameObject knife) => 
-            knife.AddComponent<CollisionChecker>().Initialize(_loseController, _appleHit, _beamHit);
+            knife.AddComponent<CollisionChecker>().Initialize(_loseController, _appleHit, _logHit);
 
         public void ChangeKnifeSkin(GameObject knife)
         {

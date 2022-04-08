@@ -13,29 +13,35 @@ MonoBehaviour:
   m_Name: GameFactory
   m_EditorClassIdentifier: 
   _stageConfigs:
-  - _numberOfKnives: 1
-    _beam: {fileID: 5001395775998663276, guid: 3b8915c2d4cb46547914a1871a259431, type: 3}
+  - _numberOfKnives: 6
+    _logPrefab: {fileID: 5001395775998663276, guid: 3b8915c2d4cb46547914a1871a259431, type: 3}
     _rotateSpeed: 1
-    _rotatedTime: 5
+    _rotationTime: 0
+    _rotationStopTime: 1
     _boss: 0
     _name: 
-    _particleSystem: {fileID: 5832708315200386561, guid: 25541392778949945b39283d1df00ee3, type: 3}
-  - _numberOfKnives: 1
-    _beam: {fileID: 5001395775998663276, guid: 3b8915c2d4cb46547914a1871a259431, type: 3}
+    _logExplosionParticles: {fileID: 5832708315200386561, guid: 25541392778949945b39283d1df00ee3, type: 3}
+    _particlesOnImpact: {fileID: 5832708315200386561, guid: 564929c4d7cc4fd4a86316afa37492bd, type: 3}
+  - _numberOfKnives: 5
+    _logPrefab: {fileID: 5001395775998663276, guid: 3b8915c2d4cb46547914a1871a259431, type: 3}
     _rotateSpeed: -2
-    _rotatedTime: 5
+    _rotationTime: 5
+    _rotationStopTime: 2
     _boss: 0
     _name: 
-    _particleSystem: {fileID: 5832708315200386561, guid: 25541392778949945b39283d1df00ee3, type: 3}
-  - _numberOfKnives: 1
-    _beam: {fileID: 5001395775998663276, guid: 3b8915c2d4cb46547914a1871a259431, type: 3}
+    _logExplosionParticles: {fileID: 5832708315200386561, guid: 25541392778949945b39283d1df00ee3, type: 3}
+    _particlesOnImpact: {fileID: 5832708315200386561, guid: 564929c4d7cc4fd4a86316afa37492bd, type: 3}
+  - _numberOfKnives: 3
+    _logPrefab: {fileID: 5001395775998663276, guid: 3b8915c2d4cb46547914a1871a259431, type: 3}
     _rotateSpeed: 3
-    _rotatedTime: 5
+    _rotationTime: 5
+    _rotationStopTime: 2
     _boss: 1
     _name: CHEESE
-    _particleSystem: {fileID: 5832708315200386561, guid: 25541392778949945b39283d1df00ee3, type: 3}
+    _logExplosionParticles: {fileID: 5832708315200386561, guid: 25541392778949945b39283d1df00ee3, type: 3}
+    _particlesOnImpact: {fileID: 5832708315200386561, guid: 564929c4d7cc4fd4a86316afa37492bd, type: 3}
   _appleChance: 100
   _attachedApple: {fileID: 3474160458616741028, guid: 60ecdd9a6b84e484389243e94e0fa7d8, type: 3}
   _attachedKnife: {fileID: 3474160458616741028, guid: 16db354325bc61c45897435b266fb953, type: 3}
-  _defaultKnife: {fileID: 3474160458616741028, guid: 16db354325bc61c45897435b266fb953, type: 3}
-  _skinKnife: {fileID: 3474160458616741028, guid: 97204738f0c4e604b9500c289ea83e78, type: 3}
+  _defaultKnife: {fileID: 7732020137263395071, guid: afb3069934fdd68498d99f3f497bcea9, type: 3}
+  _skinKnife: {fileID: 0}

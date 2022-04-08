@@ -1,12 +1,17 @@
+using System;
+using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace CodeBase.Behaviours
 {
     public class Motion : MonoBehaviour
     {
         private Rigidbody _rb;
-        private float _rotateSpeed = 50f;
         private bool _rotate;
+        private float _rotateSpeed = 50f;
+        private float _rotationTime;
+        private float _rotationStopTime;
 
         public void Initialize(Rigidbody rb)
         {
@@ -15,10 +20,35 @@ namespace CodeBase.Behaviours
             _rb.useGravity = false;
         }
 
+        public void InitializeRotationTime(float rotationTime, float rotationStopTime)
+        {
+            _rotationTime = rotationTime;
+            _rotationStopTime = rotationStopTime;
+            
+            if(_rotationTime == 0f)
+                return;
+            
+            StartCoroutine(StartRotationTimer());
+        }
+
         private void FixedUpdate()
         {
             if (_rotate) 
                 Rotation();
+        }
+
+        private IEnumerator StartRotationTimer()
+        {
+            yield return new WaitForSeconds(_rotationTime);
+            StopRotation();
+            StartCoroutine(StartRotationStopTimer());
+        } 
+
+        private IEnumerator StartRotationStopTimer()
+        {
+            yield return new WaitForSeconds(_rotationStopTime);
+            StartRotation(_rotateSpeed);
+            StartCoroutine(StartRotationTimer());
         }
 
         public void StartRotation(float rotateSpeed)
@@ -26,9 +56,6 @@ namespace CodeBase.Behaviours
             _rotateSpeed = rotateSpeed; 
             _rotate = true;
         }
-
-        public void RotateBeam() => 
-            transform.rotation = new Quaternion(90f, 0f, 0f, 90f);
 
         public void StartRandomRotation()
         {
@@ -64,6 +91,24 @@ namespace CodeBase.Behaviours
             _rb.AddForce(transform.up * 0.005f * Time.deltaTime);
         }
 
+        public void StartShake() => 
+            StartCoroutine(_Shake());
+
+        private IEnumerator _Shake()
+        {
+            float y;
+            float timeLeft = Time.time;
+
+            while ((timeLeft + 0.1f) > Time.time)
+            {
+                y = Random.Range(-0.07f, 0.07f);
+                transform.position = new Vector3(0, y, 0); 
+                yield return new WaitForSeconds(0.05f);
+            }
+
+            transform.position = new Vector3(0f, 0f, 0f);
+        }
+        
         public void IsKinematic() => 
             _rb.isKinematic = true;
 
