@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _stageConfigs:
   - _numberOfKnives: 6
-    _logPrefab: {fileID: 5001395775998663276, guid: 3b8915c2d4cb46547914a1871a259431, type: 3}
+    _logPrefab: {fileID: 8141257454653276654, guid: a8031d958faa3f3428e94792d0e26fb5, type: 3}
     _rotateSpeed: 1
     _rotationTime: 0
     _rotationStopTime: 1
@@ -23,7 +23,7 @@ MonoBehaviour:
     _logExplosionParticles: {fileID: 5832708315200386561, guid: 25541392778949945b39283d1df00ee3, type: 3}
     _particlesOnImpact: {fileID: 5832708315200386561, guid: 564929c4d7cc4fd4a86316afa37492bd, type: 3}
   - _numberOfKnives: 5
-    _logPrefab: {fileID: 5001395775998663276, guid: 3b8915c2d4cb46547914a1871a259431, type: 3}
+    _logPrefab: {fileID: 8141257454653276654, guid: a8031d958faa3f3428e94792d0e26fb5, type: 3}
     _rotateSpeed: -2
     _rotationTime: 5
     _rotationStopTime: 2
@@ -32,7 +32,7 @@ MonoBehaviour:
     _logExplosionParticles: {fileID: 5832708315200386561, guid: 25541392778949945b39283d1df00ee3, type: 3}
     _particlesOnImpact: {fileID: 5832708315200386561, guid: 564929c4d7cc4fd4a86316afa37492bd, type: 3}
   - _numberOfKnives: 3
-    _logPrefab: {fileID: 5001395775998663276, guid: 3b8915c2d4cb46547914a1871a259431, type: 3}
+    _logPrefab: {fileID: 8141257454653276654, guid: a8031d958faa3f3428e94792d0e26fb5, type: 3}
     _rotateSpeed: 3
     _rotationTime: 5
     _rotationStopTime: 2
@@ -42,6 +42,6 @@ MonoBehaviour:
     _particlesOnImpact: {fileID: 5832708315200386561, guid: 564929c4d7cc4fd4a86316afa37492bd, type: 3}
   _appleChance: 100
   _attachedApple: {fileID: 3474160458616741028, guid: 60ecdd9a6b84e484389243e94e0fa7d8, type: 3}
-  _attachedKnife: {fileID: 3474160458616741028, guid: 16db354325bc61c45897435b266fb953, type: 3}
-  _defaultKnife: {fileID: 7732020137263395071, guid: afb3069934fdd68498d99f3f497bcea9, type: 3}
-  _skinKnife: {fileID: 0}
+  _attachedKnife: {fileID: 2412696120508408293, guid: 35daaab19ccf25542ad828f0f433e043, type: 3}
+  _defaultKnife: {fileID: 868970505208408522, guid: e105c6c8d1a9a694c80bca437ede6de1, type: 3}
+  _skinKnife: {fileID: 6383509486127440057, guid: ec952df6856a30a4fa068de79e1af913, type: 3}
