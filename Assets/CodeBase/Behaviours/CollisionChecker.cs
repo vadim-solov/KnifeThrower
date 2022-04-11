@@ -1,3 +1,4 @@
+using System;
 using CodeBase.Game;
 using CodeBase.Game.Controllers;
 using CodeBase.ObjectType;
@@ -22,7 +23,7 @@ namespace CodeBase.Behaviours
         public void SwitchOff() => 
             _enabled = false;
 
-        private void OnTriggerEnter(Collider collision)
+        private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision != null && _enabled)
             {

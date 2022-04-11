@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CodeBase.Behaviours;
 using CodeBase.Collection;
 using CodeBase.Factories;
 using CodeBase.Game.Counters;
 using CodeBase.ObjectType;
-using Motion = CodeBase.Behaviours.Motion;
 
 namespace CodeBase.Game.Controllers
 {
@@ -66,7 +66,7 @@ namespace CodeBase.Game.Controllers
             await Task.Delay(TimeSpan.FromSeconds(DestructionTime));
             _stagesCounter.IncreaseStage();
             _knivesCounter.UpdateCounter();
-            _gameFactory.CreateBeam();
+            _gameFactory.CreateLog();
             _gameFactory.CreateApple();
             _gameFactory.CreateAttachedKnives();
             _gameFactory.CreatePlayerKnife();

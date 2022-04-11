@@ -27,7 +27,7 @@ namespace CodeBase.UI
             _uiFactory.DestroyStartScreen();
             _uiFactory.CreateHUD();
             _gameFactory.CreateContainer();
-            _gameFactory.CreateBeam();
+            _gameFactory.CreateLog();
             _gameFactory.CreateApple();
             _gameFactory.CreateAttachedKnives();
             _gameFactory.CreatePlayerKnife();

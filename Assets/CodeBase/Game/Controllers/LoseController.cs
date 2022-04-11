@@ -49,7 +49,7 @@ namespace CodeBase.Game.Controllers
         }
 
         private void StopBeamMotion() => 
-            _gameFactory.Log.GetComponent<Motion>().StopRotation();
+            _gameFactory.Log.GetComponent<LogMotion>().StopRotation();
 
         private async void CreateLoseScreen()
         {

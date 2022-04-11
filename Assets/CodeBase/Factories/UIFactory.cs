@@ -10,14 +10,19 @@ namespace CodeBase.Factories
     [CreateAssetMenu]
     public class UIFactory : ScriptableObject
     {
+        [Header("Canvas")]
         [SerializeField]
         private Canvas _canvasPrefab;
-        [SerializeField]
-        private RectTransform _loseScreenPrefab;
+
+        [Header("HUD")]
         [SerializeField]
         private RectTransform _HUDPrefab;
         [SerializeField]
         private GameObject _knifePrefab;
+
+        [Header("Screens")]
+        [SerializeField]
+        private RectTransform _loseScreenPrefab;
         [SerializeField]
         private RectTransform _startScreenPrefab;
         [SerializeField]

@@ -22,16 +22,12 @@ namespace CodeBase.Game
         
         public void OnHitInLog(GameObject playerKnife, Log log)
         {
-
-            Motion logMotion = log.GetComponent<Motion>();
+            LogMotion logMotion = log.GetComponent<LogMotion>();
             logMotion.StartShake();
-
-            
             CreateHitParticles(playerKnife.transform.position);
             Motion motion = playerKnife.GetComponent<Motion>();
             motion.StopMove();
-            motion.StickItIn();
-            motion.Attach(log.gameObject);
+            _gameFactory.AddAttach(playerKnife, -0.3f);
             SwitchOffCollision(playerKnife);
             SwitchOffInput(playerKnife);
             _knivesCounter.Decrease();

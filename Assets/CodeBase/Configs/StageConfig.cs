@@ -22,8 +22,6 @@ namespace CodeBase.Configs
         private string _name;
         [SerializeField]
         private ParticleSystem _logExplosionParticles;
-        [SerializeField]
-        private ParticleSystem _particlesOnImpact;
 
         public GameObject LogPrefab => _logPrefab;
         public float RotateSpeed => _rotateSpeed;
@@ -31,7 +29,6 @@ namespace CodeBase.Configs
         public bool Boss => _boss;
         public string Name => _name;
         public ParticleSystem LogExplosionParticles => _logExplosionParticles;
-        public ParticleSystem ParticlesOnImpact => _particlesOnImpact;
         public float RotationTime => _rotationTime;
         public float RotationStopTime => _rotationStopTime;
     }

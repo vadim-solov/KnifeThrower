@@ -20,17 +20,15 @@ namespace CodeBase.Game
         public void OnHitInApple(GameObject playerKnife, Apple apple)
         {
             AddScore();
-            SwitchOffBoxCollider(apple);
-            Motion motion = apple.GetComponent<Motion>();
-            motion.Detach(apple.gameObject);
-            motion.Drop();
-            _gameFactory.DestroyApple(2f);
+            SwitchOffCircleCollider(apple);
+            _gameFactory.DestroyApple(0f);
+            _gameFactory.CreateAppleParticles(apple.transform.position);
         }
 
         private void AddScore() => 
             _appleCounter.IncreaseScore();
 
-        private void SwitchOffBoxCollider(Apple apple) => 
-            apple.GetComponent<BoxCollider>().enabled = false;
+        private void SwitchOffCircleCollider(Apple apple) => 
+            apple.GetComponent<CircleCollider2D>().enabled = false;
     }
 }

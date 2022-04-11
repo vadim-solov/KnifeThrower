@@ -16,7 +16,7 @@ namespace CodeBase.Behaviours
         private void Update()
         {
             if (Input.GetMouseButtonDown(0)) 
-                _motion.MoveForward(_speed);
+                _motion.MoveForward();
         }
     }
 }
