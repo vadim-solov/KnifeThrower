@@ -16,7 +16,9 @@ namespace CodeBase.Factories
     public class GameFactory : ScriptableObject, IGameFactory
     {
         private const string ContainerName = "Container";
-        
+        private const float AppleAttachmentDepth = 0.67f;
+        private const float KnifeAttachmentDepth = 0.3f;
+
         [SerializeField]
         private StageConfig[] _stageConfigs = new StageConfig[5];
         
@@ -75,12 +77,13 @@ namespace CodeBase.Factories
         public void CreateLog()
         {
             _log = Instantiate(_stageConfigs[_stagesCounter.Stage].LogPrefab, _container.transform);
-            AddLogRigidbody2D(_log);
             AddLog();
             LogMotion motion = _log.AddComponent<LogMotion>();
             motion.LogInitialize(_stageConfigs[_stagesCounter.Stage].RotateSpeed, _stageConfigs[_stagesCounter.Stage].RotationTime, _stageConfigs[_stagesCounter.Stage].RotationStopTime);
+            motion.SetPosition();
             motion.StartRotationTimer();
             motion.StartRotation();
+            AddLogRigidbody2D(_log);
         }
 
         public void CreateApple()
@@ -92,10 +95,9 @@ namespace CodeBase.Factories
             AddApple(_apple);
             Motion motion = AddMotion(_apple);
             motion.InitializeLog(_log);
-            motion.Rotate();
             motion.SetPosition(_log.transform, _applePosition);
             var rb = AddRigidbody2D(_apple);
-            AddAttach(_apple, 1.2f);
+            AddAttach(_apple, AppleAttachmentDepth);
             motion.InitializeRigidbody2D(rb);
         }
 
@@ -109,10 +111,9 @@ namespace CodeBase.Factories
                 AddKnife(knife);
                 Motion motion = AddMotion(knife);
                 motion.InitializeLog(_log);
-                motion.Rotate();
                 motion.SetPosition(_log.transform, _knivesPositions[i]);
                 var rb = AddRigidbody2D(knife);
-                AddAttach(knife, 1.3f);
+                AddAttach(knife, KnifeAttachmentDepth);
                 motion.InitializeRigidbody2D(rb);
                 Knife knifeComponent = knife.GetComponent<Knife>();
                 KnifeCreated?.Invoke(knifeComponent);
@@ -140,6 +141,9 @@ namespace CodeBase.Factories
             Knife knifeComponent = _playerKnife.GetComponent<Knife>();
             KnifeCreated?.Invoke(knifeComponent);
         }
+        
+        public void DestroyContainer() => 
+            Destroy(_container.gameObject);
 
         public void DestroyBeam() => 
             Destroy(_log.gameObject);

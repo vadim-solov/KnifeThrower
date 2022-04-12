@@ -63,6 +63,7 @@ namespace CodeBase.Game.Controllers
             DestroyBeam();
             DestroyApple();
             DestroyKnives();
+            DestroyContainer();
         }
 
         private async void ResetCounters()
@@ -72,6 +73,9 @@ namespace CodeBase.Game.Controllers
             _knivesCounter.UpdateCounter();
             _scoreCounter.ResetScore();
         }
+
+        private void DestroyContainer() => 
+            _gameFactory.DestroyContainer();
 
         private void DestroyBeam() => 
             _gameFactory.DestroyBeam();

@@ -9,6 +9,8 @@ namespace CodeBase.Game
 {
     public class LogHit
     {
+        private const float AttachmentDepth = -0.9f;
+        
         private readonly KnivesCounter _knivesCounter;
         private readonly GameFactory _gameFactory;
         private readonly ScoreCounter _scoreCounter;
@@ -27,7 +29,7 @@ namespace CodeBase.Game
             CreateHitParticles(playerKnife.transform.position);
             Motion motion = playerKnife.GetComponent<Motion>();
             motion.StopMove();
-            _gameFactory.AddAttach(playerKnife, -0.3f);
+            _gameFactory.AddAttach(playerKnife, AttachmentDepth);
             SwitchOffCollision(playerKnife);
             SwitchOffInput(playerKnife);
             _knivesCounter.Decrease();

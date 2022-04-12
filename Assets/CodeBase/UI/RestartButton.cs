@@ -26,6 +26,7 @@ namespace CodeBase.UI
         private void OnClick()
         {
             _uiFactory.DestroyLoseScreen();
+            _gameFactory.CreateContainer();
             _gameFactory.CreateLog();
             _gameFactory.CreateApple();
             _gameFactory.CreateAttachedKnives();

@@ -7,6 +7,8 @@ namespace CodeBase.UI
 {
     public class LevelStatistic : MonoBehaviour
     {
+        private const string Stage = "STAGE ";
+
         [SerializeField]
         private Text _scoreText;
         [SerializeField]
@@ -27,6 +29,6 @@ namespace CodeBase.UI
             _scoreText.text = _scoreCounter.Score.ToString();
 
         private void ShowStage() => 
-            _stageText.text = (_stagesCounter.Stage + 1).ToString();
+            _stageText.text = Stage + (_stagesCounter.Stage + 1).ToString();
     }
 }

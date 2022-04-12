@@ -40,10 +40,10 @@ namespace CodeBase.Factories
         private ScoreCounter _scoreCounter;
         private RectTransform _startScreen;
         private RectTransform _skinsScreen;
-        private ISaveLoadSystem _saveLoadSystem;
         private Skins _skins;
         private Camera _camera;
         private RectTransform _maxStageScreen;
+        private ISaveLoadSystem _saveLoadSystem;
 
         public void Initialize(AppleCounter appleCounter, KnivesCounter knivesCounter, StagesCounter stagesCounter, GameFactory gameFactory, 
             ScoreCounter scoreCounter, ISaveLoadSystem saveLoadSystem, Skins skins, Camera cameraPrefab)
@@ -79,17 +79,9 @@ namespace CodeBase.Factories
         public void CreateLoseScreen()
         {
             _loseScreen = Instantiate(_loseScreenPrefab, _canvas.transform);
+            _loseScreen.GetComponent<HomeButton>().Initialize(this);
             _loseScreen.GetComponent<RestartButton>().Initialize(_gameFactory, this);
             _loseScreen.GetComponent<LevelStatistic>().Initialize(_scoreCounter, _stagesCounter);
-        }
-
-        public void DestroyLoseScreen() => 
-            Destroy(_loseScreen.gameObject);
-
-        public GameObject CreateKnife()
-        {
-            GameObject knife = Instantiate(_knifePrefab);
-            return knife;
         }
 
         public void CreateStartScreen()
@@ -100,16 +92,32 @@ namespace CodeBase.Factories
             _startScreen.GetComponent<SkinsButton>().Initialize(this);
         }
 
-        public void DestroyStartScreen() => 
-            Destroy(_startScreen.gameObject);
-
         public void CreateSkinsScreen()
         {
             _skinsScreen = Instantiate(_skinsScreenPrefab, _canvas.transform);
+            _skinsScreen.GetComponent<BackButton>().Initialize(this);
             _skinsScreen.GetComponent<SkinsLoader>().Initialize(_skins, _gameFactory);
         }
 
         public void CreateMaxStageScreen() => 
             _maxStageScreen = Instantiate(_maxStageScreenPrefab, _canvas.transform);
+
+        public GameObject CreateKnife()
+        {
+            GameObject knife = Instantiate(_knifePrefab);
+            return knife;
+        }
+
+        public void DestroyHUD() => 
+            Destroy(_hud.gameObject);
+
+        public void DestroyLoseScreen() => 
+            Destroy(_loseScreen.gameObject);
+
+        public void DestroyStartScreen() => 
+            Destroy(_startScreen.gameObject);
+
+        public void DestroySkinsScreen() => 
+            Destroy(_skinsScreen.gameObject);
     }
 }

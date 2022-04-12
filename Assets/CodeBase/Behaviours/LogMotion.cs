@@ -9,6 +9,8 @@ namespace CodeBase.Behaviours
         private float _rotationTime = 0f;
         private float _rotationStopTime = 0f;
         private bool _logRotation = false;
+        
+        private readonly Vector3 _startPosition = new Vector3(0f, 1f, 0f);
 
         public void LogInitialize(float rotateSpeed, float rotationTime, float rotationStopTime)
         {
@@ -53,12 +55,12 @@ namespace CodeBase.Behaviours
 
             while ((timeLeft + 0.1f) > Time.time)
             {
-                y = Random.Range(-0.07f, 0.07f);
+                y = Random.Range(1.0f, 1.07f);
                 transform.position = new Vector3(0, y, 0); 
                 yield return new WaitForSeconds(0.05f);
             }
-
-            transform.position = new Vector3(0f, 0f, 0f);
+            
+            transform.position = _startPosition;
         }
         
         public void StopRotation() => 
@@ -66,5 +68,8 @@ namespace CodeBase.Behaviours
 
         public void StartRotation() => 
             _logRotation = true;
+
+        public void SetPosition() => 
+            transform.position = _startPosition;
     }
 }
