@@ -18,6 +18,7 @@ namespace CodeBase.Factories
         private const string ContainerName = "Container";
         private const float AppleAttachmentDepth = 0.67f;
         private const float KnifeAttachmentDepth = 0.3f;
+        private const float MarginLogImpactParticles = 0.73f;
 
         [SerializeField]
         private StageConfig[] _stageConfigs = new StageConfig[5];
@@ -43,6 +44,8 @@ namespace CodeBase.Factories
         private ParticleSystem _particlesOnImpact;
         [SerializeField]
         private ParticleSystem _appleParticles;
+        [SerializeField]
+        private ParticleSystem _knivesParticles;
 
         private GameObject _container;
         private GameObject _log;
@@ -155,13 +158,19 @@ namespace CodeBase.Factories
             Destroy(knife.gameObject, destructionTime);
 
         public void CreateParticlesOnExplosionLog() => 
-            Instantiate(_stageConfigs[_stagesCounter.Stage].LogExplosionParticles);
+            Instantiate(_stageConfigs[_stagesCounter.Stage].LogExplosionParticles, _container.transform);
 
         public void CreateParticlesOnImpact(Vector3 position) => 
-            Instantiate(_particlesOnImpact, position, Quaternion.identity);
+            Instantiate(_particlesOnImpact, position + new Vector3(0f, MarginLogImpactParticles, 0f), _particlesOnImpact.transform.rotation, _container.transform);
 
         public void CreateAppleParticles(Vector3 position) => 
-            Instantiate(_appleParticles, position, Quaternion.identity);
+            Instantiate(_appleParticles, position, _appleParticles.transform.rotation, _container.transform);
+        
+        public void CreateKnivesParticles(Sprite sprite)
+        {
+            var particles = Instantiate(_knivesParticles, _container.transform);
+            particles.textureSheetAnimation.AddSprite(sprite);
+        }
 
         private bool CheckAppleChance()
         {

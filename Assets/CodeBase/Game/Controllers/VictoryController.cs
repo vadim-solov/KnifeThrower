@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CodeBase.Behaviours;
 using CodeBase.Collection;
 using CodeBase.Factories;
 using CodeBase.Game.Counters;
 using CodeBase.ObjectType;
+using UnityEngine;
+using Motion = CodeBase.Behaviours.Motion;
 
 namespace CodeBase.Game.Controllers
 {
@@ -41,8 +42,9 @@ namespace CodeBase.Game.Controllers
         {
             DestroyBeam();
             _gameFactory.CreateParticlesOnExplosionLog();
-            TryDestroyApple();
             DestroyKnives();
+            CreateKnivesParticles();
+            TryDestroyApple();
             _knivesCollection.Clear();
             _skins.CheckNewSkins(_stagesCounter.Stage);
             
@@ -53,6 +55,15 @@ namespace CodeBase.Game.Controllers
             }
 
             CreateNewObjects();
+        }
+
+        private void CreateKnivesParticles()
+        {
+            foreach (var knife in _knivesList)
+            {
+                Sprite sprite = knife.GetComponentInChildren<SpriteRenderer>().sprite;
+                _gameFactory.CreateKnivesParticles(sprite);
+            }
         }
 
         private async void CreateMaxStageScreen()
@@ -81,18 +92,15 @@ namespace CodeBase.Game.Controllers
                 return;
             
             Motion apple = _gameFactory.Apple.GetComponent<Motion>();
-            apple.Drop();
+            apple.TurnOnGravity();
+            apple.StartRandomRotation();
             _gameFactory.DestroyApple(DestructionTime);
         }
 
         private void DestroyKnives()
         {
-            foreach (Knife knife in _knivesList)
-            {
-                Motion motion = knife.GetComponent<Motion>();
-                motion.Drop();
-                _gameFactory.DestroyKnife(knife, DestructionTime);
-            }
+            foreach (Knife knife in _knivesList) 
+                _gameFactory.DestroyKnife(knife, 0f);
         }
     }
 }

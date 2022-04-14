@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: UIFactory
   m_EditorClassIdentifier: 
   _canvasPrefab: {fileID: 7704184565466896074, guid: de4b559a4c5196c48914a810d53587e8, type: 3}
-  _loseScreenPrefab: {fileID: 5759684475154948952, guid: ce246a6e7c5aa2d4b979fcbab9927fdd, type: 3}
   _HUDPrefab: {fileID: 9035993070047203417, guid: 0668a3bffbac61f4fbbc96cf7ad913ac, type: 3}
   _knifePrefab: {fileID: 5197167033857003116, guid: c6994963a35a342409b32a51be712f74, type: 3}
+  _loseScreenPrefab: {fileID: 5759684475154948952, guid: ce246a6e7c5aa2d4b979fcbab9927fdd, type: 3}
   _startScreenPrefab: {fileID: 7814524308348853813, guid: dd2a159b767553c41abd5efe5a28e47b, type: 3}
   _skinsScreenPrefab: {fileID: 3433612805920423463, guid: 2c876b16c7c9044478d5b0e920315677, type: 3}
   _maxStageScreenPrefab: {fileID: 4623206820690761867, guid: 74b26a7330392cf468034c28c3fe189d, type: 3}
+  _newSkinsWindowPrefab: {fileID: 1226008621359674438, guid: c88bdc9999851c149998b05924779a60, type: 3}

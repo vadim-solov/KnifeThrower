@@ -29,6 +29,8 @@ namespace CodeBase.Factories
         private RectTransform _skinsScreenPrefab;
         [SerializeField]
         private RectTransform _maxStageScreenPrefab;
+        [SerializeField]
+        private RectTransform _newSkinsWindowPrefab;
 
         private Canvas _canvas;
         private RectTransform _loseScreen;
@@ -44,6 +46,7 @@ namespace CodeBase.Factories
         private Camera _camera;
         private RectTransform _maxStageScreen;
         private ISaveLoadSystem _saveLoadSystem;
+        private RectTransform _newSkinWindow;
 
         public void Initialize(AppleCounter appleCounter, KnivesCounter knivesCounter, StagesCounter stagesCounter, GameFactory gameFactory, 
             ScoreCounter scoreCounter, ISaveLoadSystem saveLoadSystem, Skins skins, Camera cameraPrefab)
@@ -107,6 +110,15 @@ namespace CodeBase.Factories
             GameObject knife = Instantiate(_knifePrefab);
             return knife;
         }
+
+        public void CreatNewSkinWindow(Sprite sprite)
+        {
+            _newSkinWindow = Instantiate(_newSkinsWindowPrefab, _canvas.transform);
+            _newSkinWindow.GetComponent<NewSkinWindowImage>().AddSprite(sprite);
+        }
+
+        public void DestroyNewSkinWindow(float destructionTime) => 
+            Destroy(_newSkinWindow.gameObject, destructionTime);
 
         public void DestroyHUD() => 
             Destroy(_hud.gameObject);

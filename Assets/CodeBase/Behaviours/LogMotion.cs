@@ -8,7 +8,7 @@ namespace CodeBase.Behaviours
         private float _rotateSpeed = 50f;
         private float _rotationTime = 0f;
         private float _rotationStopTime = 0f;
-        private bool _logRotation = false;
+        private bool _rotation = false;
         
         private readonly Vector3 _startPosition = new Vector3(0f, 1f, 0f);
 
@@ -21,7 +21,7 @@ namespace CodeBase.Behaviours
         
         private void FixedUpdate()
         {
-            if (_logRotation) 
+            if (_rotation) 
                 Rotate();
         }
         
@@ -30,6 +30,9 @@ namespace CodeBase.Behaviours
 
         private IEnumerator StartRotationDuration()
         {
+            if (!_rotation)
+                yield break;
+            
             yield return new WaitForSeconds(_rotationTime);
             StopRotation();
             StartCoroutine(StartRotationStopTimer());
@@ -64,10 +67,10 @@ namespace CodeBase.Behaviours
         }
         
         public void StopRotation() => 
-            _logRotation = false;
+            _rotation = false;
 
         public void StartRotation() => 
-            _logRotation = true;
+            _rotation = true;
 
         public void SetPosition() => 
             transform.position = _startPosition;

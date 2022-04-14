@@ -34,6 +34,7 @@ namespace CodeBase.Game
         
         private void Awake()
         {
+            _skins.Initialize(_uiFactory);
             _saveLoadSystem = new PlayerPrefsSystem();
             _stagesCounter = new StagesCounter(_saveLoadSystem, _gameFactory);
             _scoreCounter = new ScoreCounter(_saveLoadSystem);
