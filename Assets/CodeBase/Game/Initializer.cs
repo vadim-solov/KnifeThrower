@@ -19,6 +19,8 @@ namespace CodeBase.Game
         private Skins _skins;
         [SerializeField]
         private Camera _cameraPrefab;
+        [SerializeField, Range(0f, 3f)]
+        private float _delayBetweenShots = 0f;
 
         private KnivesCounter _knivesCounter;
         private VictoryController _victoryController;
@@ -44,7 +46,7 @@ namespace CodeBase.Game
             _knivesCounter = new KnivesCounter(_gameFactory, _stagesCounter);
             _loseController = new LoseController(_gameFactory, _uiFactory, _knivesCollection, _stagesCounter, _knivesCounter, _scoreCounter);
             _victoryController = new VictoryController(_gameFactory, _knivesCounter, _knivesCollection, _stagesCounter, _skins, _uiFactory);
-            _logHit = new LogHit(_knivesCounter, _gameFactory, _scoreCounter);
+            _logHit = new LogHit(_knivesCounter, _gameFactory, _scoreCounter, _delayBetweenShots);
 
             _gameFactory.Initialize(_loseController, _stagesCounter, _appleHit, _logHit);
             _uiFactory.Initialize(_appleCounter, _knivesCounter, _stagesCounter, _gameFactory, _scoreCounter, _saveLoadSystem, _skins, _cameraPrefab);

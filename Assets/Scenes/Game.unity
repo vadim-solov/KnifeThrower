@@ -315,6 +315,7 @@ MonoBehaviour:
   _uiFactory: {fileID: 11400000, guid: 003724f82cd43ba4bb22f8f641135b70, type: 2}
   _skins: {fileID: 11400000, guid: 450cc541feb204642b0547c9f443c065, type: 2}
   _cameraPrefab: {fileID: 7637410415478371166, guid: 0577c0a6f61b7ce4daad81deac8746b7, type: 3}
+  _delayBetweenShots: 0
 --- !u!4 &1787578326
 Transform:
   m_ObjectHideFlags: 0

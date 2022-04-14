@@ -16,13 +16,13 @@ MonoBehaviour:
   _skinConfigs:
   - _knifePrefab: {fileID: 693009018390305792, guid: 9f8d5c470a58d2d409ab354b55454590, type: 3}
     _availableAtStage: 1
-    _open: 1
+    _open: 0
   - _knifePrefab: {fileID: 693009018390305792, guid: 8fbb868e2de1364418832573878c0ecf, type: 3}
     _availableAtStage: 2
-    _open: 1
+    _open: 0
   - _knifePrefab: {fileID: 693009018390305792, guid: c917ba2e4516014428cc6a713103f933, type: 3}
     _availableAtStage: 3
-    _open: 1
+    _open: 0
   - _knifePrefab: {fileID: 693009018390305792, guid: 1d9d2dad94341774e9ab072937d68429, type: 3}
     _availableAtStage: 4
     _open: 0

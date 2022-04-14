@@ -58,7 +58,7 @@ namespace CodeBase.Factories
 
         private readonly float _applePosition = 60f;
         private readonly List<float> _knivesPositions = new List<float>() {0f, 120f, 240f};
-        
+
         public StageConfig[] StageConfig => _stageConfigs;
         public GameObject Log => _log;
         public GameObject Apple => _apple;
@@ -191,7 +191,7 @@ namespace CodeBase.Factories
             knife.AddComponent<Knife>();
 
         private void AddKnifeInput(GameObject knife, Motion motion) => 
-            knife.AddComponent<KnifeInput>().Initialize(motion, 10f);
+            knife.AddComponent<KnifeInput>().Initialize(motion);
 
         private void AddCollisionChecker(GameObject knife) => 
             knife.AddComponent<CollisionChecker>().Initialize(_loseController, _appleHit, _logHit);

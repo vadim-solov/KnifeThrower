@@ -111,14 +111,15 @@ namespace CodeBase.Factories
             return knife;
         }
 
-        public void CreatNewSkinWindow(Sprite sprite)
+        public RectTransform CreatNewSkinWindow(Sprite sprite)
         {
             _newSkinWindow = Instantiate(_newSkinsWindowPrefab, _canvas.transform);
             _newSkinWindow.GetComponent<NewSkinWindowImage>().AddSprite(sprite);
+            return _newSkinWindow;
         }
 
-        public void DestroyNewSkinWindow(float destructionTime) => 
-            Destroy(_newSkinWindow.gameObject, destructionTime);
+        public void DestroyNewSkinWindow() => 
+            Destroy(_newSkinWindow.gameObject);
 
         public void DestroyHUD() => 
             Destroy(_hud.gameObject);

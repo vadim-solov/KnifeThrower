@@ -24,7 +24,7 @@ namespace CodeBase.Behaviours
         }
 
         public void MoveForward() => 
-            _rb.velocity = transform.up * 10f;
+            _rb.velocity = transform.up * 15f;
 
         public void MoveBack() => 
             _rb.velocity = -transform.up * 5f;

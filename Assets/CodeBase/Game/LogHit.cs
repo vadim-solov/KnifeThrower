@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using CodeBase.Behaviours;
 using CodeBase.Factories;
 using CodeBase.Game.Counters;
@@ -14,12 +16,14 @@ namespace CodeBase.Game
         private readonly KnivesCounter _knivesCounter;
         private readonly GameFactory _gameFactory;
         private readonly ScoreCounter _scoreCounter;
+        private readonly float _delayBetweenShots;
         
-        public LogHit(KnivesCounter knivesCounter, GameFactory gameFactory, ScoreCounter scoreCounter)
+        public LogHit(KnivesCounter knivesCounter, GameFactory gameFactory, ScoreCounter scoreCounter, float delayBetweenShots)
         {
             _knivesCounter = knivesCounter;
             _gameFactory = gameFactory;
             _scoreCounter = scoreCounter;
+            _delayBetweenShots = delayBetweenShots;
         }
         
         public void OnHitInLog(GameObject playerKnife, Log log)
@@ -51,6 +55,12 @@ namespace CodeBase.Game
             if(_knivesCounter.CheckLastKnife())
                 return;
             
+            CreatePlayerKnife();
+        }
+
+        private async void CreatePlayerKnife()
+        {
+            await Task.Delay(TimeSpan.FromSeconds(_delayBetweenShots));
             _gameFactory.CreatePlayerKnife();
         }
     }

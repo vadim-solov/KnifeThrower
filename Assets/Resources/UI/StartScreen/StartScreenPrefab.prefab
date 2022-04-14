@@ -335,6 +335,7 @@ GameObject:
   - component: {fileID: 4209679183176237833}
   - component: {fileID: 4844297413478818554}
   - component: {fileID: 3492282045200814792}
+  - component: {fileID: 2722288988338752693}
   m_Layer: 5
   m_Name: PlayButton
   m_TagString: Untagged
@@ -444,6 +445,25 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!95 &2722288988338752693
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5511932206343394680}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: affdb637305b6d4459967997978f2846, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &6258104273573886898
 GameObject:
   m_ObjectHideFlags: 0
