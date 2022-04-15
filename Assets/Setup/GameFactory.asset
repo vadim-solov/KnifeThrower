@@ -15,7 +15,7 @@ MonoBehaviour:
   _stageConfigs:
   - _numberOfKnives: 5
     _logPrefab: {fileID: 8728987680525138207, guid: 7a9b3b41df9580a46bd1e8e668f633c3, type: 3}
-    _rotateSpeed: 1
+    _rotateSpeed: 2
     _rotationTime: 1
     _rotationStopTime: 0
     _boss: 0
@@ -42,6 +42,7 @@ MonoBehaviour:
   _attachedKnife: {fileID: 693009018390305792, guid: c741797c2de557d45bd5e1b901ad0fb5, type: 3}
   _defaultKnife: {fileID: 693009018390305792, guid: c741797c2de557d45bd5e1b901ad0fb5, type: 3}
   _skinKnife: {fileID: 693009018390305792, guid: 8fbb868e2de1364418832573878c0ecf, type: 3}
+  _animatorController: {fileID: 9100000, guid: af2e9cc6690ea5840b630f2d0299626a, type: 2}
   _particlesOnImpact: {fileID: 5832708315200386561, guid: 564929c4d7cc4fd4a86316afa37492bd, type: 3}
   _appleParticles: {fileID: 5832708315200386561, guid: e09db20102121ba458e4203027e9e1da, type: 3}
   _knivesParticles: {fileID: 5832708315200386561, guid: 3e5832662d6c3444ba5befa4c8799eaf, type: 3}

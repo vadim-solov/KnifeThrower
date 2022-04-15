@@ -7,7 +7,7 @@ using CodeBase.ObjectType;
 using UnityEngine;
 using Motion = CodeBase.Behaviours.Motion;
 
-namespace CodeBase.Game
+namespace CodeBase.Game.Hit
 {
     public class LogHit
     {
@@ -62,6 +62,7 @@ namespace CodeBase.Game
         {
             await Task.Delay(TimeSpan.FromSeconds(_delayBetweenShots));
             _gameFactory.CreatePlayerKnife();
+            _gameFactory.PlayerKnife.GetComponent<Animator>().SetBool("SpawnKnife", true);
         }
     }
 }

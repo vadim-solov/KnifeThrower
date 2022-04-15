@@ -81,6 +81,7 @@ namespace CodeBase.Game.Controllers
             _gameFactory.CreateApple();
             _gameFactory.CreateAttachedKnives();
             _gameFactory.CreatePlayerKnife();
+            _gameFactory.PlayerKnife.GetComponent<Animator>().SetBool("SpawnKnife", true);
         }
 
         private void DestroyBeam() => 

@@ -2,9 +2,8 @@ using CodeBase.Factories;
 using CodeBase.Game.Counters;
 using CodeBase.ObjectType;
 using UnityEngine;
-using Motion = CodeBase.Behaviours.Motion;
 
-namespace CodeBase.Game
+namespace CodeBase.Game.Hit
 {
     public class AppleHit
     {

@@ -6,7 +6,9 @@ using UnityEngine;
 using CodeBase.Game;
 using CodeBase.Game.Controllers;
 using CodeBase.Game.Counters;
+using CodeBase.Game.Hit;
 using CodeBase.ObjectType;
+using UnityEditor.Animations;
 using Motion = CodeBase.Behaviours.Motion;
 using Random = UnityEngine.Random;
 
@@ -38,6 +40,8 @@ namespace CodeBase.Factories
         private GameObject _defaultKnife;
         [SerializeField] 
         private GameObject _skinKnife;
+        [SerializeField]
+        private AnimatorController _animatorController;
 
         [Header("Particles")]
         [SerializeField]
@@ -62,6 +66,7 @@ namespace CodeBase.Factories
         public StageConfig[] StageConfig => _stageConfigs;
         public GameObject Log => _log;
         public GameObject Apple => _apple;
+        public GameObject PlayerKnife => _playerKnife;
 
         public event Action<Knife> KnifeCreated;
         public event Action AttachedKnivesCreated;
@@ -133,18 +138,25 @@ namespace CodeBase.Factories
             else
                 _playerKnife = Instantiate(_skinKnife, _container.transform);
 
-            var rb = AddRigidbody2D(_playerKnife);
+            AddAnimator(_playerKnife);
+            Rigidbody2D rb = AddRigidbody2D(_playerKnife);
             AddKnife(_playerKnife);
             Motion motion = AddMotion(_playerKnife);
             motion.InitializeLog(_log);
             motion.SetPositionPlayerKnife();
             motion.InitializeRigidbody2D(rb);
             AddKnifeInput(_playerKnife, motion);
-            AddCollisionChecker(_playerKnife); 
+            AddCollisionChecker(_playerKnife);
             Knife knifeComponent = _playerKnife.GetComponent<Knife>();
             KnifeCreated?.Invoke(knifeComponent);
         }
-        
+
+        private void AddAnimator(GameObject entity)
+        {
+            Animator animator = entity.AddComponent<Animator>();
+            animator.runtimeAnimatorController = _animatorController;
+        }
+
         public void DestroyContainer() => 
             Destroy(_container.gameObject);
 
@@ -224,12 +236,6 @@ namespace CodeBase.Factories
             join.connectedBody = rb;
             join.autoConfigureConnectedAnchor = false;
             join.anchor = new Vector2(0f, attachmentDepth);
-        }
-        
-        public void Detach(GameObject entity)
-        {
-            var attach = entity.GetComponent<FixedJoint2D>();
-            Destroy(attach);
         }
     }
 }

@@ -2,6 +2,7 @@ using CodeBase.Collection;
 using CodeBase.Factories;
 using CodeBase.Game.Controllers;
 using CodeBase.Game.Counters;
+using CodeBase.Game.Hit;
 using CodeBase.SaveLoadSystem;
 using UnityEngine;
 

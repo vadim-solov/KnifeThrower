@@ -31,6 +31,7 @@ namespace CodeBase.UI
             _gameFactory.CreateApple();
             _gameFactory.CreateAttachedKnives();
             _gameFactory.CreatePlayerKnife();
+            _gameFactory.PlayerKnife.GetComponent<Animator>().SetBool("SpawnKnife", true);
         }
     }
 }
