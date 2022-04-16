@@ -25,7 +25,6 @@ namespace CodeBase.Game.Counters
         {
             NumberOfKnives--;
             DecreaseNumberOfKnives?.Invoke(NumberOfKnives);
-            Debug.Log(NumberOfKnives);
             
             if(NumberOfKnives <= 0)
                 Victory?.Invoke();            

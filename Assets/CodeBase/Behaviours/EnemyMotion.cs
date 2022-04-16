@@ -3,17 +3,17 @@ using UnityEngine;
 
 namespace CodeBase.Behaviours
 {
-    public class LogMotion : MonoBehaviour
+    public class EnemyMotion : MonoBehaviour
     {
-        private float _rotateSpeed = 50f;
-        private float _rotationTime = 0f;
-        private float _rotationStopTime = 0f;
+        private Vector3 _startPosition;
+        private float _rotateSpeed;
+        private float _rotationTime;
+        private float _rotationStopTime;
         private bool _rotation = false;
-        
-        private readonly Vector3 _startPosition = new Vector3(0f, 1f, 0f);
 
-        public void LogInitialize(float rotateSpeed, float rotationTime, float rotationStopTime)
+        public void EnemyInitialize(Vector3 startPosition, float rotateSpeed, float rotationTime, float rotationStopTime)
         {
+            _startPosition = startPosition;
             _rotateSpeed = rotateSpeed;
             _rotationTime = rotationTime;
             _rotationStopTime = rotationStopTime;
@@ -71,8 +71,8 @@ namespace CodeBase.Behaviours
 
         public void StartRotation() => 
             _rotation = true;
-
-        public void SetPosition() => 
+        
+        public void SetStartPosition() => 
             transform.position = _startPosition;
     }
 }

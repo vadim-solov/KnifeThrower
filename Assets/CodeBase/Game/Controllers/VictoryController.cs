@@ -5,6 +5,7 @@ using CodeBase.Collection;
 using CodeBase.Factories;
 using CodeBase.Game.Counters;
 using CodeBase.ObjectType;
+using CodeBase.Vibration;
 using UnityEngine;
 using Motion = CodeBase.Behaviours.Motion;
 
@@ -40,7 +41,7 @@ namespace CodeBase.Game.Controllers
 
         private void OnVictory()
         {
-            DestroyBeam();
+            DestroyEnemy();
             _gameFactory.CreateParticlesOnExplosionLog();
             DestroyKnives();
             CreateKnivesParticles();
@@ -55,6 +56,7 @@ namespace CodeBase.Game.Controllers
             }
 
             CreateNewObjects();
+            MainVibration.Vibrate();
         }
 
         private void CreateKnivesParticles()
@@ -77,15 +79,15 @@ namespace CodeBase.Game.Controllers
             await Task.Delay(TimeSpan.FromSeconds(DestructionTime));
             _stagesCounter.IncreaseStage();
             _knivesCounter.UpdateCounter();
-            _gameFactory.CreateLog();
+            _gameFactory.CreateEnemy();
             _gameFactory.CreateApple();
             _gameFactory.CreateAttachedKnives();
             _gameFactory.CreatePlayerKnife();
             _gameFactory.PlayerKnife.GetComponent<Animator>().SetBool("SpawnKnife", true);
         }
 
-        private void DestroyBeam() => 
-            _gameFactory.DestroyBeam();
+        private void DestroyEnemy() => 
+            _gameFactory.DestroyEnemy();
 
         private void TryDestroyApple()
         {

@@ -17,19 +17,13 @@ namespace CodeBase.Collection
             _gameFactory.KnifeCreated += OnKnifeCreated;
         }
 
-        public void Cleanup()
-        {
+        public void Cleanup() => 
             _gameFactory.KnifeCreated -= OnKnifeCreated;
-            Debug.Log("Desub");
-        }
 
         public void Clear() => 
             KnivesList.Clear();
 
-        private void OnKnifeCreated(Knife knife)
-        {
+        private void OnKnifeCreated(Knife knife) => 
             KnivesList.Add(knife);
-            Debug.Log("Knife added: " + knife);
-        }
     }
 }

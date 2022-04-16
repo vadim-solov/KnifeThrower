@@ -4,21 +4,22 @@ using CodeBase.Behaviours;
 using CodeBase.Factories;
 using CodeBase.Game.Counters;
 using CodeBase.ObjectType;
+using CodeBase.Vibration;
 using UnityEngine;
 using Motion = CodeBase.Behaviours.Motion;
 
 namespace CodeBase.Game.Hit
 {
-    public class LogHit
+    public class EnemyHit
     {
-        private const float AttachmentDepth = -0.9f;
+        private const float AttachmentDepth = -0.635f;
         
         private readonly KnivesCounter _knivesCounter;
         private readonly GameFactory _gameFactory;
         private readonly ScoreCounter _scoreCounter;
         private readonly float _delayBetweenShots;
         
-        public LogHit(KnivesCounter knivesCounter, GameFactory gameFactory, ScoreCounter scoreCounter, float delayBetweenShots)
+        public EnemyHit(KnivesCounter knivesCounter, GameFactory gameFactory, ScoreCounter scoreCounter, float delayBetweenShots)
         {
             _knivesCounter = knivesCounter;
             _gameFactory = gameFactory;
@@ -26,10 +27,10 @@ namespace CodeBase.Game.Hit
             _delayBetweenShots = delayBetweenShots;
         }
         
-        public void OnHitInLog(GameObject playerKnife, Log log)
+        public void OnHitInLog(GameObject playerKnife, Enemy enemy)
         {
-            LogMotion logMotion = log.GetComponent<LogMotion>();
-            logMotion.StartShake();
+            EnemyMotion enemyMotion = enemy.GetComponent<EnemyMotion>();
+            enemyMotion.StartShake();
             CreateHitParticles(playerKnife.transform.position);
             Motion motion = playerKnife.GetComponent<Motion>();
             motion.StopMove();
@@ -39,6 +40,7 @@ namespace CodeBase.Game.Hit
             _knivesCounter.Decrease();
             _scoreCounter.IncreaseScore();
             TryCreatePlayerKnife();
+            MainVibration.Vibrate();
         }
 
         private void CreateHitParticles(Vector3 position) => 

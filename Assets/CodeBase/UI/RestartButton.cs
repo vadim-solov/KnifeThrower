@@ -27,7 +27,7 @@ namespace CodeBase.UI
         {
             _uiFactory.DestroyLoseScreen();
             _gameFactory.CreateContainer();
-            _gameFactory.CreateLog();
+            _gameFactory.CreateEnemy();
             _gameFactory.CreateApple();
             _gameFactory.CreateAttachedKnives();
             _gameFactory.CreatePlayerKnife();

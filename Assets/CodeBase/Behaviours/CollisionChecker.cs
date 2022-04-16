@@ -10,13 +10,13 @@ namespace CodeBase.Behaviours
         private bool _enabled = true;
         private LoseController _loseController;
         private AppleHit _appleHit;
-        private LogHit _logHit;
+        private EnemyHit _enemyHit;
 
-        public void Initialize(LoseController loseController, AppleHit appleHit, LogHit logHit)
+        public void Initialize(LoseController loseController, AppleHit appleHit, EnemyHit enemyHit)
         {
             _loseController = loseController;
             _appleHit = appleHit;
-            _logHit = logHit;
+            _enemyHit = enemyHit;
         }
 
         public void SwitchOff() => 
@@ -26,8 +26,8 @@ namespace CodeBase.Behaviours
         {
             if (collision != null && _enabled)
             {
-                if (collision.gameObject.TryGetComponent(out Log log)) 
-                    _logHit.OnHitInLog(gameObject, log);
+                if (collision.gameObject.TryGetComponent(out Enemy log)) 
+                    _enemyHit.OnHitInLog(gameObject, log);
 
                 if (collision.gameObject.TryGetComponent(out Apple apple)) 
                     _appleHit.OnHitInApple(gameObject, apple);

@@ -2,8 +2,8 @@ using UnityEngine;
 
 namespace CodeBase.ObjectType
 {
-    public class Log : MonoBehaviour
+    public class Enemy : MonoBehaviour
     {
-
+        
     }
 }

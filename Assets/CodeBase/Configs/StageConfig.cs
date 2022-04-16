@@ -9,7 +9,7 @@ namespace CodeBase.Configs
         [SerializeField]
         private int _numberOfKnives = 5;
         [SerializeField]
-        private GameObject _logPrefab;
+        private GameObject _enemyPrefab;
         [SerializeField]
         private float _rotateSpeed = 50f;
         [SerializeField]
@@ -21,14 +21,14 @@ namespace CodeBase.Configs
         [SerializeField]
         private string _name;
         [SerializeField]
-        private ParticleSystem _logExplosionParticles;
+        private ParticleSystem _enemyExplosionParticles;
 
-        public GameObject LogPrefab => _logPrefab;
+        public GameObject EnemyPrefab => _enemyPrefab;
         public float RotateSpeed => _rotateSpeed;
         public int NumberOfKnives => _numberOfKnives;
         public bool Boss => _boss;
         public string Name => _name;
-        public ParticleSystem LogExplosionParticles => _logExplosionParticles;
+        public ParticleSystem EnemyExplosionParticles => _enemyExplosionParticles;
         public float RotationTime => _rotationTime;
         public float RotationStopTime => _rotationStopTime;
     }

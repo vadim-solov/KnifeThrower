@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using CodeBase.Behaviours;
 using CodeBase.Configs;
 using UnityEngine;
-using CodeBase.Game;
 using CodeBase.Game.Controllers;
 using CodeBase.Game.Counters;
 using CodeBase.Game.Hit;
 using CodeBase.ObjectType;
-using UnityEditor.Animations;
 using Motion = CodeBase.Behaviours.Motion;
 using Random = UnityEngine.Random;
 
@@ -18,9 +16,10 @@ namespace CodeBase.Factories
     public class GameFactory : ScriptableObject, IGameFactory
     {
         private const string ContainerName = "Container";
-        private const float AppleAttachmentDepth = 0.67f;
-        private const float KnifeAttachmentDepth = 0.3f;
+        private const float AppleAttachmentDepth = 0.4f;
+        private const float KnifeAttachmentDepth = 0.22f;
         private const float MarginLogImpactParticles = 0.73f;
+        private const float ApplePosition = 60f;
 
         [SerializeField]
         private StageConfig[] _stageConfigs = new StageConfig[5];
@@ -41,7 +40,7 @@ namespace CodeBase.Factories
         [SerializeField] 
         private GameObject _skinKnife;
         [SerializeField]
-        private AnimatorController _animatorController;
+        private RuntimeAnimatorController  _animatorController;
 
         [Header("Particles")]
         [SerializeField]
@@ -52,46 +51,44 @@ namespace CodeBase.Factories
         private ParticleSystem _knivesParticles;
 
         private GameObject _container;
-        private GameObject _log;
-        private GameObject _apple;
         private LoseController _loseController;
         private StagesCounter _stagesCounter;
         private AppleHit _appleHit;
-        private LogHit _logHit;
-        private GameObject _playerKnife;
+        private EnemyHit _enemyHit;
 
-        private readonly float _applePosition = 60f;
         private readonly List<float> _knivesPositions = new List<float>() {0f, 120f, 240f};
+        private readonly Vector3 _playerKnifeStartPosition = new Vector3(0f, -2.8f, 0f);
+        private readonly Vector3 _enemyStartPosition = new Vector3(0f, 1f, 0f);
 
         public StageConfig[] StageConfig => _stageConfigs;
-        public GameObject Log => _log;
-        public GameObject Apple => _apple;
-        public GameObject PlayerKnife => _playerKnife;
+        public GameObject Enemy { get; private set; }
+        public GameObject Apple { get; private set; }
+        public GameObject PlayerKnife { get; private set; }
 
         public event Action<Knife> KnifeCreated;
         public event Action AttachedKnivesCreated;
         
-        public void Initialize(LoseController loseController, StagesCounter stagesCounter, AppleHit appleHit, LogHit logHit)
+        public void Initialize(LoseController loseController, StagesCounter stagesCounter, AppleHit appleHit, EnemyHit enemyHit)
         {
             _loseController = loseController;
             _stagesCounter = stagesCounter;
             _appleHit = appleHit;
-            _logHit = logHit;
+            _enemyHit = enemyHit;
         }
 
         public void CreateContainer() => 
             _container = new GameObject {name = ContainerName};
 
-        public void CreateLog()
+        public void CreateEnemy()
         {
-            _log = Instantiate(_stageConfigs[_stagesCounter.Stage].LogPrefab, _container.transform);
-            AddLog();
-            LogMotion motion = _log.AddComponent<LogMotion>();
-            motion.LogInitialize(_stageConfigs[_stagesCounter.Stage].RotateSpeed, _stageConfigs[_stagesCounter.Stage].RotationTime, _stageConfigs[_stagesCounter.Stage].RotationStopTime);
-            motion.SetPosition();
+            Enemy = Instantiate(_stageConfigs[_stagesCounter.Stage].EnemyPrefab, _container.transform);
+            AddEnemy();
+            EnemyMotion motion = Enemy.AddComponent<EnemyMotion>();
+            motion.EnemyInitialize(_enemyStartPosition, _stageConfigs[_stagesCounter.Stage].RotateSpeed, _stageConfigs[_stagesCounter.Stage].RotationTime, _stageConfigs[_stagesCounter.Stage].RotationStopTime);
+            motion.SetStartPosition();
             motion.StartRotationTimer();
             motion.StartRotation();
-            AddLogRigidbody2D(_log);
+            AddLogRigidbody2D(Enemy);
         }
 
         public void CreateApple()
@@ -99,14 +96,13 @@ namespace CodeBase.Factories
             if(!CheckAppleChance())
                 return;
             
-            _apple = Instantiate(_attachedApple, _container.transform);
-            AddApple(_apple);
-            Motion motion = AddMotion(_apple);
-            motion.InitializeLog(_log);
-            motion.SetPosition(_log.transform, _applePosition);
-            var rb = AddRigidbody2D(_apple);
-            AddAttach(_apple, AppleAttachmentDepth);
-            motion.InitializeRigidbody2D(rb);
+            Apple = Instantiate(_attachedApple, _container.transform);
+            AddApple(Apple);
+            Motion motion = AddMotion(Apple);
+            motion.SetStartPositionAroundEnemy(_enemyStartPosition, ApplePosition);
+            var rb = AddRigidbody2D(Apple);
+            AddAttach(Apple, AppleAttachmentDepth);
+            motion.Initialize(rb);
         }
 
         public void CreateAttachedKnives()
@@ -118,11 +114,10 @@ namespace CodeBase.Factories
                 GameObject knife = Instantiate(_attachedKnife, _container.transform);
                 AddKnife(knife);
                 Motion motion = AddMotion(knife);
-                motion.InitializeLog(_log);
-                motion.SetPosition(_log.transform, _knivesPositions[i]);
+                motion.SetStartPositionAroundEnemy(_enemyStartPosition, _knivesPositions[i]);
                 var rb = AddRigidbody2D(knife);
                 AddAttach(knife, KnifeAttachmentDepth);
-                motion.InitializeRigidbody2D(rb);
+                motion.Initialize(rb);
                 Knife knifeComponent = knife.GetComponent<Knife>();
                 KnifeCreated?.Invoke(knifeComponent);
             }
@@ -133,21 +128,20 @@ namespace CodeBase.Factories
         public void CreatePlayerKnife()
         {
             if (_skinKnife == null)
-                _playerKnife = Instantiate(_defaultKnife, _container.transform);
+                PlayerKnife = Instantiate(_defaultKnife, _container.transform);
             
             else
-                _playerKnife = Instantiate(_skinKnife, _container.transform);
+                PlayerKnife = Instantiate(_skinKnife, _container.transform);
 
-            AddAnimator(_playerKnife);
-            Rigidbody2D rb = AddRigidbody2D(_playerKnife);
-            AddKnife(_playerKnife);
-            Motion motion = AddMotion(_playerKnife);
-            motion.InitializeLog(_log);
-            motion.SetPositionPlayerKnife();
-            motion.InitializeRigidbody2D(rb);
-            AddKnifeInput(_playerKnife, motion);
-            AddCollisionChecker(_playerKnife);
-            Knife knifeComponent = _playerKnife.GetComponent<Knife>();
+            AddAnimator(PlayerKnife);
+            Rigidbody2D rb = AddRigidbody2D(PlayerKnife);
+            AddKnife(PlayerKnife);
+            Motion motion = AddMotion(PlayerKnife);
+            motion.SetStartPositionPlayerKnife(_playerKnifeStartPosition);
+            motion.Initialize(rb);
+            AddKnifeInput(PlayerKnife, motion);
+            AddCollisionChecker(PlayerKnife);
+            Knife knifeComponent = PlayerKnife.GetComponent<Knife>();
             KnifeCreated?.Invoke(knifeComponent);
         }
 
@@ -160,17 +154,17 @@ namespace CodeBase.Factories
         public void DestroyContainer() => 
             Destroy(_container.gameObject);
 
-        public void DestroyBeam() => 
-            Destroy(_log.gameObject);
+        public void DestroyEnemy() => 
+            Destroy(Enemy.gameObject);
 
         public void DestroyApple(float destructionTime) => 
-            Destroy(_apple.gameObject, destructionTime);
+            Destroy(Apple.gameObject, destructionTime);
 
         public void DestroyKnife(Knife knife, float destructionTime) => 
             Destroy(knife.gameObject, destructionTime);
 
         public void CreateParticlesOnExplosionLog() => 
-            Instantiate(_stageConfigs[_stagesCounter.Stage].LogExplosionParticles, _container.transform);
+            Instantiate(_stageConfigs[_stagesCounter.Stage].EnemyExplosionParticles, _container.transform);
 
         public void CreateParticlesOnImpact(Vector3 position) => 
             Instantiate(_particlesOnImpact, position + new Vector3(0f, MarginLogImpactParticles, 0f), _particlesOnImpact.transform.rotation, _container.transform);
@@ -190,8 +184,8 @@ namespace CodeBase.Factories
             return random <= _appleChance;
         }
 
-        private void AddLog() => 
-            _log.AddComponent<Log>();
+        private void AddEnemy() => 
+            Enemy.AddComponent<Enemy>();
 
         private Motion AddMotion(GameObject entity) => 
             entity.AddComponent<Motion>();
@@ -206,7 +200,7 @@ namespace CodeBase.Factories
             knife.AddComponent<KnifeInput>().Initialize(motion);
 
         private void AddCollisionChecker(GameObject knife) => 
-            knife.AddComponent<CollisionChecker>().Initialize(_loseController, _appleHit, _logHit);
+            knife.AddComponent<CollisionChecker>().Initialize(_loseController, _appleHit, _enemyHit);
 
         public void ChangeKnifeSkin(GameObject knife)
         {
@@ -231,7 +225,7 @@ namespace CodeBase.Factories
 
         public void AddAttach(GameObject entity, float attachmentDepth)
         {
-            var rb = _log.GetComponent<Rigidbody2D>();
+            var rb = Enemy.GetComponent<Rigidbody2D>();
             var join = entity.AddComponent<FixedJoint2D>();
             join.connectedBody = rb;
             join.autoConfigureConnectedAnchor = false;

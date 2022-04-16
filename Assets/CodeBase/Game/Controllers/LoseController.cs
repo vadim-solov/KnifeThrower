@@ -6,6 +6,7 @@ using CodeBase.Collection;
 using CodeBase.Factories;
 using CodeBase.Game.Counters;
 using CodeBase.ObjectType;
+using CodeBase.Vibration;
 using UnityEngine;
 using Motion = CodeBase.Behaviours.Motion;
 
@@ -46,10 +47,11 @@ namespace CodeBase.Game.Controllers
             CreateLoseScreen();
             DestroyGameObjects();
             ResetCounters();
+            MainVibration.Vibrate();
         }
 
         private void StopBeamMotion() => 
-            _gameFactory.Log.GetComponent<LogMotion>().StopRotation();
+            _gameFactory.Enemy.GetComponent<EnemyMotion>().StopRotation();
 
         private async void CreateLoseScreen()
         {
@@ -60,7 +62,7 @@ namespace CodeBase.Game.Controllers
         private async void DestroyGameObjects()
         {
             await Task.Delay(TimeSpan.FromSeconds(AppearanceUIDelay));
-            DestroyBeam();
+            DestroyEnemy();
             DestroyApple();
             DestroyKnives();
             DestroyContainer();
@@ -77,8 +79,8 @@ namespace CodeBase.Game.Controllers
         private void DestroyContainer() => 
             _gameFactory.DestroyContainer();
 
-        private void DestroyBeam() => 
-            _gameFactory.DestroyBeam();
+        private void DestroyEnemy() => 
+            _gameFactory.DestroyEnemy();
 
         private void DestroyApple() => 
             _gameFactory.DestroyApple(0f);

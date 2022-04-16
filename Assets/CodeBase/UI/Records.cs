@@ -10,23 +10,17 @@ namespace CodeBase.UI
         private const string Score = "SCORE ";
 
         [SerializeField]
-        private Text _stageText;
-        [SerializeField]
-        private Text _scoreText;
+        private Text _gameProgressText;
 
         private ISaveLoadSystem _saveLoadSystem;
 
         public void Initialize(ISaveLoadSystem saveLoadSystem)
         {
             _saveLoadSystem = saveLoadSystem;
-            ShowStage();
-            ShowScore();
+            ShowGameProgress();
         }
 
-        private void ShowStage() => 
-            _stageText.text = Stage + (_saveLoadSystem.LoadStage() + 1).ToString();
-
-        private void ShowScore() => 
-            _scoreText.text = Score + _saveLoadSystem.LoadScore().ToString();
+        private void ShowGameProgress() => 
+            _gameProgressText.text = Stage + (_saveLoadSystem.LoadStage() + 1) + "  |  " + Score + _saveLoadSystem.LoadScore();
     }
 }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7144343994362316270}
   - component: {fileID: 6832526888279596839}
   m_Layer: 0
-  m_Name: BlueKnifePrefab
+  m_Name: DefaultKnifePrefab 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,7 +45,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.005350888, y: 0.006303549}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -56,7 +56,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.40115118, y: 1.706378}
+  m_Size: {x: 0.31282592, y: 1.3253117}
   m_EdgeRadius: 0
 --- !u!1 &3622271917183335625
 GameObject:
@@ -84,7 +84,7 @@ Transform:
   m_GameObject: {fileID: 3622271917183335625}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0}
+  m_LocalScale: {x: 0.55, y: 0.55, z: 0}
   m_Children: []
   m_Father: {fileID: 7144343994362316270}
   m_RootOrder: 0
