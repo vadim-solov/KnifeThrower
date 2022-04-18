@@ -99,7 +99,7 @@ namespace CodeBase.Factories
         {
             _skinsScreen = Instantiate(_skinsScreenPrefab, _canvas.transform);
             _skinsScreen.GetComponent<BackButton>().Initialize(this);
-            _skinsScreen.GetComponent<SkinsLoader>().Initialize(_skins, _gameFactory);
+            _skinsScreen.GetComponent<SkinsLoader>().Initialize(_skins, _stagesCounter);
         }
 
         public void CreateMaxStageScreen() => 

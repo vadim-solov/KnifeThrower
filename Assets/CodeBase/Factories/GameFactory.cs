@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using CodeBase.Behaviours;
 using CodeBase.Configs;
+using CodeBase.Game;
 using UnityEngine;
 using CodeBase.Game.Controllers;
 using CodeBase.Game.Counters;
@@ -13,7 +14,7 @@ using Random = UnityEngine.Random;
 namespace CodeBase.Factories
 {
     [CreateAssetMenu]
-    public class GameFactory : ScriptableObject, IGameFactory
+    public class GameFactory : ScriptableObject
     {
         private const string ContainerName = "Container";
         private const float AppleAttachmentDepth = 0.4f;
@@ -36,10 +37,6 @@ namespace CodeBase.Factories
         
         [Header("Player object")]
         [SerializeField]
-        private GameObject _defaultKnife;
-        [SerializeField] 
-        private GameObject _skinKnife;
-        [SerializeField]
         private RuntimeAnimatorController  _animatorController;
 
         [Header("Particles")]
@@ -55,6 +52,7 @@ namespace CodeBase.Factories
         private StagesCounter _stagesCounter;
         private AppleHit _appleHit;
         private EnemyHit _enemyHit;
+        private Skins _skins;
 
         private readonly List<float> _knivesPositions = new List<float>() {0f, 120f, 240f};
         private readonly Vector3 _playerKnifeStartPosition = new Vector3(0f, -2.8f, 0f);
@@ -68,12 +66,13 @@ namespace CodeBase.Factories
         public event Action<Knife> KnifeCreated;
         public event Action AttachedKnivesCreated;
         
-        public void Initialize(LoseController loseController, StagesCounter stagesCounter, AppleHit appleHit, EnemyHit enemyHit)
+        public void Initialize(LoseController loseController, StagesCounter stagesCounter, AppleHit appleHit, EnemyHit enemyHit, Skins skins)
         {
             _loseController = loseController;
             _stagesCounter = stagesCounter;
             _appleHit = appleHit;
             _enemyHit = enemyHit;
+            _skins = skins;
         }
 
         public void CreateContainer() => 
@@ -81,12 +80,12 @@ namespace CodeBase.Factories
 
         public void CreateEnemy()
         {
-            Enemy = Instantiate(_stageConfigs[_stagesCounter.Stage].EnemyPrefab, _container.transform);
+            Enemy = Instantiate(_stageConfigs[_stagesCounter.CurrentStage].EnemyPrefab, _container.transform);
             AddEnemy();
             EnemyMotion motion = Enemy.AddComponent<EnemyMotion>();
-            motion.EnemyInitialize(_enemyStartPosition, _stageConfigs[_stagesCounter.Stage].RotateSpeed, _stageConfigs[_stagesCounter.Stage].RotationTime, _stageConfigs[_stagesCounter.Stage].RotationStopTime);
+            motion.EnemyInitialize(_enemyStartPosition, _stageConfigs[_stagesCounter.CurrentStage].RotateSpeed, _stageConfigs[_stagesCounter.CurrentStage].RotationTime,
+                _stageConfigs[_stagesCounter.CurrentStage].RotationStopTime, _stageConfigs[_stagesCounter.CurrentStage].StartStopImpulse);
             motion.SetStartPosition();
-            motion.StartRotationTimer();
             motion.StartRotation();
             AddLogRigidbody2D(Enemy);
         }
@@ -105,8 +104,13 @@ namespace CodeBase.Factories
             motion.Initialize(rb);
         }
 
-        public void CreateAttachedKnives()
+        public void TryCreateAttachedKnives()
         {
+            AttachedKnivesCreated?.Invoke();
+            
+            if(_stageConfigs[_stagesCounter.CurrentStage].Boss == true)
+                return;
+
             int knivesCount = Random.Range(1, _knivesPositions.Count + 1);
             
             for (int i = 0; i < knivesCount; i++)
@@ -121,18 +125,16 @@ namespace CodeBase.Factories
                 Knife knifeComponent = knife.GetComponent<Knife>();
                 KnifeCreated?.Invoke(knifeComponent);
             }
-            
-            AttachedKnivesCreated?.Invoke();
         }
 
         public void CreatePlayerKnife()
         {
-            if (_skinKnife == null)
-                PlayerKnife = Instantiate(_defaultKnife, _container.transform);
+            for (int i = 0; i < _skins.SkinConfigs.Count; i++)
+            {
+                if (_skins.CurrentSkin == i)
+                    PlayerKnife = Instantiate(_skins.SkinConfigs[i].KnifePrefab, _container.transform);
+            }
             
-            else
-                PlayerKnife = Instantiate(_skinKnife, _container.transform);
-
             AddAnimator(PlayerKnife);
             Rigidbody2D rb = AddRigidbody2D(PlayerKnife);
             AddKnife(PlayerKnife);
@@ -163,8 +165,8 @@ namespace CodeBase.Factories
         public void DestroyKnife(Knife knife, float destructionTime) => 
             Destroy(knife.gameObject, destructionTime);
 
-        public void CreateParticlesOnExplosionLog() => 
-            Instantiate(_stageConfigs[_stagesCounter.Stage].EnemyExplosionParticles, _container.transform);
+        public void CreateParticlesEnemyExplosion() => 
+            Instantiate(_stageConfigs[_stagesCounter.CurrentStage].EnemyExplosionParticles, _container.transform);
 
         public void CreateParticlesOnImpact(Vector3 position) => 
             Instantiate(_particlesOnImpact, position + new Vector3(0f, MarginLogImpactParticles, 0f), _particlesOnImpact.transform.rotation, _container.transform);
@@ -201,11 +203,6 @@ namespace CodeBase.Factories
 
         private void AddCollisionChecker(GameObject knife) => 
             knife.AddComponent<CollisionChecker>().Initialize(_loseController, _appleHit, _enemyHit);
-
-        public void ChangeKnifeSkin(GameObject knife)
-        {
-            _skinKnife = knife;
-        }
 
         private Rigidbody2D AddLogRigidbody2D(GameObject entity)
         {

@@ -38,9 +38,9 @@ namespace CodeBase.Game
         
         private void Awake()
         {
-            _skins.Initialize(_uiFactory);
             _saveLoadSystem = new PlayerPrefsSystem();
             _stagesCounter = new StagesCounter(_saveLoadSystem, _gameFactory);
+            _skins.Initialize(_uiFactory, _saveLoadSystem, _stagesCounter);
             _scoreCounter = new ScoreCounter(_saveLoadSystem);
             _appleCounter = new AppleCounter(_saveLoadSystem);
             _appleHit = new AppleHit(_appleCounter, _gameFactory);
@@ -48,9 +48,9 @@ namespace CodeBase.Game
             _knivesCounter = new KnivesCounter(_gameFactory, _stagesCounter);
             _loseController = new LoseController(_gameFactory, _uiFactory, _knivesCollection, _stagesCounter, _knivesCounter, _scoreCounter);
             _victoryController = new VictoryController(_gameFactory, _knivesCounter, _knivesCollection, _stagesCounter, _skins, _uiFactory);
-            _enemyHit = new EnemyHit(_knivesCounter, _gameFactory, _scoreCounter, _delayBetweenShots);
+            _enemyHit = new EnemyHit(_knivesCounter, _gameFactory, _scoreCounter, _victoryController, _delayBetweenShots);
 
-            _gameFactory.Initialize(_loseController, _stagesCounter, _appleHit, _enemyHit);
+            _gameFactory.Initialize(_loseController, _stagesCounter, _appleHit, _enemyHit, _skins);
             _uiFactory.Initialize(_appleCounter, _knivesCounter, _stagesCounter, _gameFactory, _scoreCounter, _saveLoadSystem, _skins, _cameraPrefab);
             _uiFactory.CreateCamera();
 

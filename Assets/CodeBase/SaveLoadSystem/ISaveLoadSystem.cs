@@ -6,7 +6,9 @@ namespace CodeBase.SaveLoadSystem
         int LoadApples();
         void SaveScore(int score);
         int LoadScore();   
-        void SaveStage(int score);
-        int LoadStage();
+        void SaveMaxCompletedStage(int score);
+        int LoadMaxCompletedStage();
+        void SaveCurrentSkin(int skinNumber);
+        int LoadCurrentSkin();
     }
 }

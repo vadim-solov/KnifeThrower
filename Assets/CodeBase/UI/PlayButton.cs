@@ -29,7 +29,7 @@ namespace CodeBase.UI
             _gameFactory.CreateContainer();
             _gameFactory.CreateEnemy();
             _gameFactory.CreateApple();
-            _gameFactory.CreateAttachedKnives();
+            _gameFactory.TryCreateAttachedKnives();
             _gameFactory.CreatePlayerKnife();
             _gameFactory.PlayerKnife.GetComponent<Animator>().SetBool("SpawnKnife", true);
         }

@@ -37,7 +37,7 @@ namespace CodeBase.Game.Controllers
         
         public void OnLose(GameObject playerKnife, Knife collision)
         {
-            StopBeamMotion();
+            StopEnemyMotion();
             playerKnife.gameObject.GetComponent<CollisionChecker>().SwitchOff();
             playerKnife.gameObject.GetComponent<KnifeInput>().enabled = false;
             Motion motion = playerKnife.GetComponent<Motion>();
@@ -50,7 +50,7 @@ namespace CodeBase.Game.Controllers
             MainVibration.Vibrate();
         }
 
-        private void StopBeamMotion() => 
+        private void StopEnemyMotion() => 
             _gameFactory.Enemy.GetComponent<EnemyMotion>().StopRotation();
 
         private async void CreateLoseScreen()

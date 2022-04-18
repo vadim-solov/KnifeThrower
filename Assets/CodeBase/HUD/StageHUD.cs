@@ -1,6 +1,4 @@
 using CodeBase.Configs;
-using CodeBase.Factories;
-using CodeBase.Game;
 using CodeBase.Game.Counters;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,7 +20,7 @@ namespace CodeBase.HUD
         {
             _stagesCounter = stagesCounter;
             _stageConfig = stageConfig;
-            OnBeamCreated(_stagesCounter.Stage);
+            OnBeamCreated(_stagesCounter.CurrentStage);
             _stagesCounter.StageChanged += OnBeamCreated;
         }
 
@@ -31,10 +29,10 @@ namespace CodeBase.HUD
 
         private void OnBeamCreated(int stage)
         {
-            var boss = _stageConfig[_stagesCounter.Stage].Boss;
+            var boss = _stageConfig[_stagesCounter.CurrentStage].Boss;
 
             if (boss)
-                _stageText.text = Boss + _stageConfig[_stagesCounter.Stage].Name;
+                _stageText.text = Boss + _stageConfig[_stagesCounter.CurrentStage].Name;
             
             else
                 _stageText.text = Stage + (stage + 1);

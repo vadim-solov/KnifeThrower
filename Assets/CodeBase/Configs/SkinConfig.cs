@@ -9,15 +9,9 @@ namespace CodeBase.Configs
         [SerializeField]
         private GameObject _knifePrefab;
         [SerializeField]
-        private int _availableAtStage;
-        [SerializeField]
-        private bool _open;
+        private int _opensAfterStage;
 
         public GameObject KnifePrefab => _knifePrefab;
-        public int AvailableAtStage => _availableAtStage;
-        public bool Open => _open;
-
-        public void UnblockSkin() => 
-            _open = true;
+        public int OpensAfterStage => _opensAfterStage;
     }
 }

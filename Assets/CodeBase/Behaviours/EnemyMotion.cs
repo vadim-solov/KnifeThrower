@@ -7,16 +7,20 @@ namespace CodeBase.Behaviours
     {
         private Vector3 _startPosition;
         private float _rotateSpeed;
+        private float _currentRotateSpeed;
         private float _rotationTime;
         private float _rotationStopTime;
+        private float _startStopImpulse;
         private bool _rotation = false;
 
-        public void EnemyInitialize(Vector3 startPosition, float rotateSpeed, float rotationTime, float rotationStopTime)
+        public void EnemyInitialize(Vector3 startPosition, float rotateSpeed, float rotationTime, float rotationStopTime, float startStopImpulse)
         {
             _startPosition = startPosition;
             _rotateSpeed = rotateSpeed;
+            _currentRotateSpeed = rotateSpeed;
             _rotationTime = rotationTime;
             _rotationStopTime = rotationStopTime;
+            _startStopImpulse = startStopImpulse;
         }
         
         private void FixedUpdate()
@@ -24,32 +28,71 @@ namespace CodeBase.Behaviours
             if (_rotation) 
                 Rotate();
         }
-        
-        public void StartRotationTimer() => 
+
+        public void StartRotation()
+        {
+            _rotation = true;
+
+            if (_rotationTime == 0f || _rotationStopTime == 0f)
+                return;
+
             StartCoroutine(StartRotationDuration());
+        }
+
+        public void StopRotation()
+        {
+            _rotation = false;
+            StopCoroutine(StartRotationDuration());
+            StopCoroutine(SmoothStop());
+            StopCoroutine(SmoothStart());
+            StopCoroutine(StartRotationStopTimer());
+        }
+
+        public void SetStartPosition() => 
+            transform.position = _startPosition;
+
+        public void StartShake() => 
+            StartCoroutine(Shake());
 
         private IEnumerator StartRotationDuration()
         {
-            if (!_rotation)
-                yield break;
-            
             yield return new WaitForSeconds(_rotationTime);
-            StopRotation();
+            StartCoroutine(SmoothStop());
+            Debug.Log("Rotation time over!");
+        }
+
+        private IEnumerator SmoothStop()
+        {
+            while (_currentRotateSpeed >= 0)
+            {
+                _currentRotateSpeed -= Time.deltaTime * _startStopImpulse;
+                yield return null;
+            }
+
+            _currentRotateSpeed = 0;
             StartCoroutine(StartRotationStopTimer());
+            Debug.Log("Smooth stop!");
         }
 
         private IEnumerator StartRotationStopTimer()
         {
             yield return new WaitForSeconds(_rotationStopTime);
-            StartRotation();
+            StartCoroutine(SmoothStart());
+            Debug.Log("Stop time over!");
+        }
+
+        private IEnumerator SmoothStart()
+        {
+            while (_currentRotateSpeed <= _rotateSpeed)
+            {
+                _currentRotateSpeed += Time.deltaTime * _startStopImpulse;
+                yield return null;
+            }
+
+            _currentRotateSpeed = _rotateSpeed;
+            Debug.Log("Smooth start!");
             StartCoroutine(StartRotationDuration());
         }
-        
-        private void Rotate() => 
-            transform.Rotate(new Vector3(0f, 0f, _rotateSpeed));
-        
-        public void StartShake() => 
-            StartCoroutine(Shake());
 
         private IEnumerator Shake()
         {
@@ -65,14 +108,8 @@ namespace CodeBase.Behaviours
             
             transform.position = _startPosition;
         }
-        
-        public void StopRotation() => 
-            _rotation = false;
 
-        public void StartRotation() => 
-            _rotation = true;
-        
-        public void SetStartPosition() => 
-            transform.position = _startPosition;
+        private void Rotate() => 
+            transform.Rotate(new Vector3(0f, 0f, _currentRotateSpeed));
     }
 }

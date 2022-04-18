@@ -1,7 +1,7 @@
 using System;
-using CodeBase.Configs;
 using CodeBase.Factories;
 using CodeBase.SaveLoadSystem;
+using UnityEngine;
 
 namespace CodeBase.Game.Counters
 {
@@ -10,7 +10,8 @@ namespace CodeBase.Game.Counters
         private readonly ISaveLoadSystem _saveLoadSystem;
         private readonly GameFactory _gameFactory;
 
-        public int Stage { get; private set; } = 0;
+        public int CurrentStage { get; private set; } = 0;
+        public int MaxCompletedStage { get; private set; }
 
         public event Action<int> StageChanged;
 
@@ -18,33 +19,49 @@ namespace CodeBase.Game.Counters
         {
             _saveLoadSystem = saveLoadSystem;
             _gameFactory = gameFactory;
+            MaxCompletedStage = _saveLoadSystem.LoadMaxCompletedStage();
+            Debug.Log(MaxCompletedStage);
         }
 
         public void IncreaseStage()
         {
-            Stage++;
-            StageChanged?.Invoke(Stage);
+            CurrentStage++;
+            if (CurrentStage > MaxCompletedStage)
+            {
+                MaxCompletedStage = CurrentStage;
+                _saveLoadSystem.SaveMaxCompletedStage(MaxCompletedStage);
+            }
+                
+            StageChanged?.Invoke(CurrentStage);
         }
 
         public void ResetStages()
         {
             SaveMaxStage();
-            Stage = 0;
-            StageChanged?.Invoke(Stage);
+            CurrentStage = 0;
+            StageChanged?.Invoke(CurrentStage);
         }
         
         private void SaveMaxStage()
         {
-            int loadedStage = _saveLoadSystem.LoadStage();
-            
-            if (loadedStage < Stage)
-                _saveLoadSystem.SaveStage(Stage);
+            int maxStage = _saveLoadSystem.LoadMaxCompletedStage();
+
+            if (maxStage < CurrentStage)
+            {
+                MaxCompletedStage = CurrentStage;
+                _saveLoadSystem.SaveMaxCompletedStage(MaxCompletedStage);
+            }
         }
 
-        public bool CheckMaxStage()
+        public bool CheckMaxCompletedStage()
         {
-            if (Stage >= _gameFactory.StageConfig.Length - 1)
+            if (CurrentStage >= _gameFactory.StageConfig.Length - 1)
+            {
+                MaxCompletedStage = CurrentStage + 1;
+                _saveLoadSystem.SaveMaxCompletedStage(MaxCompletedStage);
+                
                 return true;
+            }
 
             return false;
         }

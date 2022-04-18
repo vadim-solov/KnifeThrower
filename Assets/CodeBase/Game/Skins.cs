@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CodeBase.Configs;
 using CodeBase.Factories;
+using CodeBase.Game.Counters;
+using CodeBase.SaveLoadSystem;
 using UnityEngine;
 
 namespace CodeBase.Game
@@ -10,33 +12,35 @@ namespace CodeBase.Game
     [CreateAssetMenu]
     public class Skins : ScriptableObject
     {
-        private const string StartDownUp = "StartUpDown";
-        private const string StartUpDown = "StartDownUp";
-        private const float WindowDestroyTime = 4f;
-
-        [SerializeField]
-        private GameObject _defaultKnifePrefab;
         [SerializeField]
         private List<SkinConfig> _skinConfigs = new List<SkinConfig>();
 
+        private const string StartDownUp = "StartUpDown";
+        private const string StartUpDown = "StartDownUp";
+        private const float WindowDestroyTime = 4f;
         private UIFactory _uiFactory;
+        private ISaveLoadSystem _saveLoadSystem;
+        private StagesCounter _stagesCounter;
 
-        public GameObject DefaultKnifePrefab => _defaultKnifePrefab;
+        public int CurrentSkin { get; private set; }
         public List<SkinConfig> SkinConfigs => _skinConfigs;
 
-        public void Initialize(UIFactory uiFactory) => 
+        public void Initialize(UIFactory uiFactory, ISaveLoadSystem saveLoadSystem, StagesCounter stagesCounter)
+        {
+            _stagesCounter = stagesCounter;
             _uiFactory = uiFactory;
+            _saveLoadSystem = saveLoadSystem;
+            CurrentSkin = saveLoadSystem.LoadCurrentSkin();
+        }
 
-        public void CheckNewSkins(int stage)
+        public void CheckNewSkins()
         {
             for (int i = 0; i < _skinConfigs.Count; i++)
             {
-                if (stage == (_skinConfigs[i].AvailableAtStage - 1) && _skinConfigs[i].Open == false)
+                if (_stagesCounter.CurrentStage != 0 && _stagesCounter.CurrentStage == _skinConfigs[i].OpensAfterStage && _stagesCounter.CurrentStage >= _stagesCounter.MaxCompletedStage)
                 {
-                    _skinConfigs[i].UnblockSkin();
-
-                    var sprite = _skinConfigs[i].KnifePrefab.GetComponentInChildren<SpriteRenderer>().sprite;
-                    var window = _uiFactory.CreatNewSkinWindow(sprite);
+                    Sprite sprite = _skinConfigs[i].KnifePrefab.GetComponentInChildren<SpriteRenderer>().sprite;
+                    RectTransform window = _uiFactory.CreatNewSkinWindow(sprite);
                     StartUpDownAnimation(window);
                     StartDownUpAnimation(window);
                     DestroyNewSkinWindow();
@@ -57,6 +61,12 @@ namespace CodeBase.Game
         {
             await Task.Delay(TimeSpan.FromSeconds(WindowDestroyTime));
             _uiFactory.DestroyNewSkinWindow();
+        }
+        
+        public void ChangeSkin(int skinNumber)
+        {
+            CurrentSkin = skinNumber;
+            _saveLoadSystem.SaveCurrentSkin(skinNumber);
         }
     }
 }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7144343994362316270}
   - component: {fileID: 6832526888279596839}
   m_Layer: 0
-  m_Name: DefaultKnifePrefab 1
+  m_Name: BlueKnifePrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

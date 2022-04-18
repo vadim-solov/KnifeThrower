@@ -1,6 +1,5 @@
 using System;
 using CodeBase.Factories;
-using UnityEngine;
 
 namespace CodeBase.Game.Counters
 {
@@ -39,6 +38,6 @@ namespace CodeBase.Game.Counters
         }
 
         public void UpdateCounter() => 
-            NumberOfKnives = _gameFactory.StageConfig[_stagesCounter.Stage].NumberOfKnives;
+            NumberOfKnives = _gameFactory.StageConfig[_stagesCounter.CurrentStage].NumberOfKnives;
     }
 }

@@ -22,13 +22,25 @@ namespace CodeBase.SaveLoadSystem
             return score;
         }  
         
-        public void SaveStage(int stage) => 
+        public void SaveMaxCompletedStage(int stage) => 
             PlayerPrefs.SetInt("Stage", stage);
 
-        public int LoadStage()
+        public int LoadMaxCompletedStage()
         {
             int score = PlayerPrefs.GetInt("Stage", 0);
             return score;
         }
+
+        public void SaveCurrentSkin(int skinNumber)
+        {
+            PlayerPrefs.SetInt("CurrentSkin", skinNumber);
+            Debug.Log(skinNumber);
+        }
+        
+        public int LoadCurrentSkin()
+        {
+            int skinNumber = PlayerPrefs.GetInt("CurrentSkin", 0);
+            return skinNumber;
+        }  
     }
 }
