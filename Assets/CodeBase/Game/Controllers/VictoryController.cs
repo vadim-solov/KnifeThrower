@@ -26,6 +26,8 @@ namespace CodeBase.Game.Controllers
         
         public bool IsVictory { get; private set; }
 
+        public event Action Victory;
+
         public VictoryController(GameFactory gameFactory, KnivesCounter knivesCounter, KnivesCollection knivesCollection, StagesCounter stagesCounter, Skins skins, UIFactory uiFactory)
         {
             _gameFactory = gameFactory;
@@ -62,6 +64,7 @@ namespace CodeBase.Game.Controllers
             IncreaseStage();
             UpdateCounter();
             CreateNewObjects();
+            Victory?.Invoke();
         }
 
         private void UpdateCounter() => 

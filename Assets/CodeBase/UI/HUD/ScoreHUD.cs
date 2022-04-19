@@ -1,9 +1,8 @@
-using CodeBase.Game;
 using CodeBase.Game.Counters;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace CodeBase.HUD
+namespace CodeBase.UI.HUD
 {
     public class ScoreHUD : MonoBehaviour
     {
@@ -11,6 +10,8 @@ namespace CodeBase.HUD
         private Text _scoreText;
 
         private ScoreCounter _scoreCounter;
+
+        public Text ScoreText => _scoreText;
 
         public void Initialize(ScoreCounter scoreCounter)
         {

@@ -1,5 +1,4 @@
 using CodeBase.Factories;
-using CodeBase.Game;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,6 +25,8 @@ namespace CodeBase.UI
         private void OnClick()
         {
             _uiFactory.DestroyLoseScreen();
+            _uiFactory.ShowStage();
+            _uiFactory.ShowScore();
             _gameFactory.CreateContainer();
             _gameFactory.CreateEnemy();
             _gameFactory.CreateApple();

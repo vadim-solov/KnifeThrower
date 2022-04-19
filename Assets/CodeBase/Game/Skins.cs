@@ -30,7 +30,7 @@ namespace CodeBase.Game
             _stagesCounter = stagesCounter;
             _uiFactory = uiFactory;
             _saveLoadSystem = saveLoadSystem;
-            CurrentSkin = saveLoadSystem.LoadCurrentSkin();
+            CurrentSkin = saveLoadSystem.Load(SaveLoadType.CurrentSkin);
         }
 
         public void CheckNewSkins()
@@ -66,7 +66,7 @@ namespace CodeBase.Game
         public void ChangeSkin(int skinNumber)
         {
             CurrentSkin = skinNumber;
-            _saveLoadSystem.SaveCurrentSkin(skinNumber);
+            _saveLoadSystem.Save(SaveLoadType.CurrentSkin, skinNumber);
         }
     }
 }

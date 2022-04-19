@@ -17,7 +17,7 @@ MonoBehaviour:
     _name: 
     _enemyPrefab: {fileID: 8728987680525138207, guid: 7a9b3b41df9580a46bd1e8e668f633c3, type: 3}
     _enemyExplosionParticles: {fileID: 5832708315200386561, guid: 25541392778949945b39283d1df00ee3, type: 3}
-    _numberOfKnives: 7
+    _numberOfKnives: 1
     _rotateSpeed: 1.5
     _rotationTime: 0
     _rotationStopTime: 0
@@ -26,7 +26,7 @@ MonoBehaviour:
     _name: 
     _enemyPrefab: {fileID: 8728987680525138207, guid: 7a9b3b41df9580a46bd1e8e668f633c3, type: 3}
     _enemyExplosionParticles: {fileID: 5832708315200386561, guid: 25541392778949945b39283d1df00ee3, type: 3}
-    _numberOfKnives: 9
+    _numberOfKnives: 1
     _rotateSpeed: -1.2
     _rotationTime: 0
     _rotationStopTime: 0
@@ -35,7 +35,7 @@ MonoBehaviour:
     _name: 
     _enemyPrefab: {fileID: 8728987680525138207, guid: 7a9b3b41df9580a46bd1e8e668f633c3, type: 3}
     _enemyExplosionParticles: {fileID: 5832708315200386561, guid: 25541392778949945b39283d1df00ee3, type: 3}
-    _numberOfKnives: 10
+    _numberOfKnives: 1
     _rotateSpeed: 1.5
     _rotationTime: 2
     _rotationStopTime: 0.2
@@ -44,17 +44,17 @@ MonoBehaviour:
     _name: 
     _enemyPrefab: {fileID: 8728987680525138207, guid: 7a9b3b41df9580a46bd1e8e668f633c3, type: 3}
     _enemyExplosionParticles: {fileID: 5832708315200386561, guid: 25541392778949945b39283d1df00ee3, type: 3}
-    _numberOfKnives: 8
+    _numberOfKnives: 1
     _rotateSpeed: 2.5
-    _rotationTime: 2.8
-    _rotationStopTime: 0.2
-    _startStopImpulse: 2
+    _rotationTime: 1.5
+    _rotationStopTime: 0.1
+    _startStopImpulse: 1.5
   - _boss: 1
     _name: WATERMELON
     _enemyPrefab: {fileID: 8728987680525138207, guid: 308c291c6db406c4ebb7d1ca7abcb42b, type: 3}
     _enemyExplosionParticles: {fileID: 5832708315200386561, guid: 25541392778949945b39283d1df00ee3, type: 3}
-    _numberOfKnives: 15
-    _rotateSpeed: 2.5
+    _numberOfKnives: 1
+    _rotateSpeed: 1.8
     _rotationTime: 0
     _rotationStopTime: 0
     _startStopImpulse: 1

@@ -5,6 +5,8 @@ namespace CodeBase.Behaviours
 {
     public class EnemyMotion : MonoBehaviour
     {
+        private const float ShakingShearDistance = 1.05f;
+        
         private Vector3 _startPosition;
         private float _rotateSpeed;
         private float _currentRotateSpeed;
@@ -58,7 +60,6 @@ namespace CodeBase.Behaviours
         {
             yield return new WaitForSeconds(_rotationTime);
             StartCoroutine(SmoothStop());
-            Debug.Log("Rotation time over!");
         }
 
         private IEnumerator SmoothStop()
@@ -71,14 +72,12 @@ namespace CodeBase.Behaviours
 
             _currentRotateSpeed = 0;
             StartCoroutine(StartRotationStopTimer());
-            Debug.Log("Smooth stop!");
         }
 
         private IEnumerator StartRotationStopTimer()
         {
             yield return new WaitForSeconds(_rotationStopTime);
             StartCoroutine(SmoothStart());
-            Debug.Log("Stop time over!");
         }
 
         private IEnumerator SmoothStart()
@@ -90,19 +89,16 @@ namespace CodeBase.Behaviours
             }
 
             _currentRotateSpeed = _rotateSpeed;
-            Debug.Log("Smooth start!");
             StartCoroutine(StartRotationDuration());
         }
 
         private IEnumerator Shake()
         {
-            float y;
             float timeLeft = Time.time;
 
             while ((timeLeft + 0.1f) > Time.time)
             {
-                y = Random.Range(1.0f, 1.07f);
-                transform.position = new Vector3(0, y, 0); 
+                transform.position = new Vector3(0, ShakingShearDistance, 0); 
                 yield return new WaitForSeconds(0.05f);
             }
             

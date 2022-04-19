@@ -51,12 +51,12 @@ namespace CodeBase.Game
             _enemyHit = new EnemyHit(_knivesCounter, _gameFactory, _scoreCounter, _victoryController, _delayBetweenShots);
 
             _gameFactory.Initialize(_loseController, _stagesCounter, _appleHit, _enemyHit, _skins);
-            _uiFactory.Initialize(_appleCounter, _knivesCounter, _stagesCounter, _gameFactory, _scoreCounter, _saveLoadSystem, _skins, _cameraPrefab);
+            _uiFactory.Initialize(_appleCounter, _knivesCounter, _stagesCounter, _gameFactory, _scoreCounter, _saveLoadSystem, _skins, _cameraPrefab, _victoryController);
             _uiFactory.CreateCamera();
 
             _uiFactory.CreateCanvas();
             _uiFactory.CreateStartScreen();
-            
+
             MainVibration.Init();
         }
 

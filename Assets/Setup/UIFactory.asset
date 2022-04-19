@@ -15,6 +15,7 @@ MonoBehaviour:
   _canvasPrefab: {fileID: 7704184565466896074, guid: de4b559a4c5196c48914a810d53587e8, type: 3}
   _HUDPrefab: {fileID: 9035993070047203417, guid: 0668a3bffbac61f4fbbc96cf7ad913ac, type: 3}
   _knifePrefab: {fileID: 5197167033857003116, guid: c6994963a35a342409b32a51be712f74, type: 3}
+  _appleScorePrefab: {fileID: 6788219902595194081, guid: ac468ef1c784e704188003779da583a5, type: 3}
   _loseScreenPrefab: {fileID: 5759684475154948952, guid: ce246a6e7c5aa2d4b979fcbab9927fdd, type: 3}
   _startScreenPrefab: {fileID: 7814524308348853813, guid: dd2a159b767553c41abd5efe5a28e47b, type: 3}
   _skinsScreenPrefab: {fileID: 3433612805920423463, guid: 2c876b16c7c9044478d5b0e920315677, type: 3}

@@ -42,7 +42,7 @@ namespace CodeBase.UI
                 GameObject knifePrefab = _skins.SkinConfigs[i].KnifePrefab;
                 Button button = Instantiate(_button, _container.transform);
 
-                if (_stagesCounter.MaxCompletedStage <= skinNumber && i != 0) 
+                if (_stagesCounter.MaxCompletedStage <= _skins.SkinConfigs[i].OpensAfterStage && i != 0) 
                     button.interactable = false;
 
                 var knife = Instantiate(knifePrefab, button.transform);

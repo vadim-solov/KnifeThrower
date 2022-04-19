@@ -1,7 +1,5 @@
-using System;
 using CodeBase.Factories;
 using CodeBase.SaveLoadSystem;
-using UnityEngine;
 
 namespace CodeBase.Game.Counters
 {
@@ -13,14 +11,11 @@ namespace CodeBase.Game.Counters
         public int CurrentStage { get; private set; } = 0;
         public int MaxCompletedStage { get; private set; }
 
-        public event Action<int> StageChanged;
-
         public StagesCounter(ISaveLoadSystem saveLoadSystem, GameFactory gameFactory)
         {
             _saveLoadSystem = saveLoadSystem;
             _gameFactory = gameFactory;
-            MaxCompletedStage = _saveLoadSystem.LoadMaxCompletedStage();
-            Debug.Log(MaxCompletedStage);
+            MaxCompletedStage = _saveLoadSystem.Load(SaveLoadType.MaxCompletedStage);
         }
 
         public void IncreaseStage()
@@ -29,27 +24,24 @@ namespace CodeBase.Game.Counters
             if (CurrentStage > MaxCompletedStage)
             {
                 MaxCompletedStage = CurrentStage;
-                _saveLoadSystem.SaveMaxCompletedStage(MaxCompletedStage);
+                _saveLoadSystem.Save(SaveLoadType.MaxCompletedStage, MaxCompletedStage);
             }
-                
-            StageChanged?.Invoke(CurrentStage);
         }
 
         public void ResetStages()
         {
             SaveMaxStage();
             CurrentStage = 0;
-            StageChanged?.Invoke(CurrentStage);
         }
         
         private void SaveMaxStage()
         {
-            int maxStage = _saveLoadSystem.LoadMaxCompletedStage();
+            int maxStage = _saveLoadSystem.Load(SaveLoadType.MaxCompletedStage);
 
             if (maxStage < CurrentStage)
             {
                 MaxCompletedStage = CurrentStage;
-                _saveLoadSystem.SaveMaxCompletedStage(MaxCompletedStage);
+                _saveLoadSystem.Save(SaveLoadType.MaxCompletedStage, MaxCompletedStage);
             }
         }
 
@@ -58,7 +50,7 @@ namespace CodeBase.Game.Counters
             if (CurrentStage >= _gameFactory.StageConfig.Length - 1)
             {
                 MaxCompletedStage = CurrentStage + 1;
-                _saveLoadSystem.SaveMaxCompletedStage(MaxCompletedStage);
+                _saveLoadSystem.Save(SaveLoadType.MaxCompletedStage, MaxCompletedStage);
                 
                 return true;
             }

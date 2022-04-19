@@ -21,6 +21,6 @@ namespace CodeBase.UI
         }
 
         private void ShowGameProgress() => 
-            _gameProgressText.text = Stage + (_saveLoadSystem.LoadMaxCompletedStage() + 1) + "  |  " + Score + _saveLoadSystem.LoadScore();
+            _gameProgressText.text = Stage + (_saveLoadSystem.Load(SaveLoadType.MaxCompletedStage) + 1) + "  |  " + Score + _saveLoadSystem.Load(SaveLoadType.Score);
     }
 }

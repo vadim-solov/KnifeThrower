@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using CodeBase.Factories;
-using CodeBase.Game;
 using CodeBase.Game.Counters;
 using UnityEngine;
 
-namespace CodeBase.HUD
+namespace CodeBase.UI.HUD
 {
     public class KnivesHUD : MonoBehaviour
     {

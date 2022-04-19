@@ -4,43 +4,51 @@ namespace CodeBase.SaveLoadSystem
 {
     public class PlayerPrefsSystem : ISaveLoadSystem
     {
-        public void SaveApples(int number) => 
-            PlayerPrefs.SetInt("Apple", number);
-
-        public int LoadApples()
+        public void Save(SaveLoadType type, int value)
         {
-            int numbersOfApples = PlayerPrefs.GetInt("Apple", 0);
-            return numbersOfApples;
+            string saveName = "";
+            
+            switch (type)
+            {
+                case SaveLoadType.Apples:
+                    saveName = "Apple";
+                    break;
+                case SaveLoadType.Score:
+                    saveName = "Score";
+                    break;
+                case SaveLoadType.MaxCompletedStage:
+                    saveName = "Stage";
+                    break;
+                case SaveLoadType.CurrentSkin:
+                    saveName = "CurrentSkin";
+                    break;
+            }
+            
+            PlayerPrefs.SetInt(saveName, value);
         }
 
-        public void SaveScore(int score) => 
-            PlayerPrefs.SetInt("Score", score);
+        public int Load(SaveLoadType type)
+        {
+            string loadName = "";
 
-        public int LoadScore()
-        {
-            int score = PlayerPrefs.GetInt("Score", 0);
-            return score;
-        }  
-        
-        public void SaveMaxCompletedStage(int stage) => 
-            PlayerPrefs.SetInt("Stage", stage);
-
-        public int LoadMaxCompletedStage()
-        {
-            int score = PlayerPrefs.GetInt("Stage", 0);
-            return score;
-        }
-
-        public void SaveCurrentSkin(int skinNumber)
-        {
-            PlayerPrefs.SetInt("CurrentSkin", skinNumber);
-            Debug.Log(skinNumber);
-        }
-        
-        public int LoadCurrentSkin()
-        {
-            int skinNumber = PlayerPrefs.GetInt("CurrentSkin", 0);
+            switch (type)
+            {
+                case SaveLoadType.Apples:
+                    loadName = "Apple";
+                    break;
+                case SaveLoadType.Score:
+                    loadName = "Score";
+                    break;
+                case SaveLoadType.MaxCompletedStage:
+                    loadName = "Stage";
+                    break;
+                case SaveLoadType.CurrentSkin:
+                    loadName = "CurrentSkin";
+                    break;
+            }
+            
+            int skinNumber = PlayerPrefs.GetInt(loadName, 0);
             return skinNumber;
-        }  
+        }
     }
 }

@@ -62,10 +62,12 @@ namespace CodeBase.Game.Controllers
         private async void DestroyGameObjects()
         {
             await Task.Delay(TimeSpan.FromSeconds(AppearanceUIDelay));
-            DestroyEnemy();
-            DestroyApple();
+            _uiFactory.HideStage();
+            _uiFactory.HideScore();
+            _gameFactory.DestroyEnemy();
+            _gameFactory.DestroyApple(0f);
             DestroyKnives();
-            DestroyContainer();
+            _gameFactory.DestroyContainer();
         }
 
         private async void ResetCounters()
@@ -75,15 +77,6 @@ namespace CodeBase.Game.Controllers
             _knivesCounter.UpdateCounter();
             _scoreCounter.ResetScore();
         }
-
-        private void DestroyContainer() => 
-            _gameFactory.DestroyContainer();
-
-        private void DestroyEnemy() => 
-            _gameFactory.DestroyEnemy();
-
-        private void DestroyApple() => 
-            _gameFactory.DestroyApple(0f);
 
         private void DestroyKnives()
         {

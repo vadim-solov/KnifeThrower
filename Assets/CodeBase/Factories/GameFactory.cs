@@ -63,9 +63,10 @@ namespace CodeBase.Factories
         public GameObject Apple { get; private set; }
         public GameObject PlayerKnife { get; private set; }
 
+        public event Action EnemyCreated;
         public event Action<Knife> KnifeCreated;
         public event Action AttachedKnivesCreated;
-        
+
         public void Initialize(LoseController loseController, StagesCounter stagesCounter, AppleHit appleHit, EnemyHit enemyHit, Skins skins)
         {
             _loseController = loseController;
@@ -88,6 +89,7 @@ namespace CodeBase.Factories
             motion.SetStartPosition();
             motion.StartRotation();
             AddLogRigidbody2D(Enemy);
+            EnemyCreated?.Invoke();
         }
 
         public void CreateApple()

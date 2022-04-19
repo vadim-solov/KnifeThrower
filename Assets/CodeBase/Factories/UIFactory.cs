@@ -1,8 +1,9 @@
 using CodeBase.Game;
+using CodeBase.Game.Controllers;
 using CodeBase.Game.Counters;
-using CodeBase.HUD;
 using CodeBase.SaveLoadSystem;
 using CodeBase.UI;
+using CodeBase.UI.HUD;
 using UnityEngine;
 
 namespace CodeBase.Factories
@@ -19,6 +20,8 @@ namespace CodeBase.Factories
         private RectTransform _HUDPrefab;
         [SerializeField]
         private GameObject _knifePrefab;
+        [SerializeField]
+        private RectTransform _appleScorePrefab;
 
         [Header("Screens")]
         [SerializeField]
@@ -47,10 +50,16 @@ namespace CodeBase.Factories
         private RectTransform _maxStageScreen;
         private ISaveLoadSystem _saveLoadSystem;
         private RectTransform _newSkinWindow;
+        private VictoryController _victoryController;
+        private RectTransform _appleScore;
 
+        private StageHUD _stage;
+        private ScoreHUD _score;
+        
         public void Initialize(AppleCounter appleCounter, KnivesCounter knivesCounter, StagesCounter stagesCounter, GameFactory gameFactory, 
-            ScoreCounter scoreCounter, ISaveLoadSystem saveLoadSystem, Skins skins, Camera cameraPrefab)
+            ScoreCounter scoreCounter, ISaveLoadSystem saveLoadSystem, Skins skins, Camera cameraPrefab, VictoryController victoryController)
         {
+            _victoryController = victoryController;
             _appleCounter = appleCounter;
             _knivesCounter = knivesCounter;
             _stagesCounter = stagesCounter;
@@ -73,10 +82,33 @@ namespace CodeBase.Factories
         public void CreateHUD()
         {
             _hud = Instantiate(_HUDPrefab, _canvas.transform);
-            _hud.GetComponent<AppleScoreHUD>().Initialize(_appleCounter);
             _hud.GetComponent<KnivesHUD>().Initialize(this, _knivesCounter, _gameFactory);
-            _hud.GetComponent<StageHUD>().Initialize(_stagesCounter, _gameFactory.StageConfig);
-            _hud.GetComponent<ScoreHUD>().Initialize(_scoreCounter);
+            
+            _stage = _hud.GetComponent<StageHUD>();
+            _stage.Initialize(_gameFactory, _stagesCounter, _victoryController);
+            
+            _score = _hud.GetComponent<ScoreHUD>();
+            _score.Initialize(_scoreCounter);
+            
+            CreateAppleScore(_hud);
+        }
+
+        public void HideStage() =>
+            _stage.StageText.gameObject.SetActive(false);
+
+        public void HideScore() =>
+            _score.ScoreText.gameObject.SetActive(false);
+        
+        public void ShowStage() =>
+            _stage.StageText.gameObject.SetActive(true);
+
+        public void ShowScore() =>
+            _score.ScoreText.gameObject.SetActive(true);
+
+        private void CreateAppleScore(RectTransform parent)
+        {
+            _appleScore = Instantiate(_appleScorePrefab, parent.transform);
+            _appleScore.GetComponent<AppleScoreHUD>().Initialize(_appleCounter);
         }
 
         public void CreateLoseScreen()
@@ -85,6 +117,7 @@ namespace CodeBase.Factories
             _loseScreen.GetComponent<HomeButton>().Initialize(this);
             _loseScreen.GetComponent<RestartButton>().Initialize(_gameFactory, this);
             _loseScreen.GetComponent<LevelStatistic>().Initialize(_scoreCounter, _stagesCounter);
+            CreateAppleScore(_loseScreen);
         }
 
         public void CreateStartScreen()
@@ -93,6 +126,7 @@ namespace CodeBase.Factories
             _startScreen.GetComponent<PlayButton>().Initialize(_gameFactory, this);
             _startScreen.GetComponent<Records>().Initialize(_saveLoadSystem);
             _startScreen.GetComponent<SkinsButton>().Initialize(this);
+            CreateAppleScore(_startScreen);
         }
 
         public void CreateSkinsScreen()
@@ -100,6 +134,7 @@ namespace CodeBase.Factories
             _skinsScreen = Instantiate(_skinsScreenPrefab, _canvas.transform);
             _skinsScreen.GetComponent<BackButton>().Initialize(this);
             _skinsScreen.GetComponent<SkinsLoader>().Initialize(_skins, _stagesCounter);
+            CreateAppleScore(_skinsScreen);
         }
 
         public void CreateMaxStageScreen() => 

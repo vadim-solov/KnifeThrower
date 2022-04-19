@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace CodeBase.HUD
+namespace CodeBase.UI.HUD
 {
     public class KnifeImage : MonoBehaviour
     {

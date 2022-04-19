@@ -28,10 +28,10 @@ namespace CodeBase.Game.Counters
 
         private void CheckMaxScore()
         {
-            int loadedScore = _saveLoadSystem.LoadScore();
+            int loadedScore = _saveLoadSystem.Load(SaveLoadType.Score);
             
             if (loadedScore < Score)
-                _saveLoadSystem.SaveScore(Score);
+                _saveLoadSystem.Save(SaveLoadType.Score, Score);
         }
     }
 }

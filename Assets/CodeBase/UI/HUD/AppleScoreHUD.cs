@@ -1,9 +1,8 @@
-using CodeBase.Game;
 using CodeBase.Game.Counters;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace CodeBase.HUD
+namespace CodeBase.UI.HUD
 {
     public class AppleScoreHUD : MonoBehaviour
     {

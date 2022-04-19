@@ -14,13 +14,13 @@ namespace CodeBase.Game.Counters
         public AppleCounter(ISaveLoadSystem saveLoadSystem)
         {
             _saveLoadSystem = saveLoadSystem;
-            Score = _saveLoadSystem.LoadApples();
+            Score = _saveLoadSystem.Load(SaveLoadType.Apples);
         }
 
         public void IncreaseScore()
         {
             Score++;
-            _saveLoadSystem.SaveApples(Score);
+            _saveLoadSystem.Save(SaveLoadType.Apples, Score);
             ScoreChanged?.Invoke(Score);
         }
     }
