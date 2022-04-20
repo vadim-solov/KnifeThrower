@@ -1,4 +1,3 @@
-using System;
 using CodeBase.Factories;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,9 +9,9 @@ namespace CodeBase.UI
         [SerializeField]
         private Button _skinsButton;
 
-        private UIFactory _uiFactory;
+        private IUIFactory _uiFactory;
 
-        public void Initialize(UIFactory uiFactory)
+        public void Initialize(IUIFactory uiFactory)
         {
             _uiFactory = uiFactory;
             _skinsButton.onClick.AddListener(CreateSkinsScreen);

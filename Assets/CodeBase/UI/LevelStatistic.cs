@@ -29,6 +29,6 @@ namespace CodeBase.UI
             _scoreText.text = _scoreCounter.Score.ToString();
 
         private void ShowStage() => 
-            _stageText.text = Stage + (_stagesCounter.CurrentStage + 1).ToString();
+            _stageText.text = Stage + (_stagesCounter.CurrentStage + 1);
     }
 }

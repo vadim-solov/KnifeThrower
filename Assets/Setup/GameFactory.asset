@@ -17,51 +17,97 @@ MonoBehaviour:
     _name: 
     _enemyPrefab: {fileID: 8728987680525138207, guid: 7a9b3b41df9580a46bd1e8e668f633c3, type: 3}
     _enemyExplosionParticles: {fileID: 5832708315200386561, guid: 25541392778949945b39283d1df00ee3, type: 3}
-    _numberOfKnives: 1
-    _rotateSpeed: 1.5
+    _numberOfKnives: 5
+    _rotateSpeed: 150
     _rotationTime: 0
     _rotationStopTime: 0
-    _startStopImpulse: 1
+    _startStopImpulse: 100
   - _boss: 0
     _name: 
     _enemyPrefab: {fileID: 8728987680525138207, guid: 7a9b3b41df9580a46bd1e8e668f633c3, type: 3}
     _enemyExplosionParticles: {fileID: 5832708315200386561, guid: 25541392778949945b39283d1df00ee3, type: 3}
-    _numberOfKnives: 1
-    _rotateSpeed: -1.2
+    _numberOfKnives: 7
+    _rotateSpeed: -200
     _rotationTime: 0
     _rotationStopTime: 0
-    _startStopImpulse: 1
+    _startStopImpulse: 100
   - _boss: 0
     _name: 
     _enemyPrefab: {fileID: 8728987680525138207, guid: 7a9b3b41df9580a46bd1e8e668f633c3, type: 3}
     _enemyExplosionParticles: {fileID: 5832708315200386561, guid: 25541392778949945b39283d1df00ee3, type: 3}
-    _numberOfKnives: 1
-    _rotateSpeed: 1.5
-    _rotationTime: 2
-    _rotationStopTime: 0.2
-    _startStopImpulse: 2
+    _numberOfKnives: 10
+    _rotateSpeed: 200
+    _rotationTime: 1
+    _rotationStopTime: 1
+    _startStopImpulse: 150
   - _boss: 0
     _name: 
     _enemyPrefab: {fileID: 8728987680525138207, guid: 7a9b3b41df9580a46bd1e8e668f633c3, type: 3}
     _enemyExplosionParticles: {fileID: 5832708315200386561, guid: 25541392778949945b39283d1df00ee3, type: 3}
-    _numberOfKnives: 1
-    _rotateSpeed: 2.5
-    _rotationTime: 1.5
-    _rotationStopTime: 0.1
-    _startStopImpulse: 1.5
+    _numberOfKnives: 8
+    _rotateSpeed: -300
+    _rotationTime: 0.7
+    _rotationStopTime: 0.5
+    _startStopImpulse: 250
   - _boss: 1
     _name: WATERMELON
     _enemyPrefab: {fileID: 8728987680525138207, guid: 308c291c6db406c4ebb7d1ca7abcb42b, type: 3}
-    _enemyExplosionParticles: {fileID: 5832708315200386561, guid: 25541392778949945b39283d1df00ee3, type: 3}
+    _enemyExplosionParticles: {fileID: 5832708315200386561, guid: e35ee44875a72df41998587dcc94ad72, type: 3}
     _numberOfKnives: 1
-    _rotateSpeed: 1.8
+    _rotateSpeed: 350
+    _rotationTime: 1.5
+    _rotationStopTime: 0.5
+    _startStopImpulse: 100
+  - _boss: 0
+    _name: 
+    _enemyPrefab: {fileID: 8728987680525138207, guid: 7a9b3b41df9580a46bd1e8e668f633c3, type: 3}
+    _enemyExplosionParticles: {fileID: 5832708315200386561, guid: 25541392778949945b39283d1df00ee3, type: 3}
+    _numberOfKnives: 9
+    _rotateSpeed: 200
+    _rotationTime: 0.5
+    _rotationStopTime: 1
+    _startStopImpulse: 200
+  - _boss: 0
+    _name: 
+    _enemyPrefab: {fileID: 8728987680525138207, guid: 7a9b3b41df9580a46bd1e8e668f633c3, type: 3}
+    _enemyExplosionParticles: {fileID: 5832708315200386561, guid: 25541392778949945b39283d1df00ee3, type: 3}
+    _numberOfKnives: 11
+    _rotateSpeed: -180
+    _rotationTime: 2
+    _rotationStopTime: 1
+    _startStopImpulse: 100
+  - _boss: 0
+    _name: 
+    _enemyPrefab: {fileID: 8728987680525138207, guid: 7a9b3b41df9580a46bd1e8e668f633c3, type: 3}
+    _enemyExplosionParticles: {fileID: 5832708315200386561, guid: 25541392778949945b39283d1df00ee3, type: 3}
+    _numberOfKnives: 8
+    _rotateSpeed: 150
+    _rotationTime: 3
+    _rotationStopTime: 0.5
+    _startStopImpulse: 50
+  - _boss: 0
+    _name: 
+    _enemyPrefab: {fileID: 8728987680525138207, guid: 7a9b3b41df9580a46bd1e8e668f633c3, type: 3}
+    _enemyExplosionParticles: {fileID: 5832708315200386561, guid: 25541392778949945b39283d1df00ee3, type: 3}
+    _numberOfKnives: 10
+    _rotateSpeed: -300
+    _rotationTime: 0.3
+    _rotationStopTime: 0.1
+    _startStopImpulse: 300
+  - _boss: 1
+    _name: ORANGE
+    _enemyPrefab: {fileID: 8728987680525138207, guid: 2ee0fc8cbb7804b45aac1311ff923c5e, type: 3}
+    _enemyExplosionParticles: {fileID: 5832708315200386561, guid: ecaf48f244c6221419c3e7ada8b2bd0f, type: 3}
+    _numberOfKnives: 8
+    _rotateSpeed: 350
     _rotationTime: 0
     _rotationStopTime: 0
-    _startStopImpulse: 1
+    _startStopImpulse: 100
   _appleChance: 25
   _attachedApple: {fileID: 2097046311003215172, guid: 957b7dc42a4d40449a3f4827876a92c2, type: 3}
   _attachedKnife: {fileID: 693009018390305792, guid: c741797c2de557d45bd5e1b901ad0fb5, type: 3}
-  _animatorController: {fileID: 9100000, guid: af2e9cc6690ea5840b630f2d0299626a, type: 2}
+  _spawnAnimation: {fileID: 9100000, guid: af2e9cc6690ea5840b630f2d0299626a, type: 2}
+  _growthAnimation: {fileID: 9100000, guid: 5f186832c93037c4d98577ee53f95bc9, type: 2}
   _particlesOnImpact: {fileID: 5832708315200386561, guid: 564929c4d7cc4fd4a86316afa37492bd, type: 3}
   _appleParticles: {fileID: 5832708315200386561, guid: e09db20102121ba458e4203027e9e1da, type: 3}
   _knivesParticles: {fileID: 5832708315200386561, guid: 3e5832662d6c3444ba5befa4c8799eaf, type: 3}

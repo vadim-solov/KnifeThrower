@@ -9,9 +9,9 @@ namespace CodeBase.UI
         [SerializeField]
         private Button _homeButton;
 
-        private UIFactory _uiFactory;
+        private IUIFactory _uiFactory;
 
-        public void Initialize(UIFactory uiFactory)
+        public void Initialize(IUIFactory uiFactory)
         {
             _uiFactory = uiFactory;
             _homeButton.onClick.AddListener(GoHome);
@@ -22,8 +22,8 @@ namespace CodeBase.UI
 
         private void GoHome()
         {
-            _uiFactory.DestroyHUD();
-            _uiFactory.DestroyLoseScreen();
+            _uiFactory.DestroyUI(UIType.HUD);
+            _uiFactory.DestroyUI(UIType.LoseScreen);
             _uiFactory.CreateStartScreen();
         }
     }

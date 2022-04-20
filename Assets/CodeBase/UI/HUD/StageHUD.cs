@@ -15,14 +15,14 @@ namespace CodeBase.UI.HUD
         [SerializeField]
         private Text _stageText;
 
-        private GameFactory _gameFactory;
+        private IGameFactory _gameFactory;
         private StagesCounter _stagesCounter;
         private VictoryController _victoryController;
         private StageConfig[] _stageConfig;
 
         public Text StageText => _stageText;
 
-        public void Initialize(GameFactory gameFactory, StagesCounter stagesCounter, VictoryController victoryController)
+        public void Initialize(IGameFactory gameFactory, StagesCounter stagesCounter, VictoryController victoryController)
         {
             _gameFactory = gameFactory;
             _stagesCounter = stagesCounter;

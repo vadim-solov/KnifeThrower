@@ -25,7 +25,7 @@ namespace CodeBase.Behaviours
             _startStopImpulse = startStopImpulse;
         }
         
-        private void FixedUpdate()
+        private void Update()
         {
             if (_rotation) 
                 Rotate();
@@ -69,6 +69,12 @@ namespace CodeBase.Behaviours
                 _currentRotateSpeed -= Time.deltaTime * _startStopImpulse;
                 yield return null;
             }
+            
+            while (_currentRotateSpeed <= 0)
+            {
+                _currentRotateSpeed += Time.deltaTime * _startStopImpulse;
+                yield return null;
+            }
 
             _currentRotateSpeed = 0;
             StartCoroutine(StartRotationStopTimer());
@@ -85,6 +91,12 @@ namespace CodeBase.Behaviours
             while (_currentRotateSpeed <= _rotateSpeed)
             {
                 _currentRotateSpeed += Time.deltaTime * _startStopImpulse;
+                yield return null;
+            }   
+            
+            while (_currentRotateSpeed >= _rotateSpeed)
+            {
+                _currentRotateSpeed -= Time.deltaTime * _startStopImpulse;
                 yield return null;
             }
 
@@ -106,6 +118,6 @@ namespace CodeBase.Behaviours
         }
 
         private void Rotate() => 
-            transform.Rotate(new Vector3(0f, 0f, _currentRotateSpeed));
+            transform.Rotate(new Vector3(0f, 0f, _currentRotateSpeed) * Time.deltaTime);
     }
 }

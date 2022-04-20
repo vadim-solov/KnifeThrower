@@ -18,14 +18,16 @@ namespace CodeBase.Game
         private const string StartDownUp = "StartUpDown";
         private const string StartUpDown = "StartDownUp";
         private const float WindowDestroyTime = 4f;
-        private UIFactory _uiFactory;
-        private ISaveLoadSystem _saveLoadSystem;
+        
         private StagesCounter _stagesCounter;
+        
+        private IUIFactory _uiFactory;
+        private ISaveLoadSystem _saveLoadSystem;
 
         public int CurrentSkin { get; private set; }
         public List<SkinConfig> SkinConfigs => _skinConfigs;
 
-        public void Initialize(UIFactory uiFactory, ISaveLoadSystem saveLoadSystem, StagesCounter stagesCounter)
+        public void Initialize(IUIFactory uiFactory, ISaveLoadSystem saveLoadSystem, StagesCounter stagesCounter)
         {
             _stagesCounter = stagesCounter;
             _uiFactory = uiFactory;
@@ -48,6 +50,12 @@ namespace CodeBase.Game
             }
         }
 
+        public void ChangeSkin(int skinNumber)
+        {
+            CurrentSkin = skinNumber;
+            _saveLoadSystem.Save(SaveLoadType.CurrentSkin, skinNumber);
+        }
+
         private void StartUpDownAnimation(RectTransform window) => 
             window.GetComponent<Animator>().SetBool(StartDownUp, true);
 
@@ -60,13 +68,7 @@ namespace CodeBase.Game
         private async void DestroyNewSkinWindow()
         {
             await Task.Delay(TimeSpan.FromSeconds(WindowDestroyTime));
-            _uiFactory.DestroyNewSkinWindow();
-        }
-        
-        public void ChangeSkin(int skinNumber)
-        {
-            CurrentSkin = skinNumber;
-            _saveLoadSystem.Save(SaveLoadType.CurrentSkin, skinNumber);
+            _uiFactory.DestroyUI(UIType.NewSkinWindow);
         }
     }
 }

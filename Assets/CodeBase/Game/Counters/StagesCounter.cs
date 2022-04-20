@@ -6,12 +6,12 @@ namespace CodeBase.Game.Counters
     public class StagesCounter
     {
         private readonly ISaveLoadSystem _saveLoadSystem;
-        private readonly GameFactory _gameFactory;
+        private readonly IGameFactory _gameFactory;
 
         public int CurrentStage { get; private set; } = 0;
         public int MaxCompletedStage { get; private set; }
 
-        public StagesCounter(ISaveLoadSystem saveLoadSystem, GameFactory gameFactory)
+        public StagesCounter(ISaveLoadSystem saveLoadSystem, IGameFactory gameFactory)
         {
             _saveLoadSystem = saveLoadSystem;
             _gameFactory = gameFactory;

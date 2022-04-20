@@ -9,9 +9,9 @@ namespace CodeBase.UI
         [SerializeField]
         private Button _backButton;
 
-        private UIFactory _uiFactory;
+        private IUIFactory _uiFactory;
 
-        public void Initialize(UIFactory uiFactory)
+        public void Initialize(IUIFactory uiFactory)
         {
             _uiFactory = uiFactory;
             _backButton.onClick.AddListener(Back);
@@ -21,6 +21,6 @@ namespace CodeBase.UI
             _backButton.onClick.RemoveListener(Back);
 
         private void Back() => 
-            _uiFactory.DestroySkinsScreen();
+            _uiFactory.DestroyUI(UIType.SkinsScreen);
     }
 }

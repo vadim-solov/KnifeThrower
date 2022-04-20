@@ -16,14 +16,14 @@ namespace CodeBase.Configs
         private ParticleSystem _enemyExplosionParticles;
         [SerializeField, Range(1, 15)]
         private int _numberOfKnives = 5;
-        [SerializeField, Range(-8, 8)]
-        private float _rotateSpeed = 2f;
+        [SerializeField, Range(-600, 600)]
+        private float _rotateSpeed = 100f;
         [SerializeField, Range(0, 10)]
         private float _rotationTime = 3f;
         [SerializeField, Range(0, 10)]
         private float _rotationStopTime = 2f;
-        [SerializeField, Range(0.1f, 10f)]
-        private float _startStopImpulse = 1f;
+        [SerializeField, Range(30f, 1500f)]
+        private float _startStopImpulse = 100f;
 
         public bool Boss => _boss;
         public string Name => _name;

@@ -35,27 +35,31 @@ namespace CodeBase.Game
         private ScoreCounter _scoreCounter;
 
         private ISaveLoadSystem _saveLoadSystem;
+        private IGameFactory _iGameFactory;
+        private IUIFactory _iUiFactory;
         
         private void Awake()
         {
+            _iUiFactory = _uiFactory;
+            _iGameFactory = _gameFactory;
             _saveLoadSystem = new PlayerPrefsSystem();
-            _stagesCounter = new StagesCounter(_saveLoadSystem, _gameFactory);
-            _skins.Initialize(_uiFactory, _saveLoadSystem, _stagesCounter);
+            _stagesCounter = new StagesCounter(_saveLoadSystem, _iGameFactory);
+            _skins.Initialize(_iUiFactory, _saveLoadSystem, _stagesCounter);
             _scoreCounter = new ScoreCounter(_saveLoadSystem);
             _appleCounter = new AppleCounter(_saveLoadSystem);
-            _appleHit = new AppleHit(_appleCounter, _gameFactory);
-            _knivesCollection = new KnivesCollection(_gameFactory);
-            _knivesCounter = new KnivesCounter(_gameFactory, _stagesCounter);
-            _loseController = new LoseController(_gameFactory, _uiFactory, _knivesCollection, _stagesCounter, _knivesCounter, _scoreCounter);
-            _victoryController = new VictoryController(_gameFactory, _knivesCounter, _knivesCollection, _stagesCounter, _skins, _uiFactory);
-            _enemyHit = new EnemyHit(_knivesCounter, _gameFactory, _scoreCounter, _victoryController, _delayBetweenShots);
+            _appleHit = new AppleHit(_appleCounter, _iGameFactory);
+            _knivesCollection = new KnivesCollection(_iGameFactory);
+            _knivesCounter = new KnivesCounter(_iGameFactory, _stagesCounter);
+            _loseController = new LoseController(_iGameFactory, _iUiFactory, _knivesCollection, _stagesCounter, _knivesCounter, _scoreCounter);
+            _victoryController = new VictoryController(_iGameFactory, _knivesCounter, _knivesCollection, _stagesCounter, _skins, _iUiFactory);
+            _enemyHit = new EnemyHit(_knivesCounter, _iGameFactory, _scoreCounter, _victoryController, _delayBetweenShots);
 
-            _gameFactory.Initialize(_loseController, _stagesCounter, _appleHit, _enemyHit, _skins);
-            _uiFactory.Initialize(_appleCounter, _knivesCounter, _stagesCounter, _gameFactory, _scoreCounter, _saveLoadSystem, _skins, _cameraPrefab, _victoryController);
-            _uiFactory.CreateCamera();
+            _iGameFactory.Initialize(_loseController, _stagesCounter, _appleHit, _enemyHit, _skins);
+            _iUiFactory.Initialize(_appleCounter, _knivesCounter, _stagesCounter, _iGameFactory, _scoreCounter, _saveLoadSystem, _skins, _cameraPrefab, _victoryController);
+            _iUiFactory.CreateCamera();
 
-            _uiFactory.CreateCanvas();
-            _uiFactory.CreateStartScreen();
+            _iUiFactory.CreateCanvas();
+            _iUiFactory.CreateStartScreen();
 
             MainVibration.Init();
         }

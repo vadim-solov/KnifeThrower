@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using CodeBase.Factories;
 using CodeBase.ObjectType;
-using UnityEngine;
 
 namespace CodeBase.Collection
 {
@@ -9,9 +8,9 @@ namespace CodeBase.Collection
     {
         public List<Knife> KnivesList { get; } = new List<Knife>();
         
-        private readonly GameFactory _gameFactory;
+        private readonly IGameFactory _gameFactory;
 
-        public KnivesCollection(GameFactory gameFactory)
+        public KnivesCollection(IGameFactory gameFactory)
         {
             _gameFactory = gameFactory;
             _gameFactory.KnifeCreated += OnKnifeCreated;

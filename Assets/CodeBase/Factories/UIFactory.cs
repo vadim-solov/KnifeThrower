@@ -9,7 +9,7 @@ using UnityEngine;
 namespace CodeBase.Factories
 {
     [CreateAssetMenu]
-    public class UIFactory : ScriptableObject
+    public class UIFactory : ScriptableObject, IUIFactory
     {
         [Header("Canvas")]
         [SerializeField]
@@ -41,22 +41,22 @@ namespace CodeBase.Factories
         private AppleCounter _appleCounter;
         private KnivesCounter _knivesCounter;
         private StagesCounter _stagesCounter;
-        private GameFactory _gameFactory;
         private ScoreCounter _scoreCounter;
         private RectTransform _startScreen;
         private RectTransform _skinsScreen;
         private Skins _skins;
         private Camera _camera;
         private RectTransform _maxStageScreen;
-        private ISaveLoadSystem _saveLoadSystem;
         private RectTransform _newSkinWindow;
         private VictoryController _victoryController;
         private RectTransform _appleScore;
-
         private StageHUD _stage;
         private ScoreHUD _score;
-        
-        public void Initialize(AppleCounter appleCounter, KnivesCounter knivesCounter, StagesCounter stagesCounter, GameFactory gameFactory, 
+
+        private IGameFactory _gameFactory;
+        private ISaveLoadSystem _saveLoadSystem;
+
+        public void Initialize(AppleCounter appleCounter, KnivesCounter knivesCounter, StagesCounter stagesCounter, IGameFactory gameFactory, 
             ScoreCounter scoreCounter, ISaveLoadSystem saveLoadSystem, Skins skins, Camera cameraPrefab, VictoryController victoryController)
         {
             _victoryController = victoryController;
@@ -83,32 +83,11 @@ namespace CodeBase.Factories
         {
             _hud = Instantiate(_HUDPrefab, _canvas.transform);
             _hud.GetComponent<KnivesHUD>().Initialize(this, _knivesCounter, _gameFactory);
-            
             _stage = _hud.GetComponent<StageHUD>();
             _stage.Initialize(_gameFactory, _stagesCounter, _victoryController);
-            
             _score = _hud.GetComponent<ScoreHUD>();
             _score.Initialize(_scoreCounter);
-            
             CreateAppleScore(_hud);
-        }
-
-        public void HideStage() =>
-            _stage.StageText.gameObject.SetActive(false);
-
-        public void HideScore() =>
-            _score.ScoreText.gameObject.SetActive(false);
-        
-        public void ShowStage() =>
-            _stage.StageText.gameObject.SetActive(true);
-
-        public void ShowScore() =>
-            _score.ScoreText.gameObject.SetActive(true);
-
-        private void CreateAppleScore(RectTransform parent)
-        {
-            _appleScore = Instantiate(_appleScorePrefab, parent.transform);
-            _appleScore.GetComponent<AppleScoreHUD>().Initialize(_appleCounter);
         }
 
         public void CreateLoseScreen()
@@ -153,19 +132,53 @@ namespace CodeBase.Factories
             return _newSkinWindow;
         }
 
-        public void DestroyNewSkinWindow() => 
-            Destroy(_newSkinWindow.gameObject);
+        public void DestroyUI(UIType type)
+        {
+            RectTransform entity = null;
 
-        public void DestroyHUD() => 
-            Destroy(_hud.gameObject);
+            switch (type)
+            {
+                case UIType.NewSkinWindow:
+                    entity = _newSkinWindow;
+                    break;
 
-        public void DestroyLoseScreen() => 
-            Destroy(_loseScreen.gameObject);
+                case UIType.HUD:
+                    entity = _hud;
+                    break;
+                
+                case UIType.LoseScreen:
+                    entity = _loseScreen;
+                    break;
+                
+                case UIType.StartScreen:
+                    entity = _startScreen;
+                    break;
+                
+                case UIType.SkinsScreen:
+                    entity = _skinsScreen;
+                    break;
+            }
 
-        public void DestroyStartScreen() => 
-            Destroy(_startScreen.gameObject);
+            if (entity != null)
+                Destroy(entity.gameObject);
+        }
 
-        public void DestroySkinsScreen() => 
-            Destroy(_skinsScreen.gameObject);
+        public void HideStage() =>
+            _stage.StageText.gameObject.SetActive(false);
+
+        public void HideScore() =>
+            _score.ScoreText.gameObject.SetActive(false);
+        
+        public void ShowStage() =>
+            _stage.StageText.gameObject.SetActive(true);
+
+        public void ShowScore() =>
+            _score.ScoreText.gameObject.SetActive(true);
+
+        private void CreateAppleScore(RectTransform parent)
+        {
+            _appleScore = Instantiate(_appleScorePrefab, parent.transform);
+            _appleScore.GetComponent<AppleScoreHUD>().Initialize(_appleCounter);
+        }
     }
 }

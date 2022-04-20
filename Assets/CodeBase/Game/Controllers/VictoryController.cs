@@ -14,21 +14,23 @@ namespace CodeBase.Game.Controllers
     public class VictoryController
     {
         private const float DestructionTime = 2f;
-        private const string AnimationName = "SpawnKnife";
+        private const string SpawnKnifeAnimation = "SpawnKnife";
+        private const string IsGrowthAnimation = "IsGrowth";
 
-        private readonly GameFactory _gameFactory;
         private readonly KnivesCounter _knivesCounter;
         private readonly List<Knife> _knivesList;
         private readonly KnivesCollection _knivesCollection;
         private readonly StagesCounter _stagesCounter;
         private readonly Skins _skins;
-        private readonly UIFactory _uiFactory;
+        
+        private readonly IGameFactory _gameFactory;
+        private readonly IUIFactory _uiFactory;
         
         public bool IsVictory { get; private set; }
 
         public event Action Victory;
 
-        public VictoryController(GameFactory gameFactory, KnivesCounter knivesCounter, KnivesCollection knivesCollection, StagesCounter stagesCounter, Skins skins, UIFactory uiFactory)
+        public VictoryController(IGameFactory gameFactory, KnivesCounter knivesCounter, KnivesCollection knivesCollection, StagesCounter stagesCounter, Skins skins, IUIFactory uiFactory)
         {
             _gameFactory = gameFactory;
             _knivesCounter = knivesCounter;
@@ -46,14 +48,14 @@ namespace CodeBase.Game.Controllers
         private void OnVictory()
         {
             IsVictory = true;
-            Vibrate();
-            DestroyEnemy();
-            CrateParticles();
+            MainVibration.Vibrate();
+            _gameFactory.DestroyEnemy();
+            _gameFactory.CreateParticlesEnemyExplosion();
             DestroyKnives();
             CreateKnivesParticles();
             TryDestroyApple();
-            ClearCollection();
-            CheckNewSkins();
+            _knivesCollection.Clear();
+            _skins.CheckNewSkins();
             
             if (_stagesCounter.CheckMaxCompletedStage() == true)
             {
@@ -61,30 +63,12 @@ namespace CodeBase.Game.Controllers
                 return;
             }
             
-            IncreaseStage();
-            UpdateCounter();
+            _stagesCounter.IncreaseStage();
+            _knivesCounter.UpdateCounter();
             CreateNewObjects();
             Victory?.Invoke();
         }
-
-        private void UpdateCounter() => 
-            _knivesCounter.UpdateCounter();
-
-        private void IncreaseStage() => 
-            _stagesCounter.IncreaseStage();
-
-        private void CheckNewSkins() => 
-            _skins.CheckNewSkins();
-
-        private void ClearCollection() => 
-            _knivesCollection.Clear();
-
-        private void CrateParticles() => 
-            _gameFactory.CreateParticlesEnemyExplosion();
-
-        private void Vibrate() => 
-            MainVibration.Vibrate();
-
+        
         private void CreateKnivesParticles()
         {
             foreach (var knife in _knivesList)
@@ -107,12 +91,23 @@ namespace CodeBase.Game.Controllers
             _gameFactory.CreateApple();
             _gameFactory.TryCreateAttachedKnives();
             _gameFactory.CreatePlayerKnife();
-            _gameFactory.PlayerKnife.GetComponent<Animator>().SetBool(AnimationName, true);
+            EnabledEnemyAnimation();
+            EnableKnivesAnimation();
+            EnablePlayerKnifeAnimations();
             IsVictory = false;
         }
 
-        private void DestroyEnemy() => 
-            _gameFactory.DestroyEnemy();
+        private void EnabledEnemyAnimation() => 
+            _gameFactory.Enemy.GetComponent<Animator>().SetBool(IsGrowthAnimation, true);
+
+        private void EnableKnivesAnimation()
+        {
+            foreach (var knife in _knivesList)
+                knife.GetComponent<Animator>().SetBool(IsGrowthAnimation, true);
+        }
+
+        private void EnablePlayerKnifeAnimations() => 
+            _gameFactory.PlayerKnife.GetComponent<Animator>().SetBool(SpawnKnifeAnimation, true);
 
         private void TryDestroyApple()
         {

@@ -15,16 +15,17 @@ namespace CodeBase.Game.Controllers
     public class LoseController
     {
         private const float AppearanceUIDelay = 1f;
-        
-        private readonly GameFactory _gameFactory;
-        private readonly UIFactory _uiFactory;
+
         private readonly KnivesCollection _knivesCollection;
         private readonly List<Knife> _knivesList;
         private readonly StagesCounter _stagesCounter;
         private readonly KnivesCounter _knivesCounter;
         private readonly ScoreCounter _scoreCounter;
+        
+        private readonly IGameFactory _gameFactory;
+        private readonly IUIFactory _uiFactory;
 
-        public LoseController(GameFactory gameFactory, UIFactory uiFactory, KnivesCollection knivesCollection, StagesCounter stagesCounter, KnivesCounter knivesCounter, ScoreCounter scoreCounter)
+        public LoseController(IGameFactory gameFactory, IUIFactory uiFactory, KnivesCollection knivesCollection, StagesCounter stagesCounter, KnivesCounter knivesCounter, ScoreCounter scoreCounter)
         {
             _gameFactory = gameFactory;
             _uiFactory = uiFactory;

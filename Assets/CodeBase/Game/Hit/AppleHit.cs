@@ -8,9 +8,10 @@ namespace CodeBase.Game.Hit
     public class AppleHit
     {
         private readonly AppleCounter _appleCounter;
-        private readonly GameFactory _gameFactory;
+        
+        private readonly IGameFactory _gameFactory;
 
-        public AppleHit(AppleCounter appleCounter, GameFactory gameFactory)
+        public AppleHit(AppleCounter appleCounter, IGameFactory gameFactory)
         {
             _appleCounter = appleCounter;
             _gameFactory = gameFactory;

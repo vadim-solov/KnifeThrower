@@ -6,13 +6,15 @@ namespace CodeBase.UI
 {
     public class RestartButton : MonoBehaviour
     {
+        private const string SpawnKnifeAnimation = "SpawnKnife";
+
         [SerializeField] 
         private Button _restartButton;
 
-        private GameFactory _gameFactory;
-        private UIFactory _uiFactory;
+        private IGameFactory _gameFactory;
+        private IUIFactory _uiFactory;
 
-        public void Initialize(GameFactory gameFactory, UIFactory uiFactory)
+        public void Initialize(IGameFactory gameFactory, IUIFactory uiFactory)
         {
             _gameFactory = gameFactory;
             _uiFactory = uiFactory;
@@ -24,7 +26,7 @@ namespace CodeBase.UI
 
         private void OnClick()
         {
-            _uiFactory.DestroyLoseScreen();
+            _uiFactory.DestroyUI(UIType.LoseScreen);
             _uiFactory.ShowStage();
             _uiFactory.ShowScore();
             _gameFactory.CreateContainer();
@@ -32,7 +34,7 @@ namespace CodeBase.UI
             _gameFactory.CreateApple();
             _gameFactory.TryCreateAttachedKnives();
             _gameFactory.CreatePlayerKnife();
-            _gameFactory.PlayerKnife.GetComponent<Animator>().SetBool("SpawnKnife", true);
+            _gameFactory.PlayerKnife.GetComponent<Animator>().SetBool(SpawnKnifeAnimation, true);
         }
     }
 }

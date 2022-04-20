@@ -14,15 +14,17 @@ namespace CodeBase.Game.Hit
     public class EnemyHit
     {
         private const float AttachmentDepth = -0.635f;
-        private const string AnimationName = "SpawnKnife";
+        private const int VibrationTime = 50;
+        private const string SpawnKnifeAnimation = "SpawnKnife";
 
+        private readonly float _delayBetweenShots;
         private readonly KnivesCounter _knivesCounter;
-        private readonly GameFactory _gameFactory;
         private readonly ScoreCounter _scoreCounter;
         private readonly VictoryController _victoryController;
-        private readonly float _delayBetweenShots;
 
-        public EnemyHit(KnivesCounter knivesCounter, GameFactory gameFactory, ScoreCounter scoreCounter, VictoryController victoryController, float delayBetweenShots)
+        private readonly IGameFactory _gameFactory;
+
+        public EnemyHit(KnivesCounter knivesCounter, IGameFactory gameFactory, ScoreCounter scoreCounter, VictoryController victoryController, float delayBetweenShots)
         {
             _knivesCounter = knivesCounter;
             _gameFactory = gameFactory;
@@ -30,7 +32,7 @@ namespace CodeBase.Game.Hit
             _victoryController = victoryController;
             _delayBetweenShots = delayBetweenShots;
         }
-        
+
         public void OnHitInLog(GameObject playerKnife, Enemy enemy)
         {
             EnemyMotion enemyMotion = enemy.GetComponent<EnemyMotion>();
@@ -44,7 +46,7 @@ namespace CodeBase.Game.Hit
             _knivesCounter.Decrease();
             _scoreCounter.IncreaseScore();
             TryCreatePlayerKnife();
-            MainVibration.Vibrate(50);
+            MainVibration.Vibrate(VibrationTime);
         }
 
         private void CreateHitParticles(Vector3 position) => 
@@ -71,7 +73,7 @@ namespace CodeBase.Game.Hit
         {
             await Task.Delay(TimeSpan.FromSeconds(_delayBetweenShots));
             _gameFactory.CreatePlayerKnife();
-            _gameFactory.PlayerKnife.GetComponent<Animator>().SetBool(AnimationName, true);
+            _gameFactory.PlayerKnife.GetComponent<Animator>().SetBool(SpawnKnifeAnimation, true);
         }
     }
 }

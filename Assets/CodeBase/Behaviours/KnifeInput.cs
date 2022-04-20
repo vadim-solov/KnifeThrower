@@ -1,5 +1,3 @@
-using System;
-using CodeBase.Game.Controllers;
 using UnityEngine;
 
 namespace CodeBase.Behaviours

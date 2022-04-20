@@ -14,7 +14,7 @@ using Random = UnityEngine.Random;
 namespace CodeBase.Factories
 {
     [CreateAssetMenu]
-    public class GameFactory : ScriptableObject
+    public class GameFactory : ScriptableObject, IGameFactory
     {
         private const string ContainerName = "Container";
         private const float AppleAttachmentDepth = 0.4f;
@@ -35,10 +35,12 @@ namespace CodeBase.Factories
         [SerializeField]
         private GameObject _attachedKnife;
         
-        [Header("Player object")]
+        [Header("Animations")]
         [SerializeField]
-        private RuntimeAnimatorController  _animatorController;
-
+        private RuntimeAnimatorController  _spawnAnimation;
+        [SerializeField]
+        private RuntimeAnimatorController _growthAnimation;
+                
         [Header("Particles")]
         [SerializeField]
         private ParticleSystem _particlesOnImpact;
@@ -82,6 +84,7 @@ namespace CodeBase.Factories
         public void CreateEnemy()
         {
             Enemy = Instantiate(_stageConfigs[_stagesCounter.CurrentStage].EnemyPrefab, _container.transform);
+            AddAnimator(Enemy, _growthAnimation);
             AddEnemy();
             EnemyMotion motion = Enemy.AddComponent<EnemyMotion>();
             motion.EnemyInitialize(_enemyStartPosition, _stageConfigs[_stagesCounter.CurrentStage].RotateSpeed, _stageConfigs[_stagesCounter.CurrentStage].RotationTime,
@@ -101,7 +104,7 @@ namespace CodeBase.Factories
             AddApple(Apple);
             Motion motion = AddMotion(Apple);
             motion.SetStartPositionAroundEnemy(_enemyStartPosition, ApplePosition);
-            var rb = AddRigidbody2D(Apple);
+            Rigidbody2D rb = AddRigidbody2D(Apple);
             AddAttach(Apple, AppleAttachmentDepth);
             motion.Initialize(rb);
         }
@@ -118,10 +121,11 @@ namespace CodeBase.Factories
             for (int i = 0; i < knivesCount; i++)
             {
                 GameObject knife = Instantiate(_attachedKnife, _container.transform);
+                AddAnimator(knife, _growthAnimation);
                 AddKnife(knife);
                 Motion motion = AddMotion(knife);
                 motion.SetStartPositionAroundEnemy(_enemyStartPosition, _knivesPositions[i]);
-                var rb = AddRigidbody2D(knife);
+                Rigidbody2D rb = AddRigidbody2D(knife);
                 AddAttach(knife, KnifeAttachmentDepth);
                 motion.Initialize(rb);
                 Knife knifeComponent = knife.GetComponent<Knife>();
@@ -137,7 +141,7 @@ namespace CodeBase.Factories
                     PlayerKnife = Instantiate(_skins.SkinConfigs[i].KnifePrefab, _container.transform);
             }
             
-            AddAnimator(PlayerKnife);
+            AddAnimator(PlayerKnife, _spawnAnimation);
             Rigidbody2D rb = AddRigidbody2D(PlayerKnife);
             AddKnife(PlayerKnife);
             Motion motion = AddMotion(PlayerKnife);
@@ -147,12 +151,6 @@ namespace CodeBase.Factories
             AddCollisionChecker(PlayerKnife);
             Knife knifeComponent = PlayerKnife.GetComponent<Knife>();
             KnifeCreated?.Invoke(knifeComponent);
-        }
-
-        private void AddAnimator(GameObject entity)
-        {
-            Animator animator = entity.AddComponent<Animator>();
-            animator.runtimeAnimatorController = _animatorController;
         }
 
         public void DestroyContainer() => 
@@ -175,17 +173,32 @@ namespace CodeBase.Factories
 
         public void CreateAppleParticles(Vector3 position) => 
             Instantiate(_appleParticles, position, _appleParticles.transform.rotation, _container.transform);
-        
+
         public void CreateKnivesParticles(Sprite sprite)
         {
             var particles = Instantiate(_knivesParticles, _container.transform);
             particles.textureSheetAnimation.AddSprite(sprite);
         }
 
+        public void AddAttach(GameObject entity, float attachmentDepth)
+        {
+            Rigidbody2D rb = Enemy.GetComponent<Rigidbody2D>();
+            FixedJoint2D join = entity.AddComponent<FixedJoint2D>();
+            join.connectedBody = rb;
+            join.autoConfigureConnectedAnchor = false;
+            join.anchor = new Vector2(0f, attachmentDepth);
+        }
+
         private bool CheckAppleChance()
         {
             int random = Random.Range(1, 101);
             return random <= _appleChance;
+        }
+
+        private void AddAnimator(GameObject entity, RuntimeAnimatorController animationType)
+        {
+            Animator animator = entity.AddComponent<Animator>();
+            animator.runtimeAnimatorController = animationType;
         }
 
         private void AddEnemy() => 
@@ -206,29 +219,19 @@ namespace CodeBase.Factories
         private void AddCollisionChecker(GameObject knife) => 
             knife.AddComponent<CollisionChecker>().Initialize(_loseController, _appleHit, _enemyHit);
 
-        private Rigidbody2D AddLogRigidbody2D(GameObject entity)
+        private void AddLogRigidbody2D(GameObject entity)
         {
             var rb = entity.AddComponent<Rigidbody2D>();
             rb.bodyType = RigidbodyType2D.Kinematic;
             rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
-            return rb;
-        }      
-        
+        }
+
         private Rigidbody2D AddRigidbody2D(GameObject entity)
         {
             var rb = entity.AddComponent<Rigidbody2D>();
             rb.gravityScale = 0f;
             rb.angularDrag = 0f;
             return rb;
-        }
-
-        public void AddAttach(GameObject entity, float attachmentDepth)
-        {
-            var rb = Enemy.GetComponent<Rigidbody2D>();
-            var join = entity.AddComponent<FixedJoint2D>();
-            join.connectedBody = rb;
-            join.autoConfigureConnectedAnchor = false;
-            join.anchor = new Vector2(0f, attachmentDepth);
         }
     }
 }

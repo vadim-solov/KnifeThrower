@@ -1,9 +1,6 @@
-using System;
 using System.Collections.Generic;
-using CodeBase.Factories;
 using CodeBase.Game;
 using CodeBase.Game.Counters;
-using CodeBase.SaveLoadSystem;
 using UnityEngine;
 using Button = UnityEngine.UI.Button;
 
@@ -45,7 +42,7 @@ namespace CodeBase.UI
                 if (_stagesCounter.MaxCompletedStage <= _skins.SkinConfigs[i].OpensAfterStage && i != 0) 
                     button.interactable = false;
 
-                var knife = Instantiate(knifePrefab, button.transform);
+                GameObject knife = Instantiate(knifePrefab, button.transform);
                 knife.transform.localScale *= 100;
                 button.onClick.AddListener(delegate { OnClick(skinNumber); });
                 _buttonsList.Add(button);

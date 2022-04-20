@@ -10,21 +10,19 @@ namespace CodeBase.UI.HUD
         [SerializeField]
         private RectTransform _knivesContainer;
 
-        private UIFactory _uiFactory;
+        private IUIFactory _uiFactory;
         private KnivesCounter _knivesCounter;
-        private GameFactory _gameFactory;
+        private IGameFactory _gameFactory;
         
         private readonly List<GameObject> _knivesList = new List<GameObject>();
 
-        public void Initialize(UIFactory uiFactory, KnivesCounter knivesCounter, GameFactory gameFactory)
+        public void Initialize(IUIFactory uiFactory, KnivesCounter knivesCounter, IGameFactory gameFactory)
         {
             _uiFactory = uiFactory;
             _knivesCounter = knivesCounter;
             _gameFactory = gameFactory;
-
             _gameFactory.AttachedKnivesCreated += ClearAndCreateKnives;
             _knivesCounter.DecreaseNumberOfKnives += OnDecreaseNumberOfKnives;
-
         }
 
         private void OnDisable()
