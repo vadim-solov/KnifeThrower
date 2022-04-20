@@ -53,7 +53,7 @@ MonoBehaviour:
     _name: WATERMELON
     _enemyPrefab: {fileID: 8728987680525138207, guid: 308c291c6db406c4ebb7d1ca7abcb42b, type: 3}
     _enemyExplosionParticles: {fileID: 5832708315200386561, guid: e35ee44875a72df41998587dcc94ad72, type: 3}
-    _numberOfKnives: 1
+    _numberOfKnives: 9
     _rotateSpeed: 350
     _rotationTime: 1.5
     _rotationStopTime: 0.5

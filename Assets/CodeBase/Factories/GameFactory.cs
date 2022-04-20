@@ -159,8 +159,13 @@ namespace CodeBase.Factories
         public void DestroyEnemy() => 
             Destroy(Enemy.gameObject);
 
-        public void DestroyApple(float destructionTime) => 
+        public void TryDestroyApple(float destructionTime)
+        {
+            if(Apple == null)
+                return;
+            
             Destroy(Apple.gameObject, destructionTime);
+        }
 
         public void DestroyKnife(Knife knife, float destructionTime) => 
             Destroy(knife.gameObject, destructionTime);

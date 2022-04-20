@@ -28,7 +28,7 @@ namespace CodeBase.Factories
         void CreatePlayerKnife();
         void DestroyContainer();
         void DestroyEnemy();
-        void DestroyApple(float destructionTime);
+        void TryDestroyApple(float destructionTime);
         void DestroyKnife(Knife knife, float destructionTime);
         void CreateParticlesEnemyExplosion();
         void CreateParticlesOnImpact(Vector3 position);

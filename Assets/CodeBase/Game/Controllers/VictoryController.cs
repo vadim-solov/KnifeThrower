@@ -18,7 +18,6 @@ namespace CodeBase.Game.Controllers
         private const string IsGrowthAnimation = "IsGrowth";
 
         private readonly KnivesCounter _knivesCounter;
-        private readonly List<Knife> _knivesList;
         private readonly KnivesCollection _knivesCollection;
         private readonly StagesCounter _stagesCounter;
         private readonly Skins _skins;
@@ -34,7 +33,6 @@ namespace CodeBase.Game.Controllers
         {
             _gameFactory = gameFactory;
             _knivesCounter = knivesCounter;
-            _knivesList = knivesCollection.KnivesList;
             _knivesCollection = knivesCollection;
             _stagesCounter = stagesCounter;
             _skins = skins;
@@ -71,7 +69,7 @@ namespace CodeBase.Game.Controllers
         
         private void CreateKnivesParticles()
         {
-            foreach (var knife in _knivesList)
+            foreach (var knife in _knivesCollection.KnivesList)
             {
                 Sprite sprite = knife.GetComponentInChildren<SpriteRenderer>().sprite;
                 _gameFactory.CreateKnivesParticles(sprite);
@@ -102,7 +100,7 @@ namespace CodeBase.Game.Controllers
 
         private void EnableKnivesAnimation()
         {
-            foreach (var knife in _knivesList)
+            foreach (var knife in _knivesCollection.KnivesList)
                 knife.GetComponent<Animator>().SetBool(IsGrowthAnimation, true);
         }
 
@@ -117,12 +115,12 @@ namespace CodeBase.Game.Controllers
             Motion apple = _gameFactory.Apple.GetComponent<Motion>();
             apple.TurnOnGravity();
             apple.StartRandomRotation();
-            _gameFactory.DestroyApple(DestructionTime);
+            _gameFactory.TryDestroyApple(DestructionTime);
         }
 
         private void DestroyKnives()
         {
-            foreach (Knife knife in _knivesList) 
+            foreach (Knife knife in _knivesCollection.KnivesList) 
                 _gameFactory.DestroyKnife(knife, 0f);
         }
     }

@@ -17,7 +17,6 @@ namespace CodeBase.Game.Controllers
         private const float AppearanceUIDelay = 1f;
 
         private readonly KnivesCollection _knivesCollection;
-        private readonly List<Knife> _knivesList;
         private readonly StagesCounter _stagesCounter;
         private readonly KnivesCounter _knivesCounter;
         private readonly ScoreCounter _scoreCounter;
@@ -32,7 +31,6 @@ namespace CodeBase.Game.Controllers
             _knivesCollection = knivesCollection;
             _stagesCounter = stagesCounter;
             _knivesCounter = knivesCounter;
-            _knivesList = knivesCollection.KnivesList;
             _scoreCounter = scoreCounter;
         }
         
@@ -66,9 +64,17 @@ namespace CodeBase.Game.Controllers
             _uiFactory.HideStage();
             _uiFactory.HideScore();
             _gameFactory.DestroyEnemy();
-            _gameFactory.DestroyApple(0f);
+            _gameFactory.TryDestroyApple(0f);
             DestroyKnives();
             _gameFactory.DestroyContainer();
+        }
+
+        private void DestroyKnives()
+        {
+            foreach (Knife knife in _knivesCollection.KnivesList) 
+                _gameFactory.DestroyKnife(knife, 0f);
+            
+            _knivesCollection.Clear();
         }
 
         private async void ResetCounters()
@@ -77,14 +83,6 @@ namespace CodeBase.Game.Controllers
             _stagesCounter.ResetStages();
             _knivesCounter.UpdateCounter();
             _scoreCounter.ResetScore();
-        }
-
-        private void DestroyKnives()
-        {
-            foreach (Knife knife in _knivesList) 
-                _gameFactory.DestroyKnife(knife, 0f);
-            
-            _knivesCollection.Clear();
         }
     }
 }

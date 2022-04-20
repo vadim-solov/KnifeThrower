@@ -21,7 +21,7 @@ namespace CodeBase.Game.Hit
         {
             AddScore();
             SwitchOffCircleCollider(apple);
-            _gameFactory.DestroyApple(0f);
+            _gameFactory.TryDestroyApple(0f);
             _gameFactory.CreateAppleParticles(apple.transform.position);
         }
 
